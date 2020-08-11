@@ -1,2 +1,4 @@
 _resources/
 .DS_Store
+*.code-workspace
+*.vscode
