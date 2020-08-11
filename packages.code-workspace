@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "softi_app_module"
+		},
+		{
+			"path": "softi_firebase_module"
+		},
+		{
+			"path": "softi_db_module"
+		},
+		{
+			"path": "softi_core_module"
+		},
+		{
+			"path": "softi_core_module_legacy"
+		},
+		{
+			"path": "softi_deco_ui"
+		}
+	]
+}
