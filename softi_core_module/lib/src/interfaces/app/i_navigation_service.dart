@@ -6,6 +6,13 @@ abstract class INavigationService {
   pop(dynamic result);
 
   Future<dynamic> navigateTo(String routeName, {dynamic arguments, NavType replace: NavType.Push});
+
+  refresh();
 }
 
-enum NavType { Replace, ReplaceAll, Push, PopAndPush }
+enum NavType {
+  Replace,
+  ReplaceAll,
+  Push,
+  PopAndReplace,
+}

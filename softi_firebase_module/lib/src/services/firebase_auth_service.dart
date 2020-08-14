@@ -67,14 +67,14 @@ class FirebaseAuthService implements IAuthService {
     return _userFromFirebase(authResult.user);
   }
 
-  ///+ Ananymous sign in
+  ///! Ananymous sign in
 
   Future<AuthUser> signInAnonymously() async {
     final AuthResult authResult = await firebaseAuth.signInAnonymously();
     return _userFromFirebase(authResult.user);
   }
 
-  ///+ Email link sign in
+  ///! Email link sign in
 
   Future<AuthCredential> getCredentialForEmailAndLink(String email, String link) async {
     return EmailAuthProvider.getCredentialWithLink(email: email, link: link);
@@ -100,7 +100,7 @@ class FirebaseAuthService implements IAuthService {
     );
   }
 
-  ///+ Google sign in
+  ///! Google sign in
 
   Future<AuthCredential> getCredentialForGoogle() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -123,7 +123,7 @@ class FirebaseAuthService implements IAuthService {
 
   Future<AuthUser> signInWithGoogle() async => _signInWithCredential(await getCredentialForGoogle());
 
-  ///+ Apple sign in
+  ///! Apple sign in
 
   Future<AuthCredential> getCredentialForApple() async {
     final appleIdCredential = await SignInWithApple.getAppleIDCredential(
@@ -151,7 +151,7 @@ class FirebaseAuthService implements IAuthService {
 
   Future<AuthUser> signInWithApple() async => _signInWithCredential(await getCredentialForApple());
 
-  ///+ Facebook Sign in
+  ///! Facebook Sign in
 
   Future<AuthCredential> getFacebookAuthCredential(Future<String> Function(Widget) navigator) async {
     // String result = await Navigator.push(
@@ -176,7 +176,7 @@ class FirebaseAuthService implements IAuthService {
     return _signInWithCredential(await getFacebookAuthCredential(context));
   }
 
-  ///+ Email and Password sign in
+  ///! Email and Password sign in
 
   Future<AuthCredential> getCredentialForEmailPassword(String email, String password) async {
     return EmailAuthProvider.getCredential(email: email, password: password);
@@ -195,7 +195,7 @@ class FirebaseAuthService implements IAuthService {
     await firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
-  ///+ Phone sign in
+  ///! Phone sign in
 
   Future<AuthCredential> getCredentialForPhone(String verificationId, String smsCode) async {
     return PhoneAuthProvider.getCredential(verificationId: verificationId, smsCode: smsCode);

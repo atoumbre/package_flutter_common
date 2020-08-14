@@ -4,7 +4,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
 class DefaultLocalStore extends ILocalStore {
-  // SharedPreferences _instance;
   GetStorage _storage;
   FlutterSecureStorage _secureStorage;
 
@@ -13,14 +12,6 @@ class DefaultLocalStore extends ILocalStore {
     _storage = GetStorage();
     _secureStorage = new FlutterSecureStorage();
   }
-
-  // Future<String> getUserEmail() {
-  //   return _storage.read('UserEmail');
-  // }
-
-  // Future<bool> setUserEmail(email) {
-  //   return _storage.write('UserEmail', email);
-  // }
 
   @override
   Future<String> getKey(String key) {
@@ -33,12 +24,12 @@ class DefaultLocalStore extends ILocalStore {
   }
 
   @override
-  Future<bool> setKey(String key, value) {
+  Future<void> setKey(String key, value) {
     return _storage.write(key, value);
   }
 
   @override
-  Future<bool> setSecuredKey(String key, value) {
+  Future<void> setSecuredKey(String key, value) {
     return _secureStorage.write(key: key, value: value);
   }
 }

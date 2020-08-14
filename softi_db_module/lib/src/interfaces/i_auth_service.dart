@@ -16,10 +16,19 @@ abstract class IAuthService {
   Future<AuthUser> createUserWithEmailAndPassword(String email, String password);
   Future<void> sendPasswordResetEmail(String email);
 
-  // Social Login
+  // OS Login
   Future<AuthUser> signInWithGoogle();
   Future<AuthUser> signInWithApple();
+
+  // Social Login
   Future<AuthUser> signInWithFacebook(dynamic param);
+
+  // Email Link login
+  Future<AuthUser> signInWithEmailAndLink({String email, String link});
+  Future<bool> isSignInWithEmailLink(String link);
+  Future<void> sendSignInWithEmailLink({
+    @required String email,
+  });
 
   // Phone login
   Future<AuthUser> signInWithPhone(verificationId, smsOTP);
@@ -28,19 +37,6 @@ abstract class IAuthService {
     dynamic resendingId,
     bool autoRetrive,
     int autoRetrievalTimeoutSeconds,
-
-    // Function(String, [int]) codeSent,
-    // Function(String) codeAutoRetrievalTimeout,
-    // Function(AuthUser) authCompleted,
-    // Function(Exception) authFailed,
-    // int autoRetrievalTimeoutSeconds,
-  });
-
-  //Email Link login
-  Future<AuthUser> signInWithEmailAndLink({String email, String link});
-  Future<bool> isSignInWithEmailLink(String link);
-  Future<void> sendSignInWithEmailLink({
-    @required String email,
   });
 
   Future<void> signOut();
@@ -49,9 +45,9 @@ abstract class IAuthService {
 }
 
 class PhoneCodeResult {
-  final String verificationId;
-  final dynamic resendindId;
-  final dynamic authCredential;
+  final dynamic verificationId; // Receive if the code was sent successfully
+  final dynamic resendindId; // Receive if the code was sent successfully
+  final dynamic authCredential; // Receive if auto retrieve was successful
 
   PhoneCodeResult({this.verificationId, this.resendindId, this.authCredential});
 }

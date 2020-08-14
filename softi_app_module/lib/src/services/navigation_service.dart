@@ -11,11 +11,16 @@ class NavigationService extends INavigationService {
     return _navigator.pop(result);
   }
 
-  Future<dynamic> navigateTo(String routeName, {dynamic arguments, replace: NavType.Push}) {
+  navigateTo(String routeName, {dynamic arguments, replace: NavType.Push}) {
     final _navigator = _navigationKey.currentState;
     if (replace == NavType.Replace) return _navigator.pushReplacementNamed(routeName, arguments: arguments);
     if (replace == NavType.ReplaceAll) return _navigator.pushReplacementNamed(routeName, arguments: arguments);
-    if (replace == NavType.PopAndPush) return _navigator.popAndPushNamed(routeName, arguments: arguments);
+    if (replace == NavType.PopAndReplace) return _navigator.popAndPushNamed(routeName, arguments: arguments);
     return _navigator.pushNamed(routeName, arguments: arguments);
+  }
+
+  refresh() {
+    // TODO: implement refresh
+    throw UnimplementedError();
   }
 }
