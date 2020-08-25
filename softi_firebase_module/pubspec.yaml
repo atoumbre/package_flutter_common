@@ -14,8 +14,8 @@ dependencies:
   softi_core_module:
     path: ../softi_core_module
   
-  softi_db_module:
-    path: ../softi_db_module
+  # softi_db_module:
+  #   path: ../softi_db_module
     
 
   freezed_annotation:

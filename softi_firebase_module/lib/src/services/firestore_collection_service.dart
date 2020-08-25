@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:softi_db_module/softi_db_module.dart';
+import 'package:softi_core_module/softi_core_module.dart';
 
 class FirestoreCollectionService implements ICollectionService {
   FirestoreCollectionService(this._firestoreInstance, this.collectionName, this.fromJson);
