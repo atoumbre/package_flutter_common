@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named
 
-part of 'auth_user.dart';
+part of '../models/auth_user.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -57,8 +57,7 @@ mixin _$AuthUser {
 }
 
 abstract class $AuthUserCopyWith<$Res> {
-  factory $AuthUserCopyWith(AuthUser value, $Res Function(AuthUser) then) =
-      _$AuthUserCopyWithImpl<$Res>;
+  factory $AuthUserCopyWith(AuthUser value, $Res Function(AuthUser) then) = _$AuthUserCopyWithImpl<$Res>;
   $Res call(
       {String uid,
       String displayName,
@@ -94,32 +93,21 @@ class _$AuthUserCopyWithImpl<$Res> implements $AuthUserCopyWith<$Res> {
   }) {
     return _then(_value.copyWith(
       uid: uid == freezed ? _value.uid : uid as String,
-      displayName:
-          displayName == freezed ? _value.displayName : displayName as String,
+      displayName: displayName == freezed ? _value.displayName : displayName as String,
       photoUrl: photoUrl == freezed ? _value.photoUrl : photoUrl as String,
       email: email == freezed ? _value.email : email as String,
-      phoneNumber:
-          phoneNumber == freezed ? _value.phoneNumber : phoneNumber as String,
-      isAnonymous:
-          isAnonymous == freezed ? _value.isAnonymous : isAnonymous as bool,
-      isEmailVerified: isEmailVerified == freezed
-          ? _value.isEmailVerified
-          : isEmailVerified as bool,
-      creationTime: creationTime == freezed
-          ? _value.creationTime
-          : creationTime as DateTime,
-      lastSignInTime: lastSignInTime == freezed
-          ? _value.lastSignInTime
-          : lastSignInTime as DateTime,
-      providerId:
-          providerId == freezed ? _value.providerId : providerId as String,
+      phoneNumber: phoneNumber == freezed ? _value.phoneNumber : phoneNumber as String,
+      isAnonymous: isAnonymous == freezed ? _value.isAnonymous : isAnonymous as bool,
+      isEmailVerified: isEmailVerified == freezed ? _value.isEmailVerified : isEmailVerified as bool,
+      creationTime: creationTime == freezed ? _value.creationTime : creationTime as DateTime,
+      lastSignInTime: lastSignInTime == freezed ? _value.lastSignInTime : lastSignInTime as DateTime,
+      providerId: providerId == freezed ? _value.providerId : providerId as String,
     ));
   }
 }
 
 abstract class _$AuthUserCopyWith<$Res> implements $AuthUserCopyWith<$Res> {
-  factory _$AuthUserCopyWith(_AuthUser value, $Res Function(_AuthUser) then) =
-      __$AuthUserCopyWithImpl<$Res>;
+  factory _$AuthUserCopyWith(_AuthUser value, $Res Function(_AuthUser) then) = __$AuthUserCopyWithImpl<$Res>;
   @override
   $Res call(
       {String uid,
@@ -134,8 +122,7 @@ abstract class _$AuthUserCopyWith<$Res> implements $AuthUserCopyWith<$Res> {
       String providerId});
 }
 
-class __$AuthUserCopyWithImpl<$Res> extends _$AuthUserCopyWithImpl<$Res>
-    implements _$AuthUserCopyWith<$Res> {
+class __$AuthUserCopyWithImpl<$Res> extends _$AuthUserCopyWithImpl<$Res> implements _$AuthUserCopyWith<$Res> {
   __$AuthUserCopyWithImpl(_AuthUser _value, $Res Function(_AuthUser) _then)
       : super(_value, (v) => _then(v as _AuthUser));
 
@@ -157,25 +144,15 @@ class __$AuthUserCopyWithImpl<$Res> extends _$AuthUserCopyWithImpl<$Res>
   }) {
     return _then(_AuthUser(
       uid: uid == freezed ? _value.uid : uid as String,
-      displayName:
-          displayName == freezed ? _value.displayName : displayName as String,
+      displayName: displayName == freezed ? _value.displayName : displayName as String,
       photoUrl: photoUrl == freezed ? _value.photoUrl : photoUrl as String,
       email: email == freezed ? _value.email : email as String,
-      phoneNumber:
-          phoneNumber == freezed ? _value.phoneNumber : phoneNumber as String,
-      isAnonymous:
-          isAnonymous == freezed ? _value.isAnonymous : isAnonymous as bool,
-      isEmailVerified: isEmailVerified == freezed
-          ? _value.isEmailVerified
-          : isEmailVerified as bool,
-      creationTime: creationTime == freezed
-          ? _value.creationTime
-          : creationTime as DateTime,
-      lastSignInTime: lastSignInTime == freezed
-          ? _value.lastSignInTime
-          : lastSignInTime as DateTime,
-      providerId:
-          providerId == freezed ? _value.providerId : providerId as String,
+      phoneNumber: phoneNumber == freezed ? _value.phoneNumber : phoneNumber as String,
+      isAnonymous: isAnonymous == freezed ? _value.isAnonymous : isAnonymous as bool,
+      isEmailVerified: isEmailVerified == freezed ? _value.isEmailVerified : isEmailVerified as bool,
+      creationTime: creationTime == freezed ? _value.creationTime : creationTime as DateTime,
+      lastSignInTime: lastSignInTime == freezed ? _value.lastSignInTime : lastSignInTime as DateTime,
+      providerId: providerId == freezed ? _value.providerId : providerId as String,
     ));
   }
 }
@@ -241,34 +218,23 @@ class _$_AuthUser extends _AuthUser with DiagnosticableTreeMixin {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _AuthUser &&
-            (identical(other.uid, uid) ||
-                const DeepCollectionEquality().equals(other.uid, uid)) &&
+            (identical(other.uid, uid) || const DeepCollectionEquality().equals(other.uid, uid)) &&
             (identical(other.displayName, displayName) ||
-                const DeepCollectionEquality()
-                    .equals(other.displayName, displayName)) &&
-            (identical(other.photoUrl, photoUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.photoUrl, photoUrl)) &&
-            (identical(other.email, email) ||
-                const DeepCollectionEquality().equals(other.email, email)) &&
+                const DeepCollectionEquality().equals(other.displayName, displayName)) &&
+            (identical(other.photoUrl, photoUrl) || const DeepCollectionEquality().equals(other.photoUrl, photoUrl)) &&
+            (identical(other.email, email) || const DeepCollectionEquality().equals(other.email, email)) &&
             (identical(other.phoneNumber, phoneNumber) ||
-                const DeepCollectionEquality()
-                    .equals(other.phoneNumber, phoneNumber)) &&
+                const DeepCollectionEquality().equals(other.phoneNumber, phoneNumber)) &&
             (identical(other.isAnonymous, isAnonymous) ||
-                const DeepCollectionEquality()
-                    .equals(other.isAnonymous, isAnonymous)) &&
+                const DeepCollectionEquality().equals(other.isAnonymous, isAnonymous)) &&
             (identical(other.isEmailVerified, isEmailVerified) ||
-                const DeepCollectionEquality()
-                    .equals(other.isEmailVerified, isEmailVerified)) &&
+                const DeepCollectionEquality().equals(other.isEmailVerified, isEmailVerified)) &&
             (identical(other.creationTime, creationTime) ||
-                const DeepCollectionEquality()
-                    .equals(other.creationTime, creationTime)) &&
+                const DeepCollectionEquality().equals(other.creationTime, creationTime)) &&
             (identical(other.lastSignInTime, lastSignInTime) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastSignInTime, lastSignInTime)) &&
+                const DeepCollectionEquality().equals(other.lastSignInTime, lastSignInTime)) &&
             (identical(other.providerId, providerId) ||
-                const DeepCollectionEquality()
-                    .equals(other.providerId, providerId)));
+                const DeepCollectionEquality().equals(other.providerId, providerId)));
   }
 
   @override
@@ -286,8 +252,7 @@ class _$_AuthUser extends _AuthUser with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(providerId);
 
   @override
-  _$AuthUserCopyWith<_AuthUser> get copyWith =>
-      __$AuthUserCopyWithImpl<_AuthUser>(this, _$identity);
+  _$AuthUserCopyWith<_AuthUser> get copyWith => __$AuthUserCopyWithImpl<_AuthUser>(this, _$identity);
 }
 
 abstract class _AuthUser extends AuthUser {

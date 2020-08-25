@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:softi_core_module/softi_core_module.dart';
-import 'package:softi_core_module/src/models/base_model.dart';
 import 'package:flutter/foundation.dart';
+import 'package:softi_core_module/src/models/base_model.dart';
 
 abstract class ICollectionService {
   Future<QueryResult<T>> getData<T extends IBaseModel>(
