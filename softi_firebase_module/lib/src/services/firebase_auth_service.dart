@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:softi_core_module/softi_core_module.dart';
-// import 'package:softi_db_module/softi_db_module.dart';
 import 'package:softi_firebase_module/src/settings.dart';
 import 'package:softi_firebase_module/src/ui/facebook_signin_webview.dart';
 
