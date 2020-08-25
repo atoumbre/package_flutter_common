@@ -1,17 +1,16 @@
 abstract class IBaseModel {
   Map<String, dynamic> toJson();
   String getId();
-  // String getPath();
+  String getPath();
   bool isValid();
 }
 
 mixin BaseModelMixin {
   String id;
-  // String path;
+  String path;
 
   String getId() => id;
-
-  // String getPath() => path;
+  String getPath() => path;
   bool isValid() => true;
 
   // Map<String, dynamic> toJson() => super.toJson();

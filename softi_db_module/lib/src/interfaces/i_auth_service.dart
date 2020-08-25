@@ -32,7 +32,7 @@ abstract class IAuthService {
 
   // Phone login
   Future<AuthUser> signInWithPhone(verificationId, smsOTP);
-  Future<PhoneCodeResult> sendSignInWithPhoneCode({
+  Future<PhoneAuthResult> sendSignInWithPhoneCode({
     String phoneNumber,
     dynamic resendingId,
     bool autoRetrive,
@@ -44,10 +44,22 @@ abstract class IAuthService {
   void dispose();
 }
 
-class PhoneCodeResult {
-  final dynamic verificationId; // Receive if the code was sent successfully
-  final dynamic resendindId; // Receive if the code was sent successfully
-  final dynamic authCredential; // Receive if auto retrieve was successful
+class PhoneAuthResult {
+  final Future<SendCodeResult> sendCodeFuture;
+  final Future<AuthUser> autoRetriveFuture;
 
-  PhoneCodeResult({this.verificationId, this.resendindId, this.authCredential});
+  PhoneAuthResult({
+    this.sendCodeFuture,
+    this.autoRetriveFuture,
+  });
+}
+
+class SendCodeResult {
+  final Future<AuthUser> Function(String) codeVerification;
+  final Future<PhoneAuthResult> Function() resendCode;
+
+  SendCodeResult({
+    this.codeVerification,
+    this.resendCode,
+  });
 }

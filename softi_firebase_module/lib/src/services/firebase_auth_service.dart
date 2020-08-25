@@ -205,26 +205,34 @@ class FirebaseAuthService implements IAuthService {
     return _signInWithCredential(await getCredentialForPhone(verificationId, smsOTP));
   }
 
-  Future<PhoneCodeResult> sendSignInWithPhoneCode({
+  Future<PhoneAuthResult> sendSignInWithPhoneCode({
     String phoneNumber,
     dynamic resendingId,
     bool autoRetrive = true,
     int autoRetrievalTimeoutSeconds = 30,
   }) async {
-    Completer<PhoneCodeResult> sendCodeCompleter;
+    Completer<SendCodeResult> sendCodeCompleter;
+    Completer<AuthUser> autoRetriveCompleter;
 
     await firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       forceResendingToken: resendingId,
       codeSent: (verificationId, [resendingId]) {
-        sendCodeCompleter.complete(PhoneCodeResult(
-          verificationId: verificationId,
-          resendindId: resendingId,
-        ));
+        var result = SendCodeResult(
+            codeVerification: (code) => signInWithPhone(verificationId, code),
+            resendCode: () => sendSignInWithPhoneCode(
+                  phoneNumber: phoneNumber,
+                  resendingId: resendingId,
+                  autoRetrive: autoRetrive,
+                  autoRetrievalTimeoutSeconds: autoRetrievalTimeoutSeconds,
+                ));
+
+        sendCodeCompleter.complete(result);
       },
 
       verificationFailed: (AuthException authException) {
         sendCodeCompleter.completeError(authException);
+
         return;
       },
 
@@ -233,17 +241,20 @@ class FirebaseAuthService implements IAuthService {
       timeout: Duration(seconds: autoRetrive ? autoRetrievalTimeoutSeconds : 0),
 
       verificationCompleted: (AuthCredential authCredential) async {
-        sendCodeCompleter.complete(PhoneCodeResult(
-          authCredential: authCredential,
-        ));
+        AuthUser _user = await _signInWithCredential(authCredential);
+        autoRetriveCompleter.complete(_user);
       },
 
       codeAutoRetrievalTimeout: (String verificationId) {
+        // Dismiss autoretrieve timeout
         return;
       },
     );
 
-    return sendCodeCompleter.future;
+    return PhoneAuthResult(
+      sendCodeFuture: sendCodeCompleter.future,
+      autoRetriveFuture: autoRetriveCompleter.future,
+    );
   }
 
   @override

@@ -71,14 +71,14 @@ class FirestoreCollectionService implements ICollectionService {
 //TODO(atoumbre): Manage optimistic response for second read
   Future<T> add<T extends IBaseModel>(T doc, {refresh = false}) async {
     DocumentReference docRef = await _getRef(collectionName<T>()).add(_toFirestore(doc));
-    // return refresh ? fromFirestore<T>(await docRef.get()) : Future.value(doc..setId(docRef.documentID));
+    // return refresh ? _fromFirestore<T>(await docRef.get()) : Future.value(doc..setId(docRef.documentID));
 
-    return _fromFirestore<T>(await docRef.get());
+    return _fromFirestore<T>(await docRef.snapshots().first);
   }
 
   @override
   Future<bool> exists<T extends IBaseModel>(String id) async {
-    return (await _getRef(collectionName<T>()).document(id).get()).exists;
+    return (await _getRef(collectionName<T>()).document(id).snapshots().first).exists;
   }
 
   Future<T> update<T extends IBaseModel>(T doc, {refresh = false}) async {
@@ -88,7 +88,7 @@ class FirestoreCollectionService implements ICollectionService {
         merge: true,
       );
     await docRef.updateData(_toFirestore(doc));
-    return refresh ? _fromFirestore<T>(await docRef.get()) : Future.value(doc);
+    return refresh ? _fromFirestore<T>(await docRef.snapshots().first) : Future.value(doc);
   }
 
   Future<T> delete<T extends IBaseModel>(String documentId) async {
@@ -101,7 +101,7 @@ class FirestoreCollectionService implements ICollectionService {
 
   // Get documenent from db
   Future<T> get<T extends IBaseModel>(String recordId) async {
-    DocumentSnapshot snapshot = await _getRef(collectionName<T>()).document(recordId).get();
+    DocumentSnapshot snapshot = await _getRef(collectionName<T>()).document(recordId).snapshots().first;
     if (snapshot.exists) {
       return _fromFirestore<T>(snapshot);
     } else {
