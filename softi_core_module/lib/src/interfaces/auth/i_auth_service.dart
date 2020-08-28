@@ -57,8 +57,10 @@ class PhoneAuthResult {
 class SendCodeResult {
   final Future<AuthUser> Function(String) codeVerification;
   final Future<PhoneAuthResult> Function() resendCode;
+  final String phoneNumber;
 
   SendCodeResult({
+    @required this.phoneNumber,
     this.codeVerification,
     this.resendCode,
   });

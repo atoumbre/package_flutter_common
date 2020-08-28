@@ -6,7 +6,7 @@ import 'package:softi_core_module/softi_core_module.dart';
 class FirestoreCollectionService implements ICollectionService {
   FirestoreCollectionService(this._firestoreInstance, this.collectionName, this.fromJson);
 
-  final Firestore _firestoreInstance;
+  final FirebaseFirestore _firestoreInstance;
 
   final String Function<T extends IBaseModel>([T doc]) collectionName;
   final T Function<T extends IBaseModel>(Map<String, Object>) fromJson;
@@ -46,20 +46,20 @@ class FirestoreCollectionService implements ICollectionService {
 
     return _querySnapshot.map<QueryResult<T>>(
       (snapshot) {
-        var data = snapshot.documents
+        var data = snapshot.docs
             //! Filter possible here
             // .where((mappedItem) => mappedItem.name != null)
             .map<T>((doc) => _fromFirestore<T>(doc))
             .toList();
 
-        var changes = snapshot.documentChanges
+        var changes = snapshot.docChanges
             //! Filter possible here
             // .where((mappedItem) => mappedItem.name != null)
-            .map((DocumentChange doc) => Change<T>(
-                  document: _fromFirestore<T>(doc.document),
-                  oldIndex: doc.oldIndex,
-                  newIndex: doc.newIndex,
-                  type: _firestoreEntityChangeMapper[doc.type],
+            .map((DocumentChange docChange) => Change<T>(
+                  document: _fromFirestore<T>(docChange.doc),
+                  oldIndex: docChange.oldIndex,
+                  newIndex: docChange.newIndex,
+                  type: _firestoreEntityChangeMapper[docChange.type],
                 ))
             .toList();
 
@@ -78,30 +78,30 @@ class FirestoreCollectionService implements ICollectionService {
 
   @override
   Future<bool> exists<T extends IBaseModel>(String id) async {
-    return (await _getRef(collectionName<T>()).document(id).snapshots().first).exists;
+    return (await _getRef(collectionName<T>()).doc(id).snapshots().first).exists;
   }
 
   Future<T> update<T extends IBaseModel>(T doc, {refresh = false}) async {
-    DocumentReference docRef = _getRef(collectionName<T>()).document(doc.getId())
-      ..setData(
+    DocumentReference docRef = _getRef(collectionName<T>()).doc(doc.getId())
+      ..set(
         _toFirestore(doc),
-        merge: true,
+        SetOptions(merge: true),
       );
-    await docRef.updateData(_toFirestore(doc));
+    await docRef.update(_toFirestore(doc));
     return refresh ? _fromFirestore<T>(await docRef.snapshots().first) : Future.value(doc);
   }
 
   Future<T> delete<T extends IBaseModel>(String documentId) async {
     T deletedDoc = await get<T>(documentId);
     if (deletedDoc != null) {
-      await _getRef(collectionName<T>()).document(documentId).delete();
+      await _getRef(collectionName<T>()).doc(documentId).delete();
     }
     return deletedDoc;
   }
 
   // Get documenent from db
   Future<T> get<T extends IBaseModel>(String recordId) async {
-    DocumentSnapshot snapshot = await _getRef(collectionName<T>()).document(recordId).snapshots().first;
+    DocumentSnapshot snapshot = await _getRef(collectionName<T>()).doc(recordId).snapshots().first;
     if (snapshot.exists) {
       return _fromFirestore<T>(snapshot);
     } else {
@@ -111,10 +111,7 @@ class FirestoreCollectionService implements ICollectionService {
 
   // Stream documenent from db
   Stream<T> stream<T extends IBaseModel>(String recordId) {
-    return _getRef(collectionName<T>())
-        .document(recordId)
-        .snapshots()
-        .map<T>((snapshot) => _fromFirestore<T>(snapshot));
+    return _getRef(collectionName<T>()).doc(recordId).snapshots().map<T>((snapshot) => _fromFirestore<T>(snapshot));
   }
 
   /// Internala fmethodes
@@ -161,7 +158,7 @@ class FirestoreCollectionService implements ICollectionService {
 
     // Get the last Document
     if (lastId != null) {
-      _query = _query.startAfterDocument(await ref.document(lastId).get(source: Source.cache));
+      _query = _query.startAfterDocument(await ref.doc(lastId).get(GetOptions(source: Source.cache)));
     }
 
     _query = _query.limit(limit);
@@ -170,14 +167,14 @@ class FirestoreCollectionService implements ICollectionService {
   }
 
   T _fromFirestore<T extends IBaseModel>(DocumentSnapshot docSnap) {
-    Map<String, dynamic> map = docSnap.data;
+    Map<String, dynamic> map = docSnap.data();
     if (map == null) return null;
 
     Map<String, dynamic> _map = _firestireMap(map, true);
     if (_map == null) return null;
 
     dynamic _result = fromJson<T>({
-      'id': docSnap.documentID,
+      'id': docSnap.id,
       'path': docSnap.reference.path,
       ..._map,
     });
@@ -235,7 +232,7 @@ class FirestoreCollectionService implements ICollectionService {
       if (v is Timestamp)
         return v.toDate();
       else if (v is DocumentReference)
-        return {'id': v.documentID, 'path': v.path};
+        return {'id': v.id, 'path': v.path};
       else
         return v;
     } else {
@@ -244,7 +241,7 @@ class FirestoreCollectionService implements ICollectionService {
       if (v is DateTime)
         return Timestamp.fromDate(v);
       else if (v is Reference)
-        return Firestore.instance.collection(collectionName(v.data)).document(v.id);
+        return FirebaseFirestore.instance.collection(collectionName(v.data)).doc(v.id);
       else
         return v;
     }

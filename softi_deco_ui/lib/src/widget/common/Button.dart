@@ -23,7 +23,8 @@ class Button extends StatelessWidget {
       height: clear ? null : 50.0,
       decoration: clear
           ? null
-          : BoxDecoration(color: color, borderRadius: BorderRadius.circular(radius), boxShadow: ButtonStyle.boxShadow),
+          : BoxDecoration(
+              color: color, borderRadius: BorderRadius.circular(radius), boxShadow: DecoButtonStyle.boxShadow),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -31,7 +32,7 @@ class Button extends StatelessWidget {
             child: Center(
                 child: Padding(
               padding: clear ? EdgeInsets.symmetric(horizontal: 2.0) : EdgeInsets.symmetric(horizontal: 8.0),
-              child: text == '' ? widget : Text(text, style: clear ? ButtonStyle.clearText : ButtonStyle.text),
+              child: text == '' ? widget : Text(text, style: clear ? DecoButtonStyle.clearText : DecoButtonStyle.text),
             ))),
       ),
     );

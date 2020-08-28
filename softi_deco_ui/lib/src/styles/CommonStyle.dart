@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 
-
 /// Deco UI Kit base text style
 class DecoTextStyle {
-  static final baseTextStyle = TextStyle(
-      fontFamily: 'Roboto'
-  );
+  static final baseTextStyle = TextStyle(fontFamily: 'Roboto');
 }
-
 
 /// Colors used by Deco UI Kit
 class DecoColors {
-
   // background and app bar colors
   static final pageBackground = Color(0xFFFBFCFD);
   static final appBarColor = Color(0xFF707984);
@@ -28,35 +23,20 @@ class DecoColors {
   static const iconActive = Color(0xFFE23E3E);
 }
 
-
 /// Style for Button widget
-class ButtonStyle {
-  static final text = DecoTextStyle.baseTextStyle.copyWith(
-    fontSize: 14.0,
-    height: 16.0 / 14.0,
-    color: Colors.white
-  );
+class DecoButtonStyle {
+  static final text = DecoTextStyle.baseTextStyle.copyWith(fontSize: 14.0, height: 16.0 / 14.0, color: Colors.white);
 
-  static final clearText = DecoTextStyle.baseTextStyle.copyWith(
-    fontSize: 14.0,
-    height: 16.0 / 14.0,
-    color: DecoColors.text,
-    fontWeight: FontWeight.bold
-  );
+  static final clearText = DecoTextStyle.baseTextStyle
+      .copyWith(fontSize: 14.0, height: 16.0 / 14.0, color: DecoColors.text, fontWeight: FontWeight.bold);
 
   static final boxShadow = <BoxShadow>[
-    BoxShadow(
-      color: Colors.black.withOpacity(0.1),
-      blurRadius: 30.0,
-      offset: Offset(0.0, 10.0)
-    )
+    BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 30.0, offset: Offset(0.0, 10.0))
   ];
 }
 
-
 /// Style for DecoCard widget
 class DecoCardStyle {
-
   /// Card box radius
   static final borderRadius = BorderRadius.circular(5.0);
 
@@ -65,15 +45,10 @@ class DecoCardStyle {
     color: Colors.white,
     borderRadius: DecoCardStyle.borderRadius,
     boxShadow: <BoxShadow>[
-      BoxShadow(
-        color: Colors.black.withOpacity(0.1),
-        blurRadius: 30.0,
-        offset: Offset(0.0, 10.0)
-      )
+      BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 30.0, offset: Offset(0.0, 10.0))
     ],
   );
 }
-
 
 /// Style for AuthorOrDMCard widget
 class AuthorOrDMCardStyle {
@@ -96,7 +71,6 @@ class AuthorOrDMCardStyle {
   );
 }
 
-
 /// Style for ImageCardOverlap widget
 class ImageCardOverlapStyle {
   static final title = DecoTextStyle.baseTextStyle.copyWith(
@@ -111,7 +85,6 @@ class ImageCardOverlapStyle {
     color: DecoColors.textLight,
   );
 }
-
 
 /// Style for TextArea widget
 class TextAreaStyle {

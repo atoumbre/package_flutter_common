@@ -16,7 +16,7 @@ class FirebaseAuthService implements IAuthService {
   final FirebaseAuth firebaseAuth;
   final FirebaseSettings settings;
 
-  AuthUser _userFromFirebase(FirebaseUser user) {
+  AuthUser _userFromFirebase(User user) {
     if (user == null) {
       return null;
     }
@@ -26,32 +26,33 @@ class FirebaseAuthService implements IAuthService {
       uid: user.uid,
       // info
       displayName: user.displayName,
-      photoUrl: user.photoUrl,
+      photoUrl: user.photoURL,
       email: user.email,
       phoneNumber: user.phoneNumber,
       // account
-      providerId: user.providerId,
+      // providerId: user.providerData,
       isAnonymous: user.isAnonymous,
-      isEmailVerified: user.isEmailVerified,
+      isEmailVerified: user.emailVerified,
       creationTime: user.metadata.creationTime,
       lastSignInTime: user.metadata.lastSignInTime,
     );
   }
 
-  Future<AuthUser> _signInWithCredential(AuthCredential credential, [UserUpdateInfo updateUser]) async {
+  Future<AuthUser> _signInWithCredential(AuthCredential credential, {String displayName, String photoURL}) async {
     final authResult = await firebaseAuth.signInWithCredential(credential);
     final firebaseUser = authResult.user;
-    if (updateUser != null) await firebaseUser.updateProfile(updateUser);
+    if (displayName != null || photoURL != null)
+      await firebaseUser.updateProfile(displayName: displayName, photoURL: photoURL);
 
     return _userFromFirebase(firebaseUser);
   }
 
   Stream<AuthUser> streamCurrentUser() {
-    return firebaseAuth.onAuthStateChanged.map(_userFromFirebase);
+    return firebaseAuth.authStateChanges().map(_userFromFirebase);
   }
 
   Future<AuthUser> getCurrentUser() async {
-    final FirebaseUser user = await firebaseAuth.currentUser();
+    final User user = firebaseAuth.currentUser;
     return _userFromFirebase(user);
   }
 
@@ -63,21 +64,21 @@ class FirebaseAuthService implements IAuthService {
   }
 
   Future<AuthUser> linkWithCredential(AuthCredential credential) async {
-    AuthResult authResult = await (await firebaseAuth.currentUser()).linkWithCredential(credential);
+    UserCredential authResult = await firebaseAuth.currentUser.linkWithCredential(credential);
     return _userFromFirebase(authResult.user);
   }
 
   ///! Ananymous sign in
 
   Future<AuthUser> signInAnonymously() async {
-    final AuthResult authResult = await firebaseAuth.signInAnonymously();
+    final UserCredential authResult = await firebaseAuth.signInAnonymously();
     return _userFromFirebase(authResult.user);
   }
 
   ///! Email link sign in
 
   Future<AuthCredential> getCredentialForEmailAndLink(String email, String link) async {
-    return EmailAuthProvider.getCredentialWithLink(email: email, link: link);
+    return EmailAuthProvider.credentialWithLink(email: email, emailLink: link);
   }
 
   Future<AuthUser> signInWithEmailAndLink({String email, String link}) async {
@@ -85,18 +86,23 @@ class FirebaseAuthService implements IAuthService {
   }
 
   Future<bool> isSignInWithEmailLink(String link) async {
-    return await firebaseAuth.isSignInWithEmailLink(link);
+    return Future.value(firebaseAuth.isSignInWithEmailLink(link));
   }
 
   Future<void> sendSignInWithEmailLink({@required String email}) async {
-    return await firebaseAuth.sendSignInWithEmailLink(
+    return await firebaseAuth.sendSignInLinkToEmail(
       email: email,
-      url: settings.url,
-      iOSBundleID: settings.iOSBundleID,
-      androidPackageName: settings.androidPackageName,
-      androidInstallIfNotAvailable: settings.androidInstallIfNotAvailable,
-      androidMinimumVersion: settings.androidMinimumVersion,
-      handleCodeInApp: true,
+      // actionCodeSettings: ActionCodeSettings(
+      //   url: settings.url,
+      //   // iOSBundleID: settings.iOSBundleID,
+      //   // androidPackageName: settings.androidPackageName,
+      //   // androidInstallIfNotAvailable: settings.androidInstallIfNotAvailable,
+      //   // androidMinimumVersion: settings.androidMinimumVersion,
+      //   handleCodeInApp: true,
+      //   android: null,
+      //   dynamicLinkDomain: null,
+      //   iOS: null,
+      // ),
     );
   }
 
@@ -109,7 +115,7 @@ class FirebaseAuthService implements IAuthService {
     if (googleUser != null) {
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       if (googleAuth.accessToken != null && googleAuth.idToken != null) {
-        return GoogleAuthProvider.getCredential(
+        return GoogleAuthProvider.credential(
           idToken: googleAuth.idToken,
           accessToken: googleAuth.accessToken,
         );
@@ -141,9 +147,9 @@ class FirebaseAuthService implements IAuthService {
       ),
     );
 
-    final oAuthProvider = OAuthProvider(providerId: 'apple.com');
+    final oAuthProvider = OAuthProvider('apple.com');
 
-    return oAuthProvider.getCredential(
+    return oAuthProvider.credential(
       idToken: appleIdCredential.identityToken,
       accessToken: appleIdCredential.authorizationCode,
     );
@@ -166,7 +172,7 @@ class FirebaseAuthService implements IAuthService {
     String result = await navigator(getFacebookLoginWebView(settings.facebookClientId));
 
     if (result != null) {
-      return FacebookAuthProvider.getCredential(accessToken: result);
+      return FacebookAuthProvider.credential(result);
     } else {
       throw PlatformException(code: 'ERROR_ABORTED_BY_USER', message: 'Sign in aborted by user');
     }
@@ -179,7 +185,7 @@ class FirebaseAuthService implements IAuthService {
   ///! Email and Password sign in
 
   Future<AuthCredential> getCredentialForEmailPassword(String email, String password) async {
-    return EmailAuthProvider.getCredential(email: email, password: password);
+    return EmailAuthProvider.credential(email: email, password: password);
   }
 
   Future<AuthUser> signInWithEmailAndPassword(String email, String password) async {
@@ -187,7 +193,8 @@ class FirebaseAuthService implements IAuthService {
   }
 
   Future<AuthUser> createUserWithEmailAndPassword(String email, String password) async {
-    final AuthResult authResult = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+    final UserCredential authResult =
+        await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
     return _userFromFirebase(authResult.user);
   }
 
@@ -198,7 +205,7 @@ class FirebaseAuthService implements IAuthService {
   ///! Phone sign in
 
   Future<AuthCredential> getCredentialForPhone(String verificationId, String smsCode) async {
-    return PhoneAuthProvider.getCredential(verificationId: verificationId, smsCode: smsCode);
+    return PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
   }
 
   Future<AuthUser> signInWithPhone(verificationId, smsOTP) async {
@@ -219,18 +226,20 @@ class FirebaseAuthService implements IAuthService {
       forceResendingToken: resendingId,
       codeSent: (verificationId, [resendingId]) {
         var result = SendCodeResult(
-            codeVerification: (code) => signInWithPhone(verificationId, code),
-            resendCode: () => sendSignInWithPhoneCode(
-                  phoneNumber: phoneNumber,
-                  resendingId: resendingId,
-                  autoRetrive: autoRetrive,
-                  autoRetrievalTimeoutSeconds: autoRetrievalTimeoutSeconds,
-                ));
+          phoneNumber: phoneNumber,
+          codeVerification: (code) => signInWithPhone(verificationId, code),
+          resendCode: () => sendSignInWithPhoneCode(
+            phoneNumber: phoneNumber,
+            resendingId: resendingId,
+            autoRetrive: autoRetrive,
+            autoRetrievalTimeoutSeconds: autoRetrievalTimeoutSeconds,
+          ),
+        );
 
         sendCodeCompleter.complete(result);
       },
 
-      verificationFailed: (AuthException authException) {
+      verificationFailed: (FirebaseAuthException authException) {
         sendCodeCompleter.completeError(authException);
 
         return;
