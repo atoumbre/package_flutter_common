@@ -92,17 +92,19 @@ class FirebaseAuthService implements IAuthService {
   Future<void> sendSignInWithEmailLink({@required String email}) async {
     return await firebaseAuth.sendSignInLinkToEmail(
       email: email,
-      // actionCodeSettings: ActionCodeSettings(
-      //   url: settings.url,
-      //   // iOSBundleID: settings.iOSBundleID,
-      //   // androidPackageName: settings.androidPackageName,
-      //   // androidInstallIfNotAvailable: settings.androidInstallIfNotAvailable,
-      //   // androidMinimumVersion: settings.androidMinimumVersion,
-      //   handleCodeInApp: true,
-      //   android: null,
-      //   dynamicLinkDomain: null,
-      //   iOS: null,
-      // ),
+      actionCodeSettings: ActionCodeSettings(
+        url: settings.url,
+        android: {
+          'packageName': settings.androidPackageName,
+          'installApp': settings.androidInstallIfNotAvailable,
+          'minimumVersion': settings.androidMinimumVersion,
+        },
+        iOS: {
+          'bundleId': settings.iOSBundleID,
+        },
+        // dynamicLinkDomain: null,
+        // handleCodeInApp: false,
+      ),
     );
   }
 
