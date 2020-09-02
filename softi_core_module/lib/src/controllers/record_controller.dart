@@ -1,10 +1,11 @@
 import 'dart:async';
 
-import 'package:get/get.dart';
 import 'package:softi_core_module/src/interfaces/db/i_collection_service.dart';
 import 'package:softi_core_module/src/models/base_model.dart';
 
 class Record<T extends IBaseModel> {
+  Record(this.id, this._api);
+
   final ICollectionService _api; // = Get.find<ICollectionService>();
 
   bool _exist;
@@ -13,7 +14,6 @@ class Record<T extends IBaseModel> {
   final String id;
 
   /// Constructors
-  Record(this.id, this._api);
   // Record.fromData(T data) : id = data.getId();
 
   /// Methods

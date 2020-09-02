@@ -18,3 +18,4 @@ export 'package:softi_core_module/src/services/navigation_service.dart';
 
 /// Some common Controllers
 export 'package:softi_core_module/src/controllers/database_controller.dart';
+export 'package:softi_core_module/src/controllers/auth_controller.dart';
