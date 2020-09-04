@@ -27,8 +27,8 @@ class DataCollection<T extends IBaseModel> {
 
   //+ Exposed data
   bool get noMoreData => !_hasMoreData.value;
-  List<Change<T>> get changes => _changes.value;
-  List<T> get data => _data.value;
+  List<Change<T>> get changes => _changes;
+  List<T> get data => _data;
 
   void requestData(QueryParam queryParam, {int pageSize, bool realtime, int limit}) {
     // reset on each call of streamData, use streamMoreData for more data
