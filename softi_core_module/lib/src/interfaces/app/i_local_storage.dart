@@ -1,5 +1,5 @@
 abstract class ILocalStore {
-  init();
+  Future<void> init();
   Future<String> getKey(String key);
   Future<String> getSecuredKey(String key);
   Future<void> setKey(String key, dynamic value);
