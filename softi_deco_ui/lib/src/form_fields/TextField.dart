@@ -1,4 +1,8 @@
+import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:softi_deco_ui/src/form_fields/common.dart';
@@ -9,27 +13,32 @@ class DecoFormTextField extends StatelessWidget {
   final String labelText;
   final String helperText;
 
-  final String attribute;
-  final List<FormFieldValidator> validators;
-  final String initialValue;
+  // From Super
+
   final bool readOnly;
-  // final InputDecoration decoration;
+  final FocusNode focusNode;
+  final String name;
   final ValueChanged onChanged;
   final ValueTransformer valueTransformer;
-
+  final VoidCallback onReset;
+  final FormFieldValidator validator;
+  final String initialValue;
+  final bool enabled;
+  final FormFieldSetter onSaved;
   final bool autovalidate;
+
+  // Other fields
+
   final int maxLines;
   final TextInputType keyboardType;
   final bool obscureText;
   final TextStyle style;
   final TextEditingController controller;
-  final FocusNode focusNode;
   final TextCapitalization textCapitalization;
   final TextInputAction textInputAction;
   final StrutStyle strutStyle;
   final TextDirection textDirection;
   final TextAlign textAlign;
-  final TextAlignVertical textAlignVertical;
   final bool autofocus;
   final bool autocorrect;
   final bool maxLengthEnforced;
@@ -37,7 +46,6 @@ class DecoFormTextField extends StatelessWidget {
   final VoidCallback onEditingComplete;
   final ValueChanged<String> onFieldSubmitted;
   final List<TextInputFormatter> inputFormatters;
-  final bool enabled;
   final double cursorWidth;
   final Radius cursorRadius;
   final Color cursorColor;
@@ -48,8 +56,20 @@ class DecoFormTextField extends StatelessWidget {
   final bool expands;
   final int minLines;
   final bool showCursor;
-  final FormFieldSetter onSaved;
   final VoidCallback onTap;
+  final bool enableSuggestions;
+  final TextAlignVertical textAlignVertical;
+  final DragStartBehavior dragStartBehavior;
+  final ScrollController scrollController;
+  final ScrollPhysics scrollPhysics;
+  final ui.BoxWidthStyle selectionWidthStyle;
+  final ui.BoxHeightStyle selectionHeightStyle;
+  final SmartDashesType smartDashesType;
+  final SmartQuotesType smartQuotesType;
+  final ToolbarOptions toolbarOptions;
+  final Iterable<String> autofillHints;
+  final String obscuringCharacter;
+  final MouseCursor mouseCursor;
 
   DecoFormTextField({
     Key key,
@@ -57,29 +77,32 @@ class DecoFormTextField extends StatelessWidget {
     this.helperText,
     this.hintText,
     this.labelText,
-    //
-    @required this.attribute,
+    // From Super
+    this.name,
+    this.validator,
     this.initialValue,
-    this.validators = const [],
     this.readOnly = false,
-    // this.decoration = const InputDecoration(),
+    this.onChanged,
+    this.valueTransformer,
+    this.enabled = true,
+    this.onSaved,
     this.autovalidate = false,
-    this.maxLines,
+    this.onReset,
+    this.focusNode,
+    // Other fields
+    this.maxLines = 1,
     this.obscureText = false,
     this.textCapitalization = TextCapitalization.none,
     this.scrollPadding = const EdgeInsets.all(20.0),
-    this.enabled = true,
     this.enableInteractiveSelection = true,
     this.maxLengthEnforced = true,
     this.textAlign = TextAlign.start,
-    this.textAlignVertical,
     this.autofocus = false,
     this.autocorrect = true,
     this.cursorWidth = 2.0,
     this.keyboardType,
     this.style,
     this.controller,
-    this.focusNode,
     this.textInputAction,
     this.strutStyle,
     this.textDirection,
@@ -91,13 +114,23 @@ class DecoFormTextField extends StatelessWidget {
     this.cursorColor,
     this.keyboardAppearance,
     this.buildCounter,
-    this.onChanged,
-    this.valueTransformer,
     this.expands = false,
     this.minLines,
     this.showCursor,
-    this.onSaved,
     this.onTap,
+    this.enableSuggestions = false,
+    this.textAlignVertical,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.scrollController,
+    this.scrollPhysics,
+    this.selectionWidthStyle = ui.BoxWidthStyle.tight,
+    this.smartDashesType,
+    this.smartQuotesType,
+    this.toolbarOptions,
+    this.selectionHeightStyle = ui.BoxHeightStyle.tight,
+    this.autofillHints,
+    this.obscuringCharacter = '•',
+    this.mouseCursor,
   });
 
   @override
@@ -110,45 +143,60 @@ class DecoFormTextField extends StatelessWidget {
           hintText: hintText,
           helperText: helperText,
         ),
-        attribute: attribute,
+        // From Supper
         initialValue: initialValue,
-        validators: validators,
+        name: name,
+        validator: validator,
+        valueTransformer: valueTransformer,
+        onChanged: onChanged,
         readOnly: readOnly,
         autovalidate: autovalidate,
-        maxLines: maxLines,
-        obscureText: obscureText,
-        textCapitalization: textCapitalization,
-        scrollPadding: scrollPadding,
+        onSaved: onSaved,
         enabled: enabled,
-        enableInteractiveSelection: enableInteractiveSelection,
-        maxLengthEnforced: maxLengthEnforced,
-        textAlign: textAlign,
-        textAlignVertical: textAlignVertical,
-        autofocus: autofocus,
-        autocorrect: autocorrect,
-        cursorWidth: cursorWidth,
+        onReset: onReset,
+        focusNode: focusNode,
+        // Other fields
+        maxLines: maxLines,
         keyboardType: keyboardType,
+        obscureText: obscureText,
         style: style,
         controller: controller,
-        focusNode: focusNode,
+        textCapitalization: textCapitalization,
         textInputAction: textInputAction,
         strutStyle: strutStyle,
         textDirection: textDirection,
+        textAlign: textAlign,
+        autofocus: autofocus,
+        autocorrect: autocorrect,
+        maxLengthEnforced: maxLengthEnforced,
         maxLength: maxLength,
         onEditingComplete: onEditingComplete,
         onFieldSubmitted: onFieldSubmitted,
         inputFormatters: inputFormatters,
+        cursorWidth: cursorWidth,
         cursorRadius: cursorRadius,
         cursorColor: cursorColor,
         keyboardAppearance: keyboardAppearance,
+        scrollPadding: scrollPadding,
+        enableInteractiveSelection: enableInteractiveSelection,
         buildCounter: buildCounter,
-        onChanged: onChanged,
-        valueTransformer: valueTransformer,
         expands: expands,
         minLines: minLines,
         showCursor: showCursor,
-        onSaved: onSaved,
         onTap: onTap,
+        enableSuggestions: enableSuggestions,
+        textAlignVertical: textAlignVertical,
+        dragStartBehavior: dragStartBehavior,
+        scrollController: scrollController,
+        scrollPhysics: scrollPhysics,
+        selectionWidthStyle: selectionWidthStyle,
+        selectionHeightStyle: selectionHeightStyle,
+        smartDashesType: smartDashesType,
+        smartQuotesType: smartQuotesType,
+        toolbarOptions: toolbarOptions,
+        autofillHints: autofillHints,
+        obscuringCharacter: obscuringCharacter,
+        mouseCursor: mouseCursor,
       ),
     );
   }

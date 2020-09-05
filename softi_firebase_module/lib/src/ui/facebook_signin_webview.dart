@@ -3,7 +3,7 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 String facebookRedirectUrl; //"https://www.facebook.com/connect/login_success.html";
 
-Widget getFacebookLoginWebView(
+Widget facebookLoginWebView(
   // BuildContext context,
   String facebookClientId,
 ) {

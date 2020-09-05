@@ -8,8 +8,9 @@ class InputField extends StatefulWidget {
   final bool obscureText;
   final bool password;
   final bool email;
+  final TextEditingController controller;
 
-  InputField({this.obscureText = false, this.password = false, this.text, this.email = false});
+  InputField({this.obscureText = false, this.password = false, this.text, this.email = false, this.controller});
 
   @override
   _InputFieldState createState() =>
@@ -33,6 +34,7 @@ class _InputFieldState extends State<InputField> {
         child: Row(children: [
           Expanded(
             child: TextFormField(
+              controller: widget.controller,
               keyboardType: email ? TextInputType.emailAddress : null,
               obscureText: obscureText ? true : false,
               decoration: InputDecoration(

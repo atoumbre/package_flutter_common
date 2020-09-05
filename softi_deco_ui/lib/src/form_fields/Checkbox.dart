@@ -7,24 +7,33 @@ class DecoFormCheckbox extends StatelessWidget {
   final String hintText;
   final String labelText;
   final String helperText;
-  //
 
-  final String attribute;
-  final List<FormFieldValidator> validators;
-  final bool initialValue;
+  // From Super
+
   final bool readOnly;
+  final FocusNode focusNode;
+  final String name;
   final ValueChanged onChanged;
   final ValueTransformer valueTransformer;
-  final bool leadingInput;
+  final VoidCallback onReset;
+  final FormFieldValidator validator;
+  final bool initialValue;
+  final bool enabled;
+  final FormFieldSetter onSaved;
+  final bool autovalidate;
 
-  final Widget label;
+  // Other fields
 
+  final bool autofocus;
+  final bool selected;
+  final bool tristate;
   final Color activeColor;
   final Color checkColor;
-  final MaterialTapTargetSize materialTapTargetSize;
-  final bool tristate;
-  final FormFieldSetter onSaved;
   final EdgeInsets contentPadding;
+  final ListTileControlAffinity controlAffinity;
+  final Widget secondary;
+  final Widget subtitle;
+  final Widget title;
 
   DecoFormCheckbox({
     Key key,
@@ -32,21 +41,29 @@ class DecoFormCheckbox extends StatelessWidget {
     this.helperText,
     this.hintText,
     this.labelText,
-    //
-    @required this.attribute,
-    @required this.label,
+    // From Super
+    this.name,
+    this.validator,
     this.initialValue,
-    this.validators = const [],
     this.readOnly = false,
     this.onChanged,
     this.valueTransformer,
-    this.leadingInput = false,
+    this.enabled = true,
+    this.onSaved,
+    this.autovalidate = false,
+    this.onReset,
+    this.focusNode,
+    // Other fields
+    @required this.title,
     this.activeColor,
     this.checkColor,
-    this.materialTapTargetSize,
-    this.tristate = false,
-    this.onSaved,
+    this.subtitle,
+    this.secondary,
+    this.controlAffinity = ListTileControlAffinity.leading,
     this.contentPadding = const EdgeInsets.all(0.0),
+    this.autofocus = false,
+    this.tristate = false,
+    this.selected = false,
   });
 
   @override
@@ -59,21 +76,29 @@ class DecoFormCheckbox extends StatelessWidget {
           hintText: hintText,
           helperText: helperText,
         ),
-        //
-        attribute: attribute,
-        label: label,
+        // From Supper
         initialValue: initialValue,
-        validators: validators,
-        readOnly: readOnly,
-        onChanged: onChanged,
+        name: name,
+        validator: validator,
         valueTransformer: valueTransformer,
-        leadingInput: leadingInput,
+        onChanged: onChanged,
+        readOnly: readOnly,
+        autovalidate: autovalidate,
+        onSaved: onSaved,
+        enabled: enabled,
+        onReset: onReset,
+        focusNode: focusNode,
+        // Other fields
+        title: title,
         activeColor: activeColor,
         checkColor: checkColor,
-        materialTapTargetSize: materialTapTargetSize,
-        tristate: tristate,
-        onSaved: onSaved,
+        subtitle: subtitle,
+        secondary: secondary,
+        controlAffinity: controlAffinity,
         contentPadding: contentPadding,
+        autofocus: autofocus,
+        tristate: tristate,
+        selected: selected,
       ),
     );
   }

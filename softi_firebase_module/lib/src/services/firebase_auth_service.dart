@@ -140,7 +140,6 @@ class FirebaseAuthService implements IAuthService {
         AppleIDAuthorizationScopes.fullName,
       ],
       webAuthenticationOptions: WebAuthenticationOptions(
-        // clientId: 'com.winsoluce.resto',
         clientId: settings.appleSignInClientId,
         redirectUri: Uri.parse(
           //. 'https://us-central1-resto-ci.cloudfunctions.net/appleSignInCallback',
@@ -171,7 +170,7 @@ class FirebaseAuthService implements IAuthService {
     //   ),
     // );
 
-    String result = await navigator(getFacebookLoginWebView(settings.facebookClientId));
+    String result = await navigator(facebookLoginWebView(settings.facebookClientId));
 
     if (result != null) {
       return FacebookAuthProvider.credential(result);
@@ -220,8 +219,8 @@ class FirebaseAuthService implements IAuthService {
     bool autoRetrive = true,
     int autoRetrievalTimeoutSeconds = 30,
   }) async {
-    Completer<SendCodeResult> sendCodeCompleter;
-    Completer<AuthUser> autoRetriveCompleter;
+    Completer<SendCodeResult> sendCodeCompleter = Completer<SendCodeResult>();
+    Completer<AuthUser> autoRetriveCompleter = Completer<AuthUser>();
 
     await firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,

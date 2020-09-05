@@ -5,7 +5,7 @@ import 'package:get/state_manager.dart';
 abstract class BinderWidget<T extends GetxController> extends StatelessWidget {
   BinderWidget({Key key}) : super(key: key);
 
-  Widget builder(T model, rm);
+  Widget builder(T model);
   T controller();
 
   void ready(T model) {}
@@ -21,7 +21,7 @@ abstract class BinderWidget<T extends GetxController> extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetX<T>(
       init: _init(),
-      builder: (ctrl) => builder(ctrl, null),
+      builder: (ctrl) => builder(ctrl),
       dispose: (_) => dispose(con),
       initState: (_) => ready(con),
     );
