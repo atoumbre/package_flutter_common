@@ -1,13 +1,15 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:softi_core_module/softi_core_module.dart';
+import 'package:softi_core_module/src/interfaces/app/i_navigation_service.dart';
+import 'package:softi_core_module/src/interfaces/auth/i_auth_service.dart';
+import 'package:softi_core_module/src/models/auth_user.dart';
 
 class AuthController extends GetxController {
   AuthController(this.authService, this.navService);
 
-  final IAuthService authService; // = Get.find();
-  final INavigationService navService; // = Get.find();
+  final IAuthService authService;
+  final INavigationService navService;
 
   List<Future Function(AuthUser)> _authStateListener = [];
   AuthUser _authUser = AuthUser();
@@ -28,8 +30,6 @@ class AuthController extends GetxController {
       i++;
       _authUser = newAuthUser;
       await _updateAuthListners();
-
-      navService.refresh();
     });
   }
 

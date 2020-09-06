@@ -11,8 +11,8 @@ class DecoFormDateRangePicker extends StatelessWidget {
   final String labelText;
   final String helperText;
   //
-  final String attribute;
-  final List<FormFieldValidator> validators;
+  final String name;
+  final FormFieldValidator validator;
   final List<DateTime> initialValue;
   final bool readOnly;
   final ValueChanged onChanged;
@@ -65,12 +65,12 @@ class DecoFormDateRangePicker extends StatelessWidget {
     this.hintText,
     this.labelText,
     //
-    @required this.attribute,
+    @required this.name,
     @required this.firstDate,
     @required this.lastDate,
     @required this.format,
     this.initialValue,
-    this.validators = const [],
+    this.validator,
     this.readOnly = false,
     this.autovalidate = false,
     this.maxLines = 1,
@@ -123,12 +123,12 @@ class DecoFormDateRangePicker extends StatelessWidget {
           helperText: helperText,
         ),
         //
-        attribute: attribute,
+        name: name,
         firstDate: firstDate,
         lastDate: lastDate,
         format: format,
         initialValue: initialValue,
-        validators: validators,
+        validator: validator,
         readOnly: readOnly,
         autovalidate: autovalidate,
         maxLines: maxLines,
