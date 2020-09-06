@@ -1,94 +1,165 @@
+import 'package:dropdown_search/dropdown_search.dart' as dropdown_search;
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:softi_deco_ui/src/form_fields/common.dart';
 
-class DecoFormCountryPicker extends StatelessWidget {
+class DecoFormSearchableDropdown<T> extends StatelessWidget {
   //! Parameters for Labels
   final String hintText;
   final String labelText;
   final String helperText;
-  //
-  final String attribute;
-  final List<FormFieldValidator> validators;
+
+  // From Super
+
   final bool readOnly;
+  final FocusNode focusNode;
+  final String name;
   final ValueChanged onChanged;
   final ValueTransformer valueTransformer;
-
-  final TextStyle style;
+  final VoidCallback onReset;
+  final FormFieldValidator validator;
+  final T initialValue;
+  final bool enabled;
   final FormFieldSetter onSaved;
+  final bool autovalidate;
 
-  // For country dialog
-  final String searchText;
-  final EdgeInsets titlePadding;
-  final bool isSearchable;
-  final Text dialogTitle;
-  final String initialValue;
-  final String defaultSelectedCountryIsoCode;
-  final List<String> priorityListByIsoCode;
-  final List<String> countryFilterByIsoCode;
-  final TextStyle dialogTextStyle;
-  final bool isCupertinoPicker;
-  final double cupertinoPickerSheetHeight;
-  final Color cursorColor;
+  // Other fields
 
-  DecoFormCountryPicker({
+  final bool autoFocusSearchBox;
+  final bool autoValidate;
+  final bool dropdownBuilderSupportsNullItem;
+  final bool isFilteredOnline;
+  final bool showClearButton;
+  final bool showSearchBox;
+  final bool showSelectedItem;
+  final Color popupBackgroundColor;
+  final Color popupBarrierColor;
+  final double dialogMaxWidth;
+  final double maxHeight;
+  final dropdown_search.DropdownSearchBuilder<T> dropdownBuilder;
+  final dropdown_search.DropdownSearchCompareFn<T> compareFn;
+  final dropdown_search.DropdownSearchFilterFn<T> filterFn;
+  final dropdown_search.DropdownSearchItemAsString<T> itemAsString;
+  final dropdown_search.DropdownSearchOnFind<T> onFind;
+  final dropdown_search.DropdownSearchPopupItemBuilder<T> popupItemBuilder;
+  final dropdown_search.DropdownSearchPopupItemEnabled<T> popupItemDisabled;
+  final dropdown_search.ErrorBuilder errorBuilder;
+  final dropdown_search.Mode mode;
+  final InputDecoration searchBoxDecoration;
+  final List<T> items;
+  final ShapeBorder popupShape;
+  final String hint;
+  final T selectedItem;
+  final Widget clearButton;
+  final Widget dropDownButton;
+  final Widget popupTitle;
+  final WidgetBuilder emptyBuilder;
+  final WidgetBuilder loadingBuilder;
+
+  DecoFormSearchableDropdown({
     Key key,
     //!   Labels fields
     this.helperText,
     this.hintText,
     this.labelText,
-    //
-    @required this.attribute,
-    this.defaultSelectedCountryIsoCode = 'US',
-    @required this.initialValue,
-    this.validators = const [],
+    // From Super
+    this.name,
+    this.validator,
+    this.initialValue,
     this.readOnly = false,
-    this.style,
     this.onChanged,
     this.valueTransformer,
+    this.enabled = true,
     this.onSaved,
-    this.searchText,
-    this.titlePadding,
-    this.dialogTitle,
-    this.isSearchable,
-    this.priorityListByIsoCode,
-    this.countryFilterByIsoCode,
-    this.dialogTextStyle,
-    this.isCupertinoPicker = false,
-    this.cupertinoPickerSheetHeight,
-    this.cursorColor,
+    this.autovalidate = false,
+    this.onReset,
+    this.focusNode,
+    // Other fields
+    @required this.items,
+    this.autoValidate = false,
+    this.mode = dropdown_search.Mode.DIALOG,
+    this.hint,
+    this.isFilteredOnline = false,
+    this.popupTitle,
+    this.selectedItem,
+    this.onFind,
+    this.dropdownBuilder,
+    this.popupItemBuilder,
+    this.showSearchBox = true,
+    this.showClearButton = false,
+    this.searchBoxDecoration,
+    this.popupBackgroundColor,
+    this.maxHeight,
+    this.filterFn,
+    this.itemAsString,
+    this.showSelectedItem = false,
+    this.compareFn,
+    this.emptyBuilder,
+    this.loadingBuilder,
+    this.errorBuilder,
+    this.autoFocusSearchBox = false,
+    this.dialogMaxWidth,
+    this.clearButton,
+    this.dropDownButton,
+    this.dropdownBuilderSupportsNullItem = false,
+    this.popupShape,
+    this.popupItemDisabled,
+    this.popupBarrierColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return DecoFormFieldDecorator(
-      child: FormBuilderCountryPicker(
+      child: FormBuilderSearchableDropdown<T>(
         key: key,
         decoration: decoDecoration(
           labelText: labelText,
           hintText: hintText,
           helperText: helperText,
         ),
-        //
-        attribute: attribute,
-        defaultSelectedCountryIsoCode: defaultSelectedCountryIsoCode,
+        // From Supper
         initialValue: initialValue,
-        validators: validators,
-        readOnly: readOnly,
-        style: style,
-        onChanged: onChanged,
+        name: name,
+        validator: validator,
         valueTransformer: valueTransformer,
+        onChanged: onChanged,
+        readOnly: readOnly,
+        autovalidate: autovalidate,
         onSaved: onSaved,
-        searchText: searchText,
-        titlePadding: titlePadding,
-        dialogTitle: dialogTitle,
-        isSearchable: isSearchable,
-        priorityListByIsoCode: priorityListByIsoCode,
-        countryFilterByIsoCode: countryFilterByIsoCode,
-        dialogTextStyle: dialogTextStyle,
-        isCupertinoPicker: isCupertinoPicker,
-        cupertinoPickerSheetHeight: cupertinoPickerSheetHeight,
-        cursorColor: cursorColor,
+        enabled: enabled,
+        onReset: onReset,
+        focusNode: focusNode,
+        // Other fields
+        autoFocusSearchBox: autoFocusSearchBox,
+        autoValidate: autoValidate,
+        dropdownBuilderSupportsNullItem: dropdownBuilderSupportsNullItem,
+        isFilteredOnline: isFilteredOnline,
+        showClearButton: showClearButton,
+        showSearchBox: showSearchBox,
+        showSelectedItem: showSelectedItem,
+        popupBackgroundColor: popupBackgroundColor,
+        popupBarrierColor: popupBarrierColor,
+        dialogMaxWidth: dialogMaxWidth,
+        maxHeight: maxHeight,
+        dropdownBuilder: dropdownBuilder,
+        compareFn: compareFn,
+        filterFn: filterFn,
+        itemAsString: itemAsString,
+        onFind: onFind,
+        popupItemBuilder: popupItemBuilder,
+        popupItemDisabled: popupItemDisabled,
+        errorBuilder: errorBuilder,
+        mode: mode,
+        searchBoxDecoration: searchBoxDecoration,
+        items: items,
+        popupShape: popupShape,
+        hint: hint,
+        selectedItem: selectedItem,
+        clearButton: clearButton,
+        dropDownButton: dropDownButton,
+        popupTitle: popupTitle,
+        emptyBuilder: emptyBuilder,
+        loadingBuilder: loadingBuilder,
       ),
     );
   }

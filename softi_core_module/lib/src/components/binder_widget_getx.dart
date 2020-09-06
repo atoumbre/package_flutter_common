@@ -14,6 +14,13 @@ abstract class BinderWidget<T extends GetxController> extends StatelessWidget {
   T get con => Get.find();
 
   T _init() {
+    // var _con;
+    // try {
+    //   _con = Get.find<T>();
+    // } catch (e) {
+    //   _con = null;
+    // }
+
     return Get.put<T>(controller());
   }
 

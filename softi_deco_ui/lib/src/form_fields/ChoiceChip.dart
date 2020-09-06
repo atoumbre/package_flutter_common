@@ -2,36 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:softi_deco_ui/src/form_fields/common.dart';
 
-class DecoFormChoiceChip extends StatelessWidget {
+class DecoFormChoiceChip<T> extends StatelessWidget {
   //! Parameters for Labels
   final String hintText;
   final String labelText;
   final String helperText;
 
-  // FormBuilder Settings
-  final String attribute;
-  final List<FormFieldValidator> validators;
-  final dynamic initialValue;
+  // From Super
+
   final bool readOnly;
+  final FocusNode focusNode;
+  final String name;
   final ValueChanged onChanged;
-  final FormFieldSetter onSaved;
   final ValueTransformer valueTransformer;
-  final List<FormBuilderFieldOption> options;
+  final VoidCallback onReset;
+  final FormFieldValidator validator;
+  final T initialValue;
+  final bool enabled;
+  final FormFieldSetter onSaved;
+  final bool autovalidate;
 
-  // FilterChip Settings
-  final double elevation, pressElevation;
-  final Color selectedColor, disabledColor, backgroundColor, selectedShadowColor, shadowColor;
-  final ShapeBorder shape;
-  final MaterialTapTargetSize materialTapTargetSize;
+  // Other fields
 
-  // Wrap Settings
   final Axis direction;
-  final WrapAlignment alignment;
-  final WrapCrossAlignment crossAxisAlignment;
-  final WrapAlignment runAlignment;
-  final double runSpacing, spacing;
+  final Color backgroundColor;
+  final Color disabledColor;
+  final Color selectedColor;
+  final Color selectedShadowColor;
+  final Color shadowColor;
+  final double elevation;
+  final double pressElevation;
+  final double runSpacing;
+  final double spacing;
+  final EdgeInsets labelPadding;
+  final EdgeInsets padding;
+  final List<FormBuilderFieldOption> options;
+  final MaterialTapTargetSize materialTapTargetSize;
+  final ShapeBorder shape;
   final TextDirection textDirection;
+  final TextStyle labelStyle;
   final VerticalDirection verticalDirection;
+  final VisualDensity visualDensity;
+  final WrapAlignment alignment;
+  final WrapAlignment runAlignment;
+  final WrapCrossAlignment crossAxisAlignment;
 
   DecoFormChoiceChip({
     Key key,
@@ -39,15 +53,20 @@ class DecoFormChoiceChip extends StatelessWidget {
     this.helperText,
     this.hintText,
     this.labelText,
-    //
-    @required this.attribute,
-    @required this.options,
+    // From Super
+    this.name,
+    this.validator,
     this.initialValue,
-    this.validators = const [],
     this.readOnly = false,
     this.onChanged,
     this.valueTransformer,
+    this.enabled = true,
     this.onSaved,
+    this.autovalidate = false,
+    this.onReset,
+    this.focusNode,
+    // Other fields
+    @required this.options,
     this.selectedColor,
     this.disabledColor,
     this.backgroundColor,
@@ -65,44 +84,57 @@ class DecoFormChoiceChip extends StatelessWidget {
     this.spacing = 0.0,
     this.textDirection,
     this.verticalDirection = VerticalDirection.down,
+    this.labelPadding,
+    this.labelStyle,
+    this.padding,
+    this.visualDensity,
   });
 
   @override
   Widget build(BuildContext context) {
     return DecoFormFieldDecorator(
-      child: FormBuilderChoiceChip(
+      child: FormBuilderChoiceChip<T>(
         key: key,
         decoration: decoDecoration(
           labelText: labelText,
           hintText: hintText,
           helperText: helperText,
         ),
-        //
-        attribute: attribute,
-        options: options,
+        // From Supper
         initialValue: initialValue,
-        validators: validators,
-        readOnly: readOnly,
-        onChanged: onChanged,
+        name: name,
+        validator: validator,
         valueTransformer: valueTransformer,
+        onChanged: onChanged,
+        readOnly: readOnly,
+        autovalidate: autovalidate,
         onSaved: onSaved,
-        selectedColor: selectedColor,
-        disabledColor: disabledColor,
+        enabled: enabled,
+        onReset: onReset,
+        focusNode: focusNode,
+        // Other fields
+        direction: direction,
         backgroundColor: backgroundColor,
-        shadowColor: shadowColor,
+        disabledColor: disabledColor,
+        selectedColor: selectedColor,
         selectedShadowColor: selectedShadowColor,
-        shape: shape,
+        shadowColor: shadowColor,
         elevation: elevation,
         pressElevation: pressElevation,
-        materialTapTargetSize: materialTapTargetSize,
-        direction: direction,
-        alignment: alignment,
-        crossAxisAlignment: crossAxisAlignment,
-        runAlignment: runAlignment,
         runSpacing: runSpacing,
         spacing: spacing,
+        labelPadding: labelPadding,
+        padding: padding,
+        options: options,
+        materialTapTargetSize: materialTapTargetSize,
+        shape: shape,
         textDirection: textDirection,
+        labelStyle: labelStyle,
         verticalDirection: verticalDirection,
+        visualDensity: visualDensity,
+        alignment: alignment,
+        runAlignment: runAlignment,
+        crossAxisAlignment: crossAxisAlignment,
       ),
     );
   }

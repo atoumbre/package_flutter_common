@@ -17,7 +17,7 @@ class DecoFormCheckboxGroup<T> extends StatelessWidget {
   final ValueTransformer valueTransformer;
   final VoidCallback onReset;
   final FormFieldValidator validator;
-  final List<dynamic> initialValue;
+  final List<T> initialValue;
   final bool enabled;
   final FormFieldSetter onSaved;
   final bool autovalidate;

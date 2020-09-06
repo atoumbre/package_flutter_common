@@ -218,11 +218,11 @@ class FirebaseAuthService implements IAuthService {
     dynamic resendingId,
     bool autoRetrive = true,
     int autoRetrievalTimeoutSeconds = 30,
-  }) async {
+  }) {
     Completer<SendCodeResult> sendCodeCompleter = Completer<SendCodeResult>();
     Completer<AuthUser> autoRetriveCompleter = Completer<AuthUser>();
 
-    await firebaseAuth.verifyPhoneNumber(
+    firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       forceResendingToken: resendingId,
       codeSent: (verificationId, [resendingId]) {
