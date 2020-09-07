@@ -2,23 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:softi_deco_ui/src/form_fields/common.dart';
 
-class DecoFormRate extends StatelessWidget {
+class DecoFormRating extends StatelessWidget {
   //! Parameters for Labels
   final String hintText;
   final String labelText;
   final String helperText;
-  //
-  final String attribute;
-  final List<FormFieldValidator> validators;
-  final num initialValue;
+
+  // From Super
+
   final bool readOnly;
+  final FocusNode focusNode;
+  final String name;
   final ValueChanged onChanged;
-  final FormFieldSetter onSaved;
   final ValueTransformer valueTransformer;
+  final VoidCallback onReset;
+  final FormFieldValidator validator;
+  final double initialValue;
+  final bool enabled;
+  final FormFieldSetter onSaved;
+  final bool autovalidate;
+
+  // Other fields
 
   final IconData icon;
-  final num iconSize;
-  final num max;
+  final double iconSize;
+  final double max;
   final Color filledColor;
   final IconData emptyIcon;
   final Color emptyColor;
@@ -26,23 +34,28 @@ class DecoFormRate extends StatelessWidget {
   final IconData halfFilledIcon;
   final Color halfFilledColor;
 
-  DecoFormRate({
+  DecoFormRating({
     Key key,
     //!   Labels fields
     this.helperText,
     this.hintText,
     this.labelText,
-    //
-    @required this.attribute,
-    this.initialValue = 1.0,
-    this.validators = const [],
+    // From Super
+    this.name,
+    this.validator,
+    this.initialValue,
     this.readOnly = false,
+    this.onChanged,
+    this.valueTransformer,
+    this.enabled = true,
+    this.onSaved,
+    this.autovalidate = false,
+    this.onReset,
+    this.focusNode,
+    // Other fields
     this.max = 5.0,
     this.icon = Icons.star,
     this.iconSize = 24.0,
-    this.onChanged,
-    this.valueTransformer,
-    this.onSaved,
     this.filledColor,
     this.emptyIcon = Icons.star,
     this.emptyColor,
@@ -54,24 +67,29 @@ class DecoFormRate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DecoFormFieldDecorator(
-      child: FormBuilderRate(
+      child: FormBuilderRating(
         key: key,
         decoration: decoDecoration(
           labelText: labelText,
           hintText: hintText,
           helperText: helperText,
         ),
-        //
-        attribute: attribute,
+        // From Supper
         initialValue: initialValue,
-        validators: validators,
+        name: name,
+        validator: validator,
+        valueTransformer: valueTransformer,
+        onChanged: onChanged,
         readOnly: readOnly,
-        max: max,
+        autovalidate: autovalidate,
+        onSaved: onSaved,
+        enabled: enabled,
+        onReset: onReset,
+        focusNode: focusNode,
+        // Other fields
         icon: icon,
         iconSize: iconSize,
-        onChanged: onChanged,
-        valueTransformer: valueTransformer,
-        onSaved: onSaved,
+        max: max,
         filledColor: filledColor,
         emptyIcon: emptyIcon,
         emptyColor: emptyColor,

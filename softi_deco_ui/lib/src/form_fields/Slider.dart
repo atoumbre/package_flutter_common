@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -8,26 +9,39 @@ class DecoFormSlider extends StatelessWidget {
   final String hintText;
   final String labelText;
   final String helperText;
-  //
-  final String attribute;
-  final List<FormFieldValidator> validators;
-  final double initialValue;
+
+  // From Super
+
   final bool readOnly;
+  final FocusNode focusNode;
+  final String name;
   final ValueChanged onChanged;
   final ValueTransformer valueTransformer;
+  final VoidCallback onReset;
+  final FormFieldValidator validator;
+  final double initialValue;
+  final bool enabled;
+  final FormFieldSetter onSaved;
+  final bool autovalidate;
 
-  final double max;
-  final double min;
-  final int divisions;
-  final Color activeColor;
-  final Color inactiveColor;
+  // Other fields
+
   final ValueChanged<double> onChangeStart;
   final ValueChanged<double> onChangeEnd;
+  final TextStyle textStyle;
+  final TextStyle minTextStyle;
+  final TextStyle maxTextStyle;
   final String label;
   final SemanticFormatterCallback semanticFormatterCallback;
   final NumberFormat numberFormat;
-  final FormFieldSetter onSaved;
+  final MouseCursor mouseCursor;
+  final int divisions;
+  final double min;
+  final double max;
   final DisplayValues displayValues;
+  final Color inactiveColor;
+  final Color activeColor;
+  final bool autofocus;
 
   DecoFormSlider({
     Key key,
@@ -35,16 +49,22 @@ class DecoFormSlider extends StatelessWidget {
     this.helperText,
     this.hintText,
     this.labelText,
-    //
-    @required this.attribute,
-    @required this.min,
-    @required this.max,
-    @required this.initialValue,
-    this.validators = const [],
+    // From Super
+    this.name,
+    this.validator,
+    this.initialValue,
     this.readOnly = false,
-    this.divisions,
     this.onChanged,
     this.valueTransformer,
+    this.enabled = true,
+    this.onSaved,
+    this.autovalidate = false,
+    this.onReset,
+    this.focusNode,
+    // Other fields
+    @required this.min,
+    @required this.max,
+    this.divisions,
     this.activeColor,
     this.inactiveColor,
     this.onChangeStart,
@@ -52,8 +72,12 @@ class DecoFormSlider extends StatelessWidget {
     this.label,
     this.semanticFormatterCallback,
     this.numberFormat,
-    this.onSaved,
     this.displayValues = DisplayValues.all,
+    this.minTextStyle,
+    this.textStyle,
+    this.maxTextStyle,
+    this.autofocus = false,
+    this.mouseCursor,
   });
 
   @override
@@ -66,25 +90,35 @@ class DecoFormSlider extends StatelessWidget {
           hintText: hintText,
           helperText: helperText,
         ),
-        //
-        attribute: attribute,
-        min: min,
-        max: max,
+        // From Supper
         initialValue: initialValue,
-        validators: validators,
-        readOnly: readOnly,
-        divisions: divisions,
-        onChanged: onChanged,
+        name: name,
+        validator: validator,
         valueTransformer: valueTransformer,
-        activeColor: activeColor,
-        inactiveColor: inactiveColor,
+        onChanged: onChanged,
+        readOnly: readOnly,
+        autovalidate: autovalidate,
+        onSaved: onSaved,
+        enabled: enabled,
+        onReset: onReset,
+        focusNode: focusNode,
+        // Other fields
         onChangeStart: onChangeStart,
         onChangeEnd: onChangeEnd,
+        textStyle: textStyle,
+        minTextStyle: minTextStyle,
+        maxTextStyle: maxTextStyle,
         label: label,
         semanticFormatterCallback: semanticFormatterCallback,
         numberFormat: numberFormat,
-        onSaved: onSaved,
+        mouseCursor: mouseCursor,
+        divisions: divisions,
+        min: min,
+        max: max,
         displayValues: displayValues,
+        inactiveColor: inactiveColor,
+        activeColor: activeColor,
+        autofocus: autofocus,
       ),
     );
   }

@@ -1,97 +1,75 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:softi_deco_ui/src/form_fields/common.dart';
 
 class DecoFormSwitch extends StatelessWidget {
-  //!
+  //! Parameters for Labels
   final String hintText;
   final String labelText;
   final String helperText;
-  //
-  final String attribute;
-  final List<FormFieldValidator> validators;
-  final bool initialValue;
+
+  // From Super
+
   final bool readOnly;
+  final FocusNode focusNode;
+  final String name;
   final ValueChanged onChanged;
   final ValueTransformer valueTransformer;
-
-  final Widget label;
-
-  /// The color to use when this switch is on.
-  ///
-  /// Defaults to [ThemeData.toggleableActiveColor].
-  final Color activeColor;
-
-  /// The color to use on the track when this switch is on.
-  ///
-  /// Defaults to [ThemeData.toggleableActiveColor] with the opacity set at 50%.
-  ///
-  /// Ignored if this switch is created with [Switch.adaptive].
-  final Color activeTrackColor;
-
-  /// The color to use on the thumb when this switch is off.
-  ///
-  /// Defaults to the colors described in the Material design specification.
-  ///
-  /// Ignored if this switch is created with [Switch.adaptive].
-  final Color inactiveThumbColor;
-
-  /// The color to use on the track when this switch is off.
-  ///
-  /// Defaults to the colors described in the Material design specification.
-  ///
-  /// Ignored if this switch is created with [Switch.adaptive].
-  final Color inactiveTrackColor;
-
-  /// An image to use on the thumb of this switch when the switch is on.
-  ///
-  /// Ignored if this switch is created with [Switch.adaptive].
-  final ImageProvider activeThumbImage;
-
-  /// An image to use on the thumb of this switch when the switch is off.
-  ///
-  /// Ignored if this switch is created with [Switch.adaptive].
-  final ImageProvider inactiveThumbImage;
-
-  /// Configures the minimum size of the tap target.
-  ///
-  /// Defaults to [ThemeData.materialTapTargetSize].
-  ///
-  /// See also:
-  ///
-  ///  * [MaterialTapTargetSize], for a description of how this affects tap targets.
-  final MaterialTapTargetSize materialTapTargetSize;
-
-  /// {@macro flutter.cupertino.switch.dragStartBehavior}
-  final DragStartBehavior dragStartBehavior;
+  final VoidCallback onReset;
+  final FormFieldValidator validator;
+  final bool initialValue;
+  final bool enabled;
   final FormFieldSetter onSaved;
+  final bool autovalidate;
+
+  // Other fields
+
+  final bool autofocus;
+  final bool selected;
+  final Color activeColor;
+  final Color activeTrackColor;
+  final Color inactiveThumbColor;
+  final Color inactiveTrackColor;
   final EdgeInsets contentPadding;
+  final ImageProvider activeThumbImage;
+  final ImageProvider inactiveThumbImage;
+  final ListTileControlAffinity controlAffinity;
+  final Widget secondary;
+  final Widget subtitle;
+  final Widget title;
 
   DecoFormSwitch({
     Key key,
-    //
+    //!   Labels fields
     this.helperText,
     this.hintText,
     this.labelText,
-    //
-    @required this.attribute,
-    @required this.label,
+    // From Super
+    this.name,
+    this.validator,
     this.initialValue,
-    this.validators = const [],
     this.readOnly = false,
     this.onChanged,
     this.valueTransformer,
+    this.enabled = true,
+    this.onSaved,
+    this.autovalidate = false,
+    this.onReset,
+    this.focusNode,
+    // Other fields
+    @required this.title,
     this.activeColor,
     this.activeTrackColor,
     this.inactiveThumbColor,
     this.inactiveTrackColor,
     this.activeThumbImage,
     this.inactiveThumbImage,
-    this.materialTapTargetSize,
-    this.dragStartBehavior = DragStartBehavior.start,
-    this.onSaved,
+    this.subtitle,
+    this.secondary,
+    this.controlAffinity = ListTileControlAffinity.trailing,
     this.contentPadding = const EdgeInsets.all(0.0),
+    this.autofocus = false,
+    this.selected = false,
   });
 
   @override
@@ -104,24 +82,32 @@ class DecoFormSwitch extends StatelessWidget {
           hintText: hintText,
           helperText: helperText,
         ),
-        //
-        attribute: attribute,
-        label: label,
+        // From Supper
         initialValue: initialValue,
-        validators: validators,
-        readOnly: readOnly,
-        onChanged: onChanged,
+        name: name,
+        validator: validator,
         valueTransformer: valueTransformer,
+        onChanged: onChanged,
+        readOnly: readOnly,
+        autovalidate: autovalidate,
+        onSaved: onSaved,
+        enabled: enabled,
+        onReset: onReset,
+        focusNode: focusNode,
+        // Other fields
+        autofocus: autofocus,
+        selected: selected,
         activeColor: activeColor,
         activeTrackColor: activeTrackColor,
         inactiveThumbColor: inactiveThumbColor,
         inactiveTrackColor: inactiveTrackColor,
+        contentPadding: contentPadding,
         activeThumbImage: activeThumbImage,
         inactiveThumbImage: inactiveThumbImage,
-        materialTapTargetSize: materialTapTargetSize,
-        dragStartBehavior: dragStartBehavior,
-        onSaved: onSaved,
-        contentPadding: contentPadding,
+        controlAffinity: controlAffinity,
+        secondary: secondary,
+        subtitle: subtitle,
+        title: title,
       ),
     );
   }

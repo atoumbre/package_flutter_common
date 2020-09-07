@@ -7,21 +7,29 @@ class DecoFormSegmentedControl extends StatelessWidget {
   final String hintText;
   final String labelText;
   final String helperText;
-  //
-  final String attribute;
-  final List<FormFieldValidator> validators;
-  final dynamic initialValue;
+
+  // From Super
+
   final bool readOnly;
+  final FocusNode focusNode;
+  final String name;
   final ValueChanged onChanged;
   final ValueTransformer valueTransformer;
-  final Color borderColor;
-  final Color selectedColor;
-  final Color pressedColor;
+  final VoidCallback onReset;
+  final FormFieldValidator validator;
+  final List<dynamic> initialValue;
+  final bool enabled;
   final FormFieldSetter onSaved;
+  final bool autovalidate;
 
-  final List<FormBuilderFieldOption> options;
-  final EdgeInsetsGeometry padding;
+  // Other fields
+
+  final Color borderColor;
+  final Color pressedColor;
+  final Color selectedColor;
   final Color unselectedColor;
+  final EdgeInsetsGeometry padding;
+  final List<FormBuilderFieldOption> options;
 
   DecoFormSegmentedControl({
     Key key,
@@ -29,20 +37,25 @@ class DecoFormSegmentedControl extends StatelessWidget {
     this.helperText,
     this.hintText,
     this.labelText,
-    //
-    @required this.attribute,
-    @required this.options,
+    // From Super
+    this.name,
+    this.validator,
     this.initialValue,
-    this.validators = const [],
     this.readOnly = false,
     this.onChanged,
     this.valueTransformer,
+    this.enabled = true,
+    this.onSaved,
+    this.autovalidate = false,
+    this.onReset,
+    this.focusNode,
+    // Other fields
+    @required this.options,
     this.borderColor,
     this.selectedColor,
     this.pressedColor,
     this.padding,
     this.unselectedColor,
-    this.onSaved,
   });
 
   @override
@@ -55,20 +68,25 @@ class DecoFormSegmentedControl extends StatelessWidget {
           hintText: hintText,
           helperText: helperText,
         ),
-        //
-        attribute: attribute,
-        options: options,
+        // From Supper
         initialValue: initialValue,
-        validators: validators,
-        readOnly: readOnly,
-        onChanged: onChanged,
+        name: name,
+        validator: validator,
         valueTransformer: valueTransformer,
-        borderColor: borderColor,
-        selectedColor: selectedColor,
-        pressedColor: pressedColor,
-        padding: padding,
-        unselectedColor: unselectedColor,
+        onChanged: onChanged,
+        readOnly: readOnly,
+        autovalidate: autovalidate,
         onSaved: onSaved,
+        enabled: enabled,
+        onReset: onReset,
+        focusNode: focusNode,
+        // Other fields
+        borderColor: borderColor,
+        pressedColor: pressedColor,
+        selectedColor: selectedColor,
+        unselectedColor: unselectedColor,
+        padding: padding,
+        options: options,
       ),
     );
   }
