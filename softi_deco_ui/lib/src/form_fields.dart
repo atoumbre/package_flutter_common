@@ -11,7 +11,7 @@ export './form_fields/FilterChip.dart';
 export './form_fields/ImagePicker.dart';
 export './form_fields/PhoneField.dart';
 export './form_fields/RadioGroup.dart';
-export './form_fields/RangeeSlider.dart';
+export 'form_fields/RangeSlider.dart';
 export './form_fields/Rate.dart';
 export './form_fields/SegmentedControl.dart';
 export './form_fields/SignaturePad.dart';

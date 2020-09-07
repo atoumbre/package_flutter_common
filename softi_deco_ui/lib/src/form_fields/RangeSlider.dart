@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:intl/intl.dart';
 import 'package:softi_deco_ui/src/form_fields/common.dart';
 
-class DecoFormRadioGroup extends StatelessWidget {
+class DecoFormRangeSlider extends StatelessWidget {
   //! Parameters for Labels
   final String hintText;
   final String labelText;
@@ -17,14 +18,29 @@ class DecoFormRadioGroup extends StatelessWidget {
   final ValueTransformer valueTransformer;
   final VoidCallback onReset;
   final FormFieldValidator validator;
-  final List<dynamic> initialValue;
+  final RangeValues initialValue;
   final bool enabled;
   final FormFieldSetter onSaved;
   final bool autovalidate;
 
   // Other fields
 
-  DecoFormRadioGroup({
+  final Color activeColor;
+  final Color inactiveColor;
+  final double max;
+  final double min;
+  final int divisions;
+  final RangeLabels labels;
+  final RangeSemanticFormatterCallback semanticFormatterCallback;
+  final ValueChanged<RangeValues> onChangeEnd;
+  final ValueChanged<RangeValues> onChangeStart;
+  final DisplayValues displayValues;
+  final TextStyle minTextStyle;
+  final TextStyle textStyle;
+  final TextStyle maxTextStyle;
+  final NumberFormat numberFormat;
+
+  DecoFormRangeSlider({
     Key key,
     //!   Labels fields
     this.helperText,
@@ -43,12 +59,26 @@ class DecoFormRadioGroup extends StatelessWidget {
     this.onReset,
     this.focusNode,
     // Other fields
+    @required this.min,
+    @required this.max,
+    this.divisions,
+    this.activeColor,
+    this.inactiveColor,
+    this.onChangeStart,
+    this.onChangeEnd,
+    this.labels,
+    this.semanticFormatterCallback,
+    this.displayValues = DisplayValues.all,
+    this.minTextStyle,
+    this.textStyle,
+    this.maxTextStyle,
+    this.numberFormat,
   });
 
   @override
   Widget build(BuildContext context) {
     return DecoFormFieldDecorator(
-      child: FormBuilderRadioGroup(
+      child: FormBuilderRangeSlider(
         key: key,
         decoration: decoDecoration(
           labelText: labelText,
@@ -68,6 +98,20 @@ class DecoFormRadioGroup extends StatelessWidget {
         onReset: onReset,
         focusNode: focusNode,
         // Other fields
+        activeColor: activeColor,
+        inactiveColor: inactiveColor,
+        max: max,
+        min: min,
+        divisions: divisions,
+        labels: labels,
+        semanticFormatterCallback: semanticFormatterCallback,
+        onChangeEnd: onChangeEnd,
+        onChangeStart: onChangeStart,
+        displayValues: displayValues,
+        minTextStyle: minTextStyle,
+        textStyle: textStyle,
+        maxTextStyle: maxTextStyle,
+        numberFormat: numberFormat,
       ),
     );
   }

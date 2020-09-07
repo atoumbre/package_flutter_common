@@ -8,21 +8,28 @@ class DecoFormPhoneField extends StatelessWidget {
   final String hintText;
   final String labelText;
   final String helperText;
-  //
-  final String attribute;
-  final List<FormFieldValidator> validators;
-  final String initialValue;
+
+  // From Super
+
   final bool readOnly;
+  final FocusNode focusNode;
+  final String name;
   final ValueChanged onChanged;
   final ValueTransformer valueTransformer;
-
+  final VoidCallback onReset;
+  final FormFieldValidator validator;
+  final String initialValue;
+  final bool enabled;
+  final FormFieldSetter onSaved;
   final bool autovalidate;
+
+  // Other fields
+
   final int maxLines;
   final TextInputType keyboardType;
   final bool obscureText;
   final TextStyle style;
   final TextEditingController controller;
-  final FocusNode focusNode;
   final TextCapitalization textCapitalization;
   final TextInputAction textInputAction;
   final StrutStyle strutStyle;
@@ -35,7 +42,6 @@ class DecoFormPhoneField extends StatelessWidget {
   final VoidCallback onEditingComplete;
   final ValueChanged<String> onFieldSubmitted;
   final List<TextInputFormatter> inputFormatters;
-  final bool enabled;
   final double cursorWidth;
   final Radius cursorRadius;
   final Color cursorColor;
@@ -46,10 +52,10 @@ class DecoFormPhoneField extends StatelessWidget {
   final bool expands;
   final int minLines;
   final bool showCursor;
-  final FormFieldSetter onSaved;
   final VoidCallback onTap;
 
   // For country dialog
+
   final String searchText;
   final EdgeInsets titlePadding;
   final bool isSearchable;
@@ -60,6 +66,7 @@ class DecoFormPhoneField extends StatelessWidget {
   final TextStyle dialogTextStyle;
   final bool isCupertinoPicker;
   final double cupertinoPickerSheetHeight;
+  final TextAlignVertical textAlignVertical;
 
   DecoFormPhoneField({
     Key key,
@@ -67,17 +74,23 @@ class DecoFormPhoneField extends StatelessWidget {
     this.helperText,
     this.hintText,
     this.labelText,
-    //
-    @required this.attribute,
+    // From Super
+    this.name,
+    this.validator,
     this.initialValue,
-    this.validators = const [],
     this.readOnly = false,
+    this.onChanged,
+    this.valueTransformer,
+    this.enabled = true,
+    this.onSaved,
     this.autovalidate = false,
+    this.onReset,
+    this.focusNode,
+    // Other fields
     this.maxLines,
     this.obscureText = false,
     this.textCapitalization = TextCapitalization.none,
     this.scrollPadding = const EdgeInsets.all(20.0),
-    this.enabled = true,
     this.enableInteractiveSelection = true,
     this.maxLengthEnforced = true,
     this.textAlign = TextAlign.start,
@@ -87,7 +100,6 @@ class DecoFormPhoneField extends StatelessWidget {
     this.keyboardType = TextInputType.phone,
     this.style,
     this.controller,
-    this.focusNode,
     this.textInputAction,
     this.strutStyle,
     this.textDirection,
@@ -99,12 +111,9 @@ class DecoFormPhoneField extends StatelessWidget {
     this.cursorColor,
     this.keyboardAppearance,
     this.buildCounter,
-    this.onChanged,
-    this.valueTransformer,
     this.expands = false,
     this.minLines,
     this.showCursor,
-    this.onSaved,
     this.onTap,
     this.searchText,
     this.titlePadding,
@@ -116,6 +125,7 @@ class DecoFormPhoneField extends StatelessWidget {
     this.dialogTextStyle,
     this.isCupertinoPicker = false,
     this.cupertinoPickerSheetHeight,
+    this.textAlignVertical,
   });
 
   @override
@@ -128,55 +138,47 @@ class DecoFormPhoneField extends StatelessWidget {
           hintText: hintText,
           helperText: helperText,
         ),
-        //
-        attribute: attribute,
+        // From Supper
         initialValue: initialValue,
-        validators: validators,
+        name: name,
+        validator: validator,
+        valueTransformer: valueTransformer,
+        onChanged: onChanged,
         readOnly: readOnly,
         autovalidate: autovalidate,
-        maxLines: maxLines,
-        obscureText: obscureText,
-        textCapitalization: textCapitalization,
-        scrollPadding: scrollPadding,
+        onSaved: onSaved,
         enabled: enabled,
-        enableInteractiveSelection: enableInteractiveSelection,
-        maxLengthEnforced: maxLengthEnforced,
-        textAlign: textAlign,
-        autofocus: autofocus,
-        autocorrect: autocorrect,
-        cursorWidth: cursorWidth,
+        onReset: onReset,
+        focusNode: focusNode,
+        // Other fields
+        maxLines: maxLines,
         keyboardType: keyboardType,
+        obscureText: obscureText,
         style: style,
         controller: controller,
-        focusNode: focusNode,
+        textCapitalization: textCapitalization,
         textInputAction: textInputAction,
         strutStyle: strutStyle,
         textDirection: textDirection,
+        textAlign: textAlign,
+        autofocus: autofocus,
+        autocorrect: autocorrect,
+        maxLengthEnforced: maxLengthEnforced,
         maxLength: maxLength,
         onEditingComplete: onEditingComplete,
         onFieldSubmitted: onFieldSubmitted,
         inputFormatters: inputFormatters,
+        cursorWidth: cursorWidth,
         cursorRadius: cursorRadius,
         cursorColor: cursorColor,
         keyboardAppearance: keyboardAppearance,
+        scrollPadding: scrollPadding,
+        enableInteractiveSelection: enableInteractiveSelection,
         buildCounter: buildCounter,
-        onChanged: onChanged,
-        valueTransformer: valueTransformer,
         expands: expands,
         minLines: minLines,
         showCursor: showCursor,
-        onSaved: onSaved,
         onTap: onTap,
-        searchText: searchText,
-        titlePadding: titlePadding,
-        dialogTitle: dialogTitle,
-        isSearchable: isSearchable,
-        defaultSelectedCountryIsoCode: defaultSelectedCountryIsoCode,
-        priorityListByIsoCode: priorityListByIsoCode,
-        countryFilterByIsoCode: countryFilterByIsoCode,
-        dialogTextStyle: dialogTextStyle,
-        isCupertinoPicker: isCupertinoPicker,
-        cupertinoPickerSheetHeight: cupertinoPickerSheetHeight,
       ),
     );
   }
