@@ -7,18 +7,29 @@ class DecoFormSignaturePad extends StatelessWidget {
   final String hintText;
   final String labelText;
   final String helperText;
-  //
-  final String attribute;
-  final List<FormFieldValidator> validators;
+
+  // From Super
+
   final bool readOnly;
-  final ValueTransformer valueTransformer;
+  final FocusNode focusNode;
+  final String name;
   final ValueChanged onChanged;
+  final ValueTransformer valueTransformer;
+  final VoidCallback onReset;
+  final FormFieldValidator validator;
+  final List<dynamic> initialValue;
+  final bool enabled;
   final FormFieldSetter onSaved;
+  final bool autovalidate;
+
+  // Other fields
+
+  final SignatureController controller;
   final double width;
   final double height;
   final Color backgroundColor;
   final String clearButtonText;
-  final SignatureController controller;
+  final Border border;
 
   DecoFormSignaturePad({
     Key key,
@@ -26,18 +37,25 @@ class DecoFormSignaturePad extends StatelessWidget {
     this.helperText,
     this.hintText,
     this.labelText,
-    //
-    @required this.attribute,
-    this.validators = const [],
+    // From Super
+    this.name,
+    this.validator,
+    this.initialValue,
     this.readOnly = false,
-    this.backgroundColor = Colors.white,
-    this.clearButtonText = 'Clear',
+    this.onChanged,
+    this.valueTransformer,
+    this.enabled = true,
+    this.onSaved,
+    this.autovalidate = false,
+    this.onReset,
+    this.focusNode,
+    // Other fields
+    this.backgroundColor,
+    this.clearButtonText,
     this.width,
     this.height = 200,
-    this.valueTransformer,
-    this.onChanged,
-    this.onSaved,
     this.controller,
+    this.border,
   });
 
   @override
@@ -50,18 +68,25 @@ class DecoFormSignaturePad extends StatelessWidget {
           hintText: hintText,
           helperText: helperText,
         ),
-        //
-        attribute: attribute,
-        validators: validators,
-        readOnly: readOnly,
-        backgroundColor: backgroundColor,
-        clearButtonText: clearButtonText,
-        width: width,
-        height: height,
+        // From Supper
+        initialValue: initialValue,
+        name: name,
+        validator: validator,
         valueTransformer: valueTransformer,
         onChanged: onChanged,
+        readOnly: readOnly,
+        autovalidate: autovalidate,
         onSaved: onSaved,
+        enabled: enabled,
+        onReset: onReset,
+        focusNode: focusNode,
+        // Other fields
         controller: controller,
+        width: width,
+        height: height,
+        backgroundColor: backgroundColor,
+        clearButtonText: clearButtonText,
+        border: border,
       ),
     );
   }
