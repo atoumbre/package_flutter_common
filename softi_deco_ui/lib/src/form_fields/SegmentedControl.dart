@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:softi_deco_ui/src/form_fields/common.dart';
 
-class DecoFormSegmentedControl extends StatelessWidget {
+class DecoFormSegmentedControl<T> extends StatelessWidget {
   //! Parameters for Labels
   final String hintText;
   final String labelText;
@@ -17,7 +17,7 @@ class DecoFormSegmentedControl extends StatelessWidget {
   final ValueTransformer valueTransformer;
   final VoidCallback onReset;
   final FormFieldValidator validator;
-  final List<dynamic> initialValue;
+  final T initialValue;
   final bool enabled;
   final FormFieldSetter onSaved;
   final bool autovalidate;
@@ -61,7 +61,7 @@ class DecoFormSegmentedControl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DecoFormFieldDecorator(
-      child: FormBuilderSegmentedControl(
+      child: FormBuilderSegmentedControl<T>(
         key: key,
         decoration: decoDecoration(
           labelText: labelText,
