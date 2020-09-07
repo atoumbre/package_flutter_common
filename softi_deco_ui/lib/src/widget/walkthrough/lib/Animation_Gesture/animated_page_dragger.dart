@@ -47,7 +47,7 @@ class AnimatedPageDragger {
 
     //Adding listener to animation controller
     //Also value to animation controller vary from 0.0 to 1.0 according to duration.
-    completionAnimationController = AnimationController(duration: duration)
+    completionAnimationController = AnimationController(duration: duration, vsync: vsync)
       ..addListener(() {
         final slidePercent = lerpDouble(startSlidePercent, endSlidePercent, completionAnimationController.value);
 
