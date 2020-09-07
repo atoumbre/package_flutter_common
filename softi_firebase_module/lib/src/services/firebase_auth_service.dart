@@ -102,8 +102,8 @@ class FirebaseAuthService implements IAuthService {
         iOS: {
           'bundleId': settings.iOSBundleID,
         },
+        handleCodeInApp: true,
         // dynamicLinkDomain: null,
-        // handleCodeInApp: false,
       ),
     );
   }
