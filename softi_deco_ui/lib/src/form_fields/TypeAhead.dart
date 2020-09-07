@@ -7,41 +7,48 @@ class DecoFormTypeAhead<T> extends StatelessWidget {
   final String hintText;
   final String labelText;
   final String helperText;
-  //
-  final String attribute;
-  final List<FormFieldValidator> validators;
-  final T initialValue;
+
+  // From Super
+
   final bool readOnly;
+  final FocusNode focusNode;
+  final String name;
   final ValueChanged onChanged;
   final ValueTransformer valueTransformer;
-
-  final bool getImmediateSuggestions;
+  final VoidCallback onReset;
+  final FormFieldValidator validator;
+  final T initialValue;
+  final bool enabled;
+  final FormFieldSetter onSaved;
   final bool autovalidate;
-  final ErrorBuilder errorBuilder;
-  final WidgetBuilder noItemsFoundBuilder;
-  final WidgetBuilder loadingBuilder;
-  final Duration debounceDuration;
-  final SuggestionsBoxDecoration suggestionsBoxDecoration;
-  final String Function(T) selectionToTextTransformer;
-  final ItemBuilder<T> itemBuilder;
-  final SuggestionsCallback<T> suggestionsCallback;
-  final double suggestionsBoxVerticalOffset;
-  final TextFieldConfiguration textFieldConfiguration;
+
+  // Other fields
+
   final AnimationTransitionBuilder transitionBuilder;
-  final Duration animationDuration;
-  final double animationStart;
   final AxisDirection direction;
-  final bool hideOnLoading;
+  final bool autoFlipDirection;
+  final bool getImmediateSuggestions;
   final bool hideOnEmpty;
   final bool hideOnError;
+  final bool hideOnLoading;
   final bool hideSuggestionsOnKeyboardHide;
   final bool keepSuggestionsOnLoading;
-  final bool autoFlipDirection;
-  final SuggestionsBoxController suggestionsBoxController;
   final bool keepSuggestionsOnSuggestionSelected;
+  final double animationStart;
+  final double suggestionsBoxVerticalOffset;
+  final Duration animationDuration;
+  final Duration debounceDuration;
+  final ErrorBuilder errorBuilder;
+  final ItemBuilder<T> itemBuilder;
+  final SelectionToTextTransformer<T> selectionToTextTransformer;
+  final SuggestionsBoxController suggestionsBoxController;
+  final SuggestionsBoxDecoration suggestionsBoxDecoration;
+  final SuggestionsCallback<T> suggestionsCallback;
   final SuggestionSelectionCallback<T> onSuggestionSelected;
   final TextEditingController controller;
-  final FormFieldSetter<T> onSaved;
+  final TextFieldConfiguration textFieldConfiguration;
+  final WidgetBuilder loadingBuilder;
+  final WidgetBuilder noItemsFoundBuilder;
 
   DecoFormTypeAhead({
     Key key,
@@ -49,15 +56,22 @@ class DecoFormTypeAhead<T> extends StatelessWidget {
     this.helperText,
     this.hintText,
     this.labelText,
-    //
-    @required this.attribute,
+    // From Super
+    this.name,
+    this.validator,
+    this.initialValue,
+    this.readOnly = false,
+    this.onChanged,
+    this.valueTransformer,
+    this.enabled = true,
+    this.onSaved,
+    this.autovalidate = false,
+    this.onReset,
+    this.focusNode,
+    // Other fields
     @required this.itemBuilder,
     @required this.suggestionsCallback,
-    this.initialValue,
-    this.validators = const [],
-    this.readOnly = false,
     this.getImmediateSuggestions = false,
-    this.autovalidate = false,
     this.selectionToTextTransformer,
     this.errorBuilder,
     this.noItemsFoundBuilder,
@@ -76,59 +90,60 @@ class DecoFormTypeAhead<T> extends StatelessWidget {
     this.hideSuggestionsOnKeyboardHide = true,
     this.keepSuggestionsOnLoading = true,
     this.autoFlipDirection = false,
-    this.onChanged,
-    this.valueTransformer,
     this.suggestionsBoxController,
     this.keepSuggestionsOnSuggestionSelected = false,
     this.onSuggestionSelected,
     this.controller,
-    this.onSaved,
   });
 
   @override
   Widget build(BuildContext context) {
     return DecoFormFieldDecorator(
-      child: FormBuilderTypeAhead(
+      child: FormBuilderTypeAhead<T>(
         key: key,
         decoration: decoDecoration(
           labelText: labelText,
           hintText: hintText,
           helperText: helperText,
         ),
-        //
-        attribute: attribute,
-        itemBuilder: itemBuilder,
-        suggestionsCallback: suggestionsCallback,
+        // From Supper
         initialValue: initialValue,
-        validators: validators,
+        name: name,
+        validator: validator,
+        valueTransformer: valueTransformer,
+        onChanged: onChanged,
         readOnly: readOnly,
-        getImmediateSuggestions: getImmediateSuggestions,
         autovalidate: autovalidate,
-        selectionToTextTransformer: selectionToTextTransformer,
-        errorBuilder: errorBuilder,
-        noItemsFoundBuilder: noItemsFoundBuilder,
-        loadingBuilder: loadingBuilder,
-        debounceDuration: debounceDuration,
-        suggestionsBoxDecoration: suggestionsBoxDecoration,
-        suggestionsBoxVerticalOffset: suggestionsBoxVerticalOffset,
-        textFieldConfiguration: textFieldConfiguration,
+        onSaved: onSaved,
+        enabled: enabled,
+        onReset: onReset,
+        focusNode: focusNode,
+        // Other fields
         transitionBuilder: transitionBuilder,
-        animationDuration: animationDuration,
-        animationStart: animationStart,
         direction: direction,
-        hideOnLoading: hideOnLoading,
+        autoFlipDirection: autoFlipDirection,
+        getImmediateSuggestions: getImmediateSuggestions,
         hideOnEmpty: hideOnEmpty,
         hideOnError: hideOnError,
+        hideOnLoading: hideOnLoading,
         hideSuggestionsOnKeyboardHide: hideSuggestionsOnKeyboardHide,
         keepSuggestionsOnLoading: keepSuggestionsOnLoading,
-        autoFlipDirection: autoFlipDirection,
-        onChanged: onChanged,
-        valueTransformer: valueTransformer,
-        suggestionsBoxController: suggestionsBoxController,
         keepSuggestionsOnSuggestionSelected: keepSuggestionsOnSuggestionSelected,
+        animationStart: animationStart,
+        suggestionsBoxVerticalOffset: suggestionsBoxVerticalOffset,
+        animationDuration: animationDuration,
+        debounceDuration: debounceDuration,
+        errorBuilder: errorBuilder,
+        itemBuilder: itemBuilder,
+        selectionToTextTransformer: selectionToTextTransformer,
+        suggestionsBoxController: suggestionsBoxController,
+        suggestionsBoxDecoration: suggestionsBoxDecoration,
+        suggestionsCallback: suggestionsCallback,
         onSuggestionSelected: onSuggestionSelected,
         controller: controller,
-        onSaved: onSaved,
+        textFieldConfiguration: textFieldConfiguration,
+        loadingBuilder: loadingBuilder,
+        noItemsFoundBuilder: noItemsFoundBuilder,
       ),
     );
   }

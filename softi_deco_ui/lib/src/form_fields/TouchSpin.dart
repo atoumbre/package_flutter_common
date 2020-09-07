@@ -9,49 +9,56 @@ class DecoFormTouchSpin extends StatelessWidget {
   final String labelText;
   final String helperText;
 
-  final String attribute;
-  final List<FormFieldValidator> validators;
-  final num initialValue;
+  // From Super
+
   final bool readOnly;
-  final InputDecoration decoration;
+  final FocusNode focusNode;
+  final String name;
   final ValueChanged onChanged;
   final ValueTransformer valueTransformer;
-  final num step;
-  final num min;
-  final num max;
+  final VoidCallback onReset;
+  final FormFieldValidator validator;
+  final double initialValue;
+  final bool enabled;
   final FormFieldSetter onSaved;
+  final bool autovalidate;
+
+  // Other fields
+
+  final double step;
+  final double min;
+  final double max;
   final Icon subtractIcon;
   final Icon addIcon;
-  final num iconSize;
-
+  final double iconSize;
   final NumberFormat displayFormat;
-
   final EdgeInsets iconPadding;
-
   final TextStyle textStyle;
-
   final Color iconActiveColor;
-
   final Color iconDisabledColor;
 
   DecoFormTouchSpin({
     Key key,
-    //
+    //!   Labels fields
     this.helperText,
     this.hintText,
     this.labelText,
-    //
-    @required this.attribute,
+    // From Super
+    this.name,
+    this.validator,
     this.initialValue,
-    this.validators = const [],
     this.readOnly = false,
-    this.decoration = const InputDecoration(),
+    this.onChanged,
+    this.valueTransformer,
+    this.enabled = true,
+    this.onSaved,
+    this.autovalidate = false,
+    this.onReset,
+    this.focusNode,
+    // Other fields
     this.step,
     this.min = 1,
     this.max = 9999,
-    this.onChanged,
-    this.valueTransformer,
-    this.onSaved,
     this.iconSize = 24.0,
     this.displayFormat,
     this.subtractIcon = const Icon(Icons.remove),
@@ -72,21 +79,26 @@ class DecoFormTouchSpin extends StatelessWidget {
           hintText: hintText,
           helperText: helperText,
         ),
-        //
-        attribute: attribute,
+        // From Supper
         initialValue: initialValue,
-        validators: validators,
+        name: name,
+        validator: validator,
+        valueTransformer: valueTransformer,
+        onChanged: onChanged,
         readOnly: readOnly,
+        autovalidate: autovalidate,
+        onSaved: onSaved,
+        enabled: enabled,
+        onReset: onReset,
+        focusNode: focusNode,
+        // Other fields
         step: step,
         min: min,
         max: max,
-        onChanged: onChanged,
-        valueTransformer: valueTransformer,
-        onSaved: onSaved,
-        iconSize: iconSize,
-        displayFormat: displayFormat,
         subtractIcon: subtractIcon,
         addIcon: addIcon,
+        iconSize: iconSize,
+        displayFormat: displayFormat,
         iconPadding: iconPadding,
         textStyle: textStyle,
         iconActiveColor: iconActiveColor,
