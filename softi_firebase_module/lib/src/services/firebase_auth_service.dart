@@ -16,6 +16,17 @@ class FirebaseAuthService implements IAuthService {
   final FirebaseAuth firebaseAuth;
   final FirebaseSettings settings;
 
+  final StreamController _errorStreamController = StreamController();
+
+  Future<T> _catchError<T>(Future<T> Function() task) {
+    return task().catchError((onError) => _errorStreamController.sink.add(onError));
+  }
+
+  @override
+  Stream<dynamic> get authErrorStream => _errorStreamController.stream;
+
+  Stream<AuthUser> get authUserStream => firebaseAuth.authStateChanges().map(_userFromFirebase);
+
   AuthUser _userFromFirebase(User user) {
     if (user == null) {
       return null;
@@ -47,49 +58,40 @@ class FirebaseAuthService implements IAuthService {
     return _userFromFirebase(firebaseUser);
   }
 
-  Stream<AuthUser> streamCurrentUser() {
-    return firebaseAuth.authStateChanges().map(_userFromFirebase);
-  }
-
-  Future<AuthUser> getCurrentUser() async {
-    final User user = firebaseAuth.currentUser;
-    return _userFromFirebase(user);
-  }
-
-  Future<void> signOut() async {
+  Future<void> _signOut() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
     await googleSignIn.signOut();
 
     return firebaseAuth.signOut();
   }
 
-  Future<AuthUser> linkWithCredential(AuthCredential credential) async {
-    UserCredential authResult = await firebaseAuth.currentUser.linkWithCredential(credential);
-    return _userFromFirebase(authResult.user);
-  }
+  // Future<AuthUser> _linkWithCredential(AuthCredential credential) async {
+  //   UserCredential authResult = await firebaseAuth.currentUser.linkWithCredential(credential);
+  //   return _userFromFirebase(authResult.user);
+  // }
 
   ///! Ananymous sign in
 
-  Future<AuthUser> signInAnonymously() async {
+  Future<AuthUser> _signInAnonymously() async {
     final UserCredential authResult = await firebaseAuth.signInAnonymously();
     return _userFromFirebase(authResult.user);
   }
 
   ///! Email link sign in
 
-  Future<AuthCredential> getCredentialForEmailAndLink(String email, String link) async {
+  Future<AuthCredential> _getCredentialForEmailAndLink(String email, String link) async {
     return EmailAuthProvider.credentialWithLink(email: email, emailLink: link);
   }
 
-  Future<AuthUser> signInWithEmailAndLink({String email, String link}) async {
-    return _signInWithCredential(await getCredentialForEmailAndLink(email, link));
+  Future<AuthUser> _signInWithEmailAndLink({String email, String link}) async {
+    return _signInWithCredential(await _getCredentialForEmailAndLink(email, link));
   }
 
-  Future<bool> isSignInWithEmailLink(String link) async {
+  Future<bool> _isSignInWithEmailLink(String link) async {
     return Future.value(firebaseAuth.isSignInWithEmailLink(link));
   }
 
-  Future<void> sendSignInWithEmailLink({@required String email}) async {
+  Future<void> _sendSignInWithEmailLink({@required String email}) async {
     return await firebaseAuth.sendSignInLinkToEmail(
       email: email,
       actionCodeSettings: ActionCodeSettings(
@@ -110,7 +112,7 @@ class FirebaseAuthService implements IAuthService {
 
   ///! Google sign in
 
-  Future<AuthCredential> getCredentialForGoogle() async {
+  Future<AuthCredential> _getCredentialForGoogle() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
     final GoogleSignInAccount googleUser = await googleSignIn.signIn();
 
@@ -129,11 +131,11 @@ class FirebaseAuthService implements IAuthService {
     }
   }
 
-  Future<AuthUser> signInWithGoogle() async => _signInWithCredential(await getCredentialForGoogle());
+  Future<AuthUser> _signInWithGoogle() async => _signInWithCredential(await _getCredentialForGoogle());
 
   ///! Apple sign in
 
-  Future<AuthCredential> getCredentialForApple() async {
+  Future<AuthCredential> _getCredentialForApple() async {
     final appleIdCredential = await SignInWithApple.getAppleIDCredential(
       scopes: [
         AppleIDAuthorizationScopes.email,
@@ -156,11 +158,11 @@ class FirebaseAuthService implements IAuthService {
     );
   }
 
-  Future<AuthUser> signInWithApple() async => _signInWithCredential(await getCredentialForApple());
+  Future<AuthUser> _signInWithApple() async => _signInWithCredential(await _getCredentialForApple());
 
   ///! Facebook Sign in
 
-  Future<AuthCredential> getFacebookAuthCredential(Future<String> Function(Widget) navigator) async {
+  Future<AuthCredential> _getFacebookAuthCredential(Future<String> Function(Widget) navigator) async {
     // String result = await Navigator.push(
     //   context,
     //   //! CustomWebView for Facebook login
@@ -179,41 +181,41 @@ class FirebaseAuthService implements IAuthService {
     }
   }
 
-  Future<AuthUser> signInWithFacebook(dynamic context) async {
-    return _signInWithCredential(await getFacebookAuthCredential(context));
+  Future<AuthUser> _signInWithFacebook(dynamic context) async {
+    return _signInWithCredential(await _getFacebookAuthCredential(context));
   }
 
   ///! Email and Password sign in
 
-  Future<AuthCredential> getCredentialForEmailPassword(String email, String password) async {
+  Future<AuthCredential> _getCredentialForEmailPassword(String email, String password) async {
     return EmailAuthProvider.credential(email: email, password: password);
   }
 
-  Future<AuthUser> signInWithEmailAndPassword(String email, String password) async {
-    return _signInWithCredential(await getCredentialForEmailPassword(email, password));
+  Future<AuthUser> _signInWithEmailAndPassword(String email, String password) async {
+    return _signInWithCredential(await _getCredentialForEmailPassword(email, password));
   }
 
-  Future<AuthUser> createUserWithEmailAndPassword(String email, String password) async {
+  Future<AuthUser> _createUserWithEmailAndPassword(String email, String password) async {
     final UserCredential authResult =
         await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
     return _userFromFirebase(authResult.user);
   }
 
-  Future<void> sendPasswordResetEmail(String email) async {
+  Future<void> _sendPasswordResetEmail(String email) async {
     await firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
   ///! Phone sign in
 
-  Future<AuthCredential> getCredentialForPhone(String verificationId, String smsCode) async {
+  Future<AuthCredential> _getCredentialForPhone(String verificationId, String smsCode) async {
     return PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
   }
 
-  Future<AuthUser> signInWithPhone(verificationId, smsOTP) async {
-    return _signInWithCredential(await getCredentialForPhone(verificationId, smsOTP));
+  Future<AuthUser> _signInWithPhone(verificationId, smsOTP) async {
+    return _signInWithCredential(await _getCredentialForPhone(verificationId, smsOTP));
   }
 
-  Future<PhoneAuthResult> sendSignInWithPhoneCode({
+  Future<PhoneAuthResult> _sendSignInWithPhoneCode({
     String phoneNumber,
     dynamic resendingId,
     bool autoRetrive = true,
@@ -274,6 +276,113 @@ class FirebaseAuthService implements IAuthService {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    _errorStreamController.close();
+  }
+
+  @override
+  Future<AuthUser> createUserWithEmailAndPassword(String email, String password) {
+    return _catchError<AuthUser>(
+      () => _createUserWithEmailAndPassword(email, password),
+    );
+  }
+
+  @override
+  Future<void> sendPasswordResetEmail(String email) {
+    return _catchError<void>(
+      () => _sendPasswordResetEmail(email),
+    );
+  }
+
+  @override
+  Future<void> sendSignInWithEmailLink({String email}) {
+    return _catchError<void>(
+      () => _sendSignInWithEmailLink(email: email),
+    );
+  }
+
+  @override
+  Future<PhoneAuthResult> sendSignInWithPhoneCode({
+    String phoneNumber,
+    resendingId,
+    bool autoRetrive,
+    int autoRetrievalTimeoutSeconds = 30,
+  }) {
+    // return _sendSignInWithPhoneCode(
+    //   phoneNumber: phoneNumber,
+    //   resendingId: resendingId,
+    //   autoRetrive: true,
+    //   autoRetrievalTimeoutSeconds: autoRetrievalTimeoutSeconds,
+    // );
+    return _catchError<PhoneAuthResult>(
+      () => _sendSignInWithPhoneCode(
+        phoneNumber: phoneNumber,
+        resendingId: resendingId,
+        autoRetrive: true,
+        autoRetrievalTimeoutSeconds: autoRetrievalTimeoutSeconds,
+      ),
+    );
+  }
+
+  @override
+  Future<AuthUser> signInAnonymously() {
+    return _catchError<AuthUser>(
+      () => _signInAnonymously(),
+    );
+  }
+
+  @override
+  Future<AuthUser> signInWithApple() {
+    return _catchError<AuthUser>(
+      () => _signInWithApple(),
+    );
+  }
+
+  @override
+  Future<AuthUser> signInWithEmailAndLink({String email, String link}) {
+    return _catchError<AuthUser>(
+      () => _signInWithEmailAndLink(email: email, link: link),
+    );
+  }
+
+  @override
+  Future<AuthUser> signInWithEmailAndPassword(String email, String password) {
+    return _catchError<AuthUser>(
+      () => _signInWithEmailAndPassword(email, password),
+    );
+  }
+
+  @override
+  Future<AuthUser> signInWithFacebook(param) {
+    return _catchError<AuthUser>(
+      () => _signInWithFacebook(param),
+    );
+  }
+
+  @override
+  Future<AuthUser> signInWithGoogle() {
+    return _catchError<AuthUser>(
+      () => _signInWithGoogle(),
+    );
+  }
+
+  @override
+  Future<AuthUser> signInWithPhone(verificationId, smsOTP) {
+    return _catchError<AuthUser>(
+      () => _signInWithPhone(verificationId, smsOTP),
+    );
+  }
+
+  @override
+  Future<void> signOut() {
+    return _catchError<void>(
+      () => _signOut(),
+    );
+  }
+
+  @override
+  Future<bool> isSignInWithEmailLink({String link}) {
+    return _catchError<bool>(
+      () => _isSignInWithEmailLink(link),
+    );
   }
 }

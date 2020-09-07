@@ -9,23 +9,31 @@ class DecoFormFilterChip extends StatelessWidget {
   final String labelText;
   final String helperText;
 
-  // FormBuilder Settings
-  final String attribute;
-  final List<FormFieldValidator> validators;
-  final dynamic initialValue;
+  // From Super
+
   final bool readOnly;
+  final FocusNode focusNode;
+  final String name;
   final ValueChanged onChanged;
   final ValueTransformer valueTransformer;
-  final List<FormBuilderFieldOption> options;
+  final VoidCallback onReset;
+  final FormFieldValidator validator;
+  final List<dynamic> initialValue;
+  final bool enabled;
   final FormFieldSetter onSaved;
+  final bool autovalidate;
 
-  // FilterChip Settings
+  // Other fields
+
+  final List<FormBuilderFieldOption> options;
   final double elevation, pressElevation;
-  final Color selectedColor, disabledColor, backgroundColor, selectedShadowColor, shadowColor;
+  final Color selectedColor;
+  final Color disabledColor;
+  final Color backgroundColor;
+  final Color selectedShadowColor;
+  final Color shadowColor;
   final ShapeBorder shape;
   final MaterialTapTargetSize materialTapTargetSize;
-
-  // Wrap Settings
   final Axis direction;
   final WrapAlignment alignment;
   final WrapCrossAlignment crossAxisAlignment;
@@ -39,7 +47,6 @@ class DecoFormFilterChip extends StatelessWidget {
   final TextStyle labelStyle;
   final bool showCheckmark;
   final EdgeInsets labelPadding;
-  // final VisualDensity visualDensity;
 
   DecoFormFilterChip({
     Key key,
@@ -47,16 +54,20 @@ class DecoFormFilterChip extends StatelessWidget {
     this.helperText,
     this.hintText,
     this.labelText,
-
-    // FormBuilder fields
-    @required this.attribute,
-    @required this.options,
+    // From Super
+    this.name,
+    this.validator,
     this.initialValue,
-    this.validators = const [],
     this.readOnly = false,
     this.onChanged,
-    this.onSaved,
     this.valueTransformer,
+    this.enabled = true,
+    this.onSaved,
+    this.autovalidate = false,
+    this.onReset,
+    this.focusNode,
+    // Other fields
+    @required this.options,
     this.selectedColor,
     this.disabledColor,
     this.backgroundColor,
@@ -80,8 +91,6 @@ class DecoFormFilterChip extends StatelessWidget {
     this.labelStyle,
     this.showCheckmark = true,
     this.labelPadding,
-
-    // this.visualDensity,
   });
 
   @override
@@ -94,30 +103,33 @@ class DecoFormFilterChip extends StatelessWidget {
           hintText: hintText,
           helperText: helperText,
         ),
-        //
-        attribute: attribute,
-        options: options,
+        // From Supper
         initialValue: initialValue,
-        validators: validators,
-        readOnly: readOnly,
-        onChanged: onChanged,
-        onSaved: onSaved,
+        name: name,
+        validator: validator,
         valueTransformer: valueTransformer,
+        onChanged: onChanged,
+        readOnly: readOnly,
+        autovalidate: autovalidate,
+        onSaved: onSaved,
+        enabled: enabled,
+        onReset: onReset,
+        focusNode: focusNode,
+        // Other fields
+        options: options,
+        elevation: elevation,
         selectedColor: selectedColor,
         disabledColor: disabledColor,
         backgroundColor: backgroundColor,
-        shadowColor: shadowColor,
         selectedShadowColor: selectedShadowColor,
+        shadowColor: shadowColor,
         shape: shape,
-        elevation: elevation,
-        pressElevation: pressElevation,
         materialTapTargetSize: materialTapTargetSize,
         direction: direction,
         alignment: alignment,
         crossAxisAlignment: crossAxisAlignment,
         runAlignment: runAlignment,
         runSpacing: runSpacing,
-        spacing: spacing,
         textDirection: textDirection,
         verticalDirection: verticalDirection,
         padding: padding,

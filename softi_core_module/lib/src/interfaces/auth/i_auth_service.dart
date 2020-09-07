@@ -4,11 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:softi_core_module/src/models/auth_user.dart';
 
 abstract class IAuthService {
-  Stream<AuthUser> streamCurrentUser();
-  Future<AuthUser> getCurrentUser();
+  Stream<dynamic> get authErrorStream;
 
-  void refresh();
+  Stream<AuthUser> get authUserStream;
 
+  // Anonymous login
   Future<AuthUser> signInAnonymously();
 
   // Email and password
@@ -25,10 +25,8 @@ abstract class IAuthService {
 
   // Email Link login
   Future<AuthUser> signInWithEmailAndLink({String email, String link});
-  Future<bool> isSignInWithEmailLink(String link);
-  Future<void> sendSignInWithEmailLink({
-    @required String email,
-  });
+  Future<bool> isSignInWithEmailLink({String link});
+  Future<void> sendSignInWithEmailLink({@required String email});
 
   // Phone login
   Future<AuthUser> signInWithPhone(verificationId, smsOTP);
@@ -41,6 +39,7 @@ abstract class IAuthService {
 
   Future<void> signOut();
 
+  void refresh();
   void dispose();
 }
 
@@ -64,4 +63,10 @@ class SendCodeResult {
     this.codeVerification,
     this.resendCode,
   });
+}
+
+class AuthError extends Error {
+  AuthError({this.code, this.message});
+  final String code;
+  final String message;
 }
