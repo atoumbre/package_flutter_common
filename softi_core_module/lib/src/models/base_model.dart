@@ -1,43 +1,25 @@
 abstract class IBaseModel {
   Map<String, dynamic> toJson();
   String getId();
-  String getPath();
   bool isValid();
 }
 
 mixin BaseModelMixin {
   String id;
-  String path;
-
   String getId() => id;
-  String getPath() => path;
-  bool isValid() => true;
-
-  // Map<String, dynamic> toJson() => super.toJson();
+  bool isValid() => (id ?? '' != ''); //(endpoint ?? '' != '') &&
 }
 
-class Reference<T extends IBaseModel> {
-  Reference({this.id, this.data, this.fetch});
+// class Reference<T extends IBaseModel> {
+//   Reference({this.id, this.fetcher});
 
-  final String id;
-  final T data;
-  final T Function() fetch;
+//   final String id;
+//   final Future<T> Function() fetcher;
 
-  T getData() {
-    if (fetch != null) return fetch();
-    return null;
-  }
-}
+//   T _data;
 
-class Resource<T extends IBaseModel> {
-  Resource({this.id, this.data, this.fetch});
+//   Type get type => T;
+//   T get data => _data;
 
-  final String id;
-  final T data;
-  final T Function() fetch;
-
-  T getData() {
-    if (fetch != null) return fetch();
-    return null;
-  }
-}
+//   T fetch() => _data = fetcher != null ? await fetcher() : null;
+// }

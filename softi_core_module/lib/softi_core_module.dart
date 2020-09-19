@@ -6,6 +6,7 @@ export 'package:softi_core_module/src/interfaces/auth/i_auth_service.dart';
 export 'package:softi_core_module/src/interfaces/db/i_collection_service.dart';
 export 'package:softi_core_module/src/interfaces/external/i_dynamiclink_service.dart';
 export 'package:softi_core_module/src/interfaces/external/i_remote_storage.dart';
+export 'package:softi_core_module/src/interfaces/external/i_location_service.dart';
 
 /// Shared models
 export 'package:softi_core_module/src/models/auth_user.dart';
@@ -15,6 +16,7 @@ export 'package:softi_core_module/src/models/base_model.dart';
 export 'package:softi_core_module/src/services/alert_service.dart';
 export 'package:softi_core_module/src/services/local_storage.dart';
 export 'package:softi_core_module/src/services/navigation_service.dart';
+export 'package:softi_core_module/src/services/location_service.dart';
 
 /// Some common Controllers
 export 'package:softi_core_module/src/controllers/database_controller.dart';
