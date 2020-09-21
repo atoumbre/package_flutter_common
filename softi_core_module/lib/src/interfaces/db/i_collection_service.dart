@@ -15,7 +15,7 @@ abstract class ICollectionService {
     QueryParam queryParams, {
     String lastId,
     int skip,
-    int limit,
+    int limit = 10,
   });
 
   Future<T> get<T extends IBaseModel>(String id);

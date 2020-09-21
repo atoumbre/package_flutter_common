@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-abstract class IRemoteStorage {
+abstract class IRemoteStorageService {
   Future<CloudStorageResult> uploadImage({
     @required File imageToUpload,
     @required String title,

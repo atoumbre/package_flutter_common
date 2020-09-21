@@ -21,11 +21,13 @@ dependencies:
   freezed_annotation:
   google_sign_in:
   sign_in_with_apple:
+  flutter_webview_plugin:
+
+  cloud_firestore:
   firebase_auth:
   firebase_dynamic_links:
   firebase_storage:
-  flutter_webview_plugin:
-  cloud_firestore:
+  firebase_remote_config:
 
 # flutter packages pub run build_runner watch --delete-conflicting-outputs
 # flutter packages pub run build_runner build --delete-conflicting-outputs

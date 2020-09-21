@@ -7,6 +7,7 @@ export 'package:softi_core_module/src/interfaces/db/i_collection_service.dart';
 export 'package:softi_core_module/src/interfaces/external/i_dynamiclink_service.dart';
 export 'package:softi_core_module/src/interfaces/external/i_remote_storage.dart';
 export 'package:softi_core_module/src/interfaces/external/i_location_service.dart';
+export 'package:softi_core_module/src/interfaces/external/i_remote_config.dart';
 
 /// Shared models
 export 'package:softi_core_module/src/models/auth_user.dart';

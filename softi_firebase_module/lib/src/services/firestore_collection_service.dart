@@ -34,8 +34,12 @@ class FirestoreCollectionService implements ICollectionService {
     return _resultStream.first;
   }
 
-  Future<Stream<QueryResult<T>>> streamData<T extends IBaseModel>(QueryParam queryParams,
-      {int limit, String lastId, int skip}) async {
+  Future<Stream<QueryResult<T>>> streamData<T extends IBaseModel>(
+    QueryParam queryParams, {
+    int limit = 10,
+    String lastId,
+    int skip,
+  }) async {
     var _query = await _firestoreQueryBuilder(
       _getRef<T>(),
       queryParam: queryParams,
