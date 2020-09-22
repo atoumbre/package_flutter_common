@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part '../gen/auth_user.freezed.dart';
+part 'auth_user.freezed.dart';
 
 @freezed
 abstract class AuthUser implements _$AuthUser {
