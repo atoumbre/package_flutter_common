@@ -53,13 +53,11 @@ class FirestoreCollectionService implements ICollectionService {
       (snapshot) {
         var data = snapshot.docs
             //! Filter possible here
-            // .where((mappedItem) => mappedItem.name != null)
             .map<T>((doc) => _fromFirestore<T>(doc))
             .toList();
 
         var changes = snapshot.docChanges
             //! Filter possible here
-            // .where((mappedItem) => mappedItem.name != null)
             .map((DocumentChange docChange) => Change<T>(
                   document: _fromFirestore<T>(docChange.doc),
                   oldIndex: docChange.oldIndex,
@@ -73,13 +71,6 @@ class FirestoreCollectionService implements ICollectionService {
     );
   }
 
-//TODO(atoumbre): Manage optimistic response for second read
-  Future<T> add<T extends IBaseModel>(T doc, {refresh = false}) async {
-    DocumentReference docRef = await _getRef<T>().add(_toFirestore(doc));
-
-    return _fromFirestore<T>(await docRef.snapshots().first);
-  }
-
   @override
   Future<bool> exists<T extends IBaseModel>(String recordId) async {
     return (await _getRef<T>().doc(recordId).snapshots().first).exists;
@@ -87,12 +78,6 @@ class FirestoreCollectionService implements ICollectionService {
 
   // Get documenent from db
   Future<T> get<T extends IBaseModel>(String recordId) async {
-    // DocumentSnapshot snapshot = await _getRef<T>().doc(recordId).snapshots().first;
-    // if (snapshot.exists) {
-    //   return _fromFirestore<T>(snapshot);
-    // } else {
-    //   return null;
-    // }
     return stream<T>(recordId).first;
   }
 
@@ -101,27 +86,32 @@ class FirestoreCollectionService implements ICollectionService {
     return _getRef<T>().doc(recordId).snapshots().map<T>((snapshot) => _fromFirestore<T>(snapshot));
   }
 
-  Future<T> update<T extends IBaseModel>(T doc, {refresh = false}) async {
-    DocumentReference docRef = _getRef<T>().doc(doc.getId())
-      ..set(
-        _toFirestore(doc),
-        SetOptions(merge: true),
-      );
-    await docRef.update(_toFirestore(doc));
-    return refresh ? _fromFirestore<T>(await docRef.snapshots().first) : Future.value(doc);
+  Future<void> update<T extends IBaseModel>(String id, Map<String, dynamic> values) async {
+    DocumentReference docRef = _getRef<T>().doc(id);
+
+    await docRef.set(_firestireMap(values, false), SetOptions(merge: true));
   }
 
-  Future<T> delete<T extends IBaseModel>(String documentId) async {
-    T deletedDoc = await get<T>(documentId);
-    if (deletedDoc != null) {
-      await _getRef<T>().doc(documentId).delete();
+  Future<T> save<T extends IBaseModel>(T doc, {refresh = false}) async {
+    String id = doc.getId() ?? '';
+    DocumentReference docRef;
+    if (id == '') {
+      docRef = await _getRef<T>().add(_toFirestore(doc));
+      return _fromFirestore<T>(await docRef.snapshots().first);
+    } else {
+      docRef = _getRef<T>().doc(id);
+      await docRef.set(_toFirestore(doc), SetOptions(merge: true));
+      return refresh ? _fromFirestore<T>(await docRef.snapshots().first) : Future.value(doc);
     }
-    return deletedDoc;
+  }
+
+  Future<void> delete<T extends IBaseModel>(String documentId) async {
+    await _getRef<T>().doc(documentId).delete();
   }
 
   /// Internala fmethodes
   Future<Query> _firestoreQueryBuilder(CollectionReference ref,
-      {QueryParam queryParam, String lastId, int limit}) async {
+      {QueryParam queryParam, String lastId, int limit = 50}) async {
     Query _query = ref;
 
     if (queryParam?.filterList != null)
@@ -178,12 +168,12 @@ class FirestoreCollectionService implements ICollectionService {
     Map<String, dynamic> _map = _firestireMap(map, true);
     if (_map == null) return null;
 
-    dynamic _result = deserializer<T>({
+    T _result = deserializer<T>({
       'id': docSnap.id,
       ..._map,
     });
 
-    return _result as T;
+    return _result;
   }
 
   Map<String, dynamic> _toFirestore(IBaseModel doc) {

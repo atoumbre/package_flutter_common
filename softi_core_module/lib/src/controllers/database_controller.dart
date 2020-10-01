@@ -13,7 +13,7 @@ class DatabaseController {
     return DataCollection<T>(_api); //..requestData(queryParam, pageSize: pageSize, limit: limit, realtime: realtime);
   }
 
-  Record record<T extends IBaseModel>(String id) {
-    return Record(id, _api);
+  Record<T> record<T extends IBaseModel>(String id) {
+    return Record<T>(id, _api);
   }
 }

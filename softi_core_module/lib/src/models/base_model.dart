@@ -7,19 +7,6 @@ abstract class IBaseModel {
 mixin BaseModelMixin {
   String id;
   String getId() => id;
-  bool isValid() => (id ?? '' != ''); //(endpoint ?? '' != '') &&
+  bool isValid() => (id ?? '' != '');
+  void setId(String newId) => id = newId;
 }
-
-// class Reference<T extends IBaseModel> {
-//   Reference({this.id, this.fetcher});
-
-//   final String id;
-//   final Future<T> Function() fetcher;
-
-//   T _data;
-
-//   Type get type => T;
-//   T get data => _data;
-
-//   T fetch() => _data = fetcher != null ? await fetcher() : null;
-// }

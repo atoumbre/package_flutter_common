@@ -10,6 +10,7 @@ class Record<T extends IBaseModel> {
 
   bool _exist;
   T _data;
+  // StreamSubscription _sub;
 
   final String id;
 
@@ -17,14 +18,14 @@ class Record<T extends IBaseModel> {
   // Record.fromData(T data) : id = data.getId();
 
   /// Methods
-  Future<T> fetch() async {
+  Future<T> fetch([bool realtime = true]) async {
     _data = await _api.get<T>(id);
     _exist = _data != null;
     return _data;
   }
 
   Future<T> save() async {
-    return _api.update<T>(_data);
+    return _api.save<T>(_data);
   }
 
   Future<void> delete() async {
@@ -39,4 +40,9 @@ class Record<T extends IBaseModel> {
   }
 
   T get data => _data;
+
+  T call([T newData]) {
+    if (newData != null) _data = newData;
+    return _data;
+  }
 }

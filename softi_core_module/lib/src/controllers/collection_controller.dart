@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
 class DataCollection<T extends IBaseModel> {
@@ -18,7 +17,7 @@ class DataCollection<T extends IBaseModel> {
 
   // Save params for next call
   QueryParam _queryParams;
-  int _pageSize = 20;
+  int _pageSize = 10;
   int _limit;
   bool _realtime = true;
 
@@ -29,6 +28,11 @@ class DataCollection<T extends IBaseModel> {
   bool get noMoreData => !_hasMoreData.value;
   List<Change<T>> get changes => _changes;
   List<T> get data => _data;
+
+  //+ Exposed data Streams
+  Stream<bool> get noMoreDataStream => _hasMoreData.stream.map((event) => !event);
+  Stream<List<Change<T>>> get changesStream => _changes.stream;
+  Stream<List<T>> get dataStream => _data.stream;
 
   void requestData(QueryParam queryParam, {int pageSize, bool realtime, int limit}) {
     // reset on each call of streamData, use streamMoreData for more data
