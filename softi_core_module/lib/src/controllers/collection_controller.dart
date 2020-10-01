@@ -17,17 +17,17 @@ class DataCollection<T extends IBaseModel> {
 
   // Save params for next call
   QueryParam _queryParams;
-  int _pageSize = 10;
+  int _pageSize;
   int _limit;
-  bool _realtime = true;
+  bool _realtime;
 
   RxList<T> _data = <T>[].obs;
   RxList<Change<T>> _changes = <Change<T>>[].obs;
 
   //+ Exposed data
   bool get noMoreData => !_hasMoreData.value;
-  List<Change<T>> get changes => _changes;
-  List<T> get data => _data;
+  RxList<Change<T>> get changes => _changes;
+  RxList<T> get data => _data;
 
   //+ Exposed data Streams
   Stream<bool> get noMoreDataStream => _hasMoreData.stream.map((event) => !event);
@@ -41,7 +41,6 @@ class DataCollection<T extends IBaseModel> {
     _pageSize = pageSize ?? _pageSize;
     _realtime = realtime ?? _realtime;
     _limit = limit ?? _limit;
-
     _requestData();
   }
 
@@ -105,7 +104,12 @@ class DataCollection<T extends IBaseModel> {
         _lastId = data.last.getId();
       }
 
-      _hasMoreData.value = data.length == _pageSize && _limit == null ? true : allData.length < _limit;
+      _hasMoreData.value = _limit == null //
+          ? data.length >= _pageSize
+          : _limit == null //
+              ? true
+              : allData.length < _limit;
+
       print('_hasMoreData : $_hasMoreData');
     }
   }
@@ -124,8 +128,9 @@ class DataCollection<T extends IBaseModel> {
 
   void _reset() {
     _queryParams = null;
-    _pageSize = 20;
+    _pageSize = 10;
     _realtime = true;
+    _limit = null;
 
     _allPages = [];
     _hasMoreData.value = true;
@@ -138,6 +143,9 @@ class DataCollection<T extends IBaseModel> {
   void dispose() {
     _allPages.forEach((element) => element.dispose());
   }
+
+  // Extends With add and delete
+
 }
 
 class _PageData<T extends IBaseModel> {

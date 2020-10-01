@@ -4,22 +4,18 @@ import 'package:softi_core_module/src/interfaces/db/i_collection_service.dart';
 import 'package:softi_core_module/src/models/base_model.dart';
 
 class Record<T extends IBaseModel> {
-  Record(this.id, this._api);
+  Record(id, this._api) : _id = id;
 
   final ICollectionService _api; // = Get.find<ICollectionService>();
 
   bool _exist;
   T _data;
-  // StreamSubscription _sub;
-
-  final String id;
-
-  /// Constructors
-  // Record.fromData(T data) : id = data.getId();
+  String _id;
 
   /// Methods
-  Future<T> fetch([bool realtime = true]) async {
-    _data = await _api.get<T>(id);
+  Future<T> fetch([String newId, bool realtime = true]) async {
+    if (newId != null) _id = newId;
+    _data = await _api.get<T>(_id);
     _exist = _data != null;
     return _data;
   }
@@ -29,13 +25,13 @@ class Record<T extends IBaseModel> {
   }
 
   Future<void> delete() async {
-    await _api.delete<T>(id);
+    await _api.delete<T>(_id);
     _exist = false;
   }
 
   /// Getters
   Future<bool> get exist async {
-    if (_exist == null) _exist = await _api.exists<T>(id);
+    if (_exist == null) _exist = await _api.exists<T>(_id);
     return Future.value(_exist);
   }
 
