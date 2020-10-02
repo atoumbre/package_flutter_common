@@ -10,7 +10,7 @@ class DatabaseController {
   get api => _api;
 
   DataCollection collection<T extends IBaseModel>() {
-    return DataCollection<T>(_api); //..requestData(queryParam, pageSize: pageSize, limit: limit, realtime: realtime);
+    return DataCollection<T>(_api);
   }
 
   Record<T> record<T extends IBaseModel>(String id) {

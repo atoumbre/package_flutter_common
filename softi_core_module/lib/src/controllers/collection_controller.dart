@@ -25,14 +25,17 @@ class DataCollection<T extends IBaseModel> {
   RxList<Change<T>> _changes = <Change<T>>[].obs;
 
   //+ Exposed data
-  bool get noMoreData => !_hasMoreData.value;
+  RxBool get hasMoreData => _hasMoreData;
   RxList<Change<T>> get changes => _changes;
   RxList<T> get data => _data;
 
   //+ Exposed data Streams
-  Stream<bool> get noMoreDataStream => _hasMoreData.stream.map((event) => !event);
+  Stream<bool> get noMoreDataStream => _hasMoreData.stream;
   Stream<List<Change<T>>> get changesStream => _changes.stream;
   Stream<List<T>> get dataStream => _data.stream;
+
+  //+ PageSize
+  int get pageSize => _pageSize;
 
   void requestData(QueryParam queryParam, {int pageSize, bool realtime, int limit}) {
     // reset on each call of streamData, use streamMoreData for more data
@@ -91,27 +94,27 @@ class DataCollection<T extends IBaseModel> {
   }
 
   void _processDocumentsSnapshot(List<T> data, int requestIndex) {
-    if (data.isNotEmpty) {
-      _allPages[requestIndex].docs = data;
+    // if (data.isNotEmpty) {
+    _allPages[requestIndex].docs = data;
 
-      List<T> allData = _allPages.fold<List<T>>(
-        List<T>(),
-        (initialValue, pageItems) => initialValue..addAll(pageItems.docs),
-      );
-      _data.assignAll(allData);
+    List<T> allData = _allPages.fold<List<T>>(
+      List<T>(),
+      (initialValue, pageItems) => initialValue..addAll(pageItems.docs),
+    );
+    _data.assignAll(allData);
 
-      if (requestIndex == _allPages.length - 1) {
-        _lastId = data.last.getId();
-      }
-
-      _hasMoreData.value = _limit == null //
-          ? data.length >= _pageSize
-          : _limit == null //
-              ? true
-              : allData.length < _limit;
-
-      print('_hasMoreData : $_hasMoreData');
+    if (requestIndex == _allPages.length - 1 && data.isNotEmpty) {
+      _lastId = data.last.getId();
     }
+
+    _hasMoreData.value = _limit == null //
+        ? data.length >= _pageSize
+        : _limit == null //
+            ? true
+            : allData.length < _limit;
+
+    print('_hasMoreData : $_hasMoreData');
+    // }
   }
 
   void _processChangesSnapshot(List<Change<T>> changes, int requestIndex) {
