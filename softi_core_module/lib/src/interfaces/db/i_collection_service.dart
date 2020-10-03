@@ -21,7 +21,7 @@ abstract class ICollectionService {
   Future<T> get<T extends IBaseModel>(String id);
   Stream<T> stream<T extends IBaseModel>(String id);
   Future<bool> exists<T extends IBaseModel>(String id);
-  Future<T> save<T extends IBaseModel>(T record);
+  Future<T> save<T extends IBaseModel>(T record, {refresh = false});
   Future<void> update<T extends IBaseModel>(String id, Map<String, dynamic> values);
   Future<void> delete<T extends IBaseModel>(String id);
 }
