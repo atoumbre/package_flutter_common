@@ -31,7 +31,7 @@ class DecoFormRangeSlider extends StatelessWidget {
   final double min;
   final int divisions;
   final RangeLabels labels;
-  final RangeSemanticFormatterCallback semanticFormatterCallback;
+  // final RangeSemanticFormatterCallback semanticFormatterCallback;
   final ValueChanged<RangeValues> onChangeEnd;
   final ValueChanged<RangeValues> onChangeStart;
   final DisplayValues displayValues;
@@ -67,7 +67,7 @@ class DecoFormRangeSlider extends StatelessWidget {
     this.onChangeStart,
     this.onChangeEnd,
     this.labels,
-    this.semanticFormatterCallback,
+    // this.semanticFormatterCallback,
     this.displayValues = DisplayValues.all,
     this.minTextStyle,
     this.textStyle,
@@ -104,7 +104,7 @@ class DecoFormRangeSlider extends StatelessWidget {
         min: min,
         divisions: divisions,
         labels: labels,
-        semanticFormatterCallback: semanticFormatterCallback,
+        // semanticFormatterCallback: semanticFormatterCallback,
         onChangeEnd: onChangeEnd,
         onChangeStart: onChangeStart,
         displayValues: displayValues,
