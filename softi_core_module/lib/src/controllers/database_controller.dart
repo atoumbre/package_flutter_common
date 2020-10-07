@@ -9,7 +9,7 @@ class DatabaseController {
 
   get api => _api;
 
-  DataCollection collection<T extends IBaseModel>() {
+  DataCollection<T> collection<T extends IBaseModel>() {
     return DataCollection<T>(_api);
   }
 

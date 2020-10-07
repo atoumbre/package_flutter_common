@@ -23,16 +23,19 @@ class DataCollection<T extends IBaseModel> {
 
   RxList<T> _data = <T>[].obs;
   RxList<Change<T>> _changes = <Change<T>>[].obs;
+  RxBool _waiting = false.obs..listen((event) => print('Waiting for data $event'));
 
   //+ Exposed data
   RxBool get hasMoreData => _hasMoreData;
   RxList<Change<T>> get changes => _changes;
   RxList<T> get data => _data;
+  RxBool get waiting => _waiting;
 
   //+ Exposed data Streams
   Stream<bool> get noMoreDataStream => _hasMoreData.stream;
   Stream<List<Change<T>>> get changesStream => _changes.stream;
   Stream<List<T>> get dataStream => _data.stream;
+  Stream<bool> get waitingStream => _waiting.stream;
 
   //+ PageSize
   int get pageSize => _pageSize;
@@ -51,6 +54,8 @@ class DataCollection<T extends IBaseModel> {
 
   void _requestData() async {
     if (!_hasMoreData.value) return;
+
+    _waiting(true);
 
     int _queryLimit = _limit == null ? _pageSize : min(_limit - _allPages.length * _pageSize, _pageSize);
 
@@ -86,6 +91,7 @@ class DataCollection<T extends IBaseModel> {
       } else {
         _changes.assignAll([]);
       }
+      _waiting(false);
     });
 
     _allPages[currentRequestIndex].subscription.onDone(() {
@@ -107,13 +113,10 @@ class DataCollection<T extends IBaseModel> {
       _lastId = data.last.getId();
     }
 
-    _hasMoreData.value = _limit == null //
-        ? data.length >= _pageSize
-        : _limit == null //
-            ? true
-            : allData.length < _limit;
+    _hasMoreData.value =
+        (data.length >= _pageSize) || (data.length >= _pageSize && _limit != null && allData.length < _limit);
 
-    print('_hasMoreData : $_hasMoreData');
+    print('_hasMoreData : $_hasMoreData ${T.toString()}');
     // }
   }
 
