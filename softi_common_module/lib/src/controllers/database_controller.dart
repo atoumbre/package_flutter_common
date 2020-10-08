@@ -1,6 +1,6 @@
+import 'package:softi_common_module/src/controllers/collection_controller.dart';
+import 'package:softi_common_module/src/controllers/record_controller.dart';
 import 'package:softi_core_module/softi_core_module.dart';
-import 'package:softi_core_module/src/controllers/collection_controller.dart';
-import 'package:softi_core_module/src/controllers/record_controller.dart';
 
 class DatabaseController {
   final ICollectionService _api;

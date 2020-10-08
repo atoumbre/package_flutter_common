@@ -13,7 +13,6 @@ class DataCollection<T extends IBaseModel> {
   // Pagination variables
   List<_PageData<T>> _allPages = [];
   String _lastId;
-  RxBool _hasMoreData = true.obs;
 
   // Save params for next call
   QueryParam _queryParams;
@@ -21,9 +20,10 @@ class DataCollection<T extends IBaseModel> {
   int _limit;
   bool _realtime;
 
+  RxBool _hasMoreData = true.obs;
   RxList<T> _data = <T>[].obs;
   RxList<Change<T>> _changes = <Change<T>>[].obs;
-  RxBool _waiting = false.obs..listen((event) => print('Waiting for data $event'));
+  RxBool _waiting = false.obs;
 
   //+ Exposed data
   RxBool get hasMoreData => _hasMoreData;

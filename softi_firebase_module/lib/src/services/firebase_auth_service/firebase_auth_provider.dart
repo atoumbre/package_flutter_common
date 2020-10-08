@@ -9,13 +9,14 @@ abstract class FirebaseAuthProvider {
   Future<AuthUser> signInWithCredential(AuthCredential credential, {String displayName, String photoURL}) async {
     final authResult = await firebaseAuth.signInWithCredential(credential);
     final firebaseUser = authResult.user;
-    if (displayName != null || photoURL != null)
-      await firebaseUser.updateProfile(displayName: displayName, photoURL: photoURL);
+
+    if (displayName != null) await firebaseUser.updateProfile(displayName: displayName);
+    if (photoURL != null) await firebaseUser.updateProfile(photoURL: photoURL);
 
     return userFromFirebase(firebaseUser);
   }
 
-  AuthUser userFromFirebase(User user) {
+  static AuthUser userFromFirebase(User user) {
     if (user == null) {
       return null;
     }

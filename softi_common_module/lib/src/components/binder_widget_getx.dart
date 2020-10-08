@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
 
 abstract class BinderWidget<T extends GetxController> extends StatelessWidget {
   BinderWidget({Key key}) : super(key: key);

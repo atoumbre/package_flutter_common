@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:softi_core_module/src/interfaces/i_base_service.dart';
 import 'package:softi_core_module/src/models/auth_user.dart';
 
-abstract class IAuthService {
-  Stream<dynamic> get authErrorStream;
-
+abstract class IAuthService extends IBaseService {
   Stream<AuthUser> get authUserStream;
 
   // Anonymous login
