@@ -1,15 +1,16 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:softi_core_module/softi_core_module.dart';
 
 abstract class IMediaPicker extends IBaseService {
   Future<List<MediaAsset>> selectMediaFromGalery({
-    Set<MediaFormat> formats,
-    List<MediaAsset> selectedItemId,
+    Set<MediaType> formats = const {MediaType.image, MediaType.video},
+    List<MediaAsset> selectedItemId = const [],
   });
 
   Future<List<MediaAsset>> selectMediaFromCamera({
-    Set<MediaFormat> formats,
+    Set<MediaType> formats = const {MediaType.image, MediaType.video},
   });
 }
 
@@ -18,10 +19,11 @@ class MediaAsset {
   final File file;
   final dynamic rawEntity;
   final MediaSource source;
-  final MediaFormat format;
+  final MediaType format;
+  final Uint8List thumbData;
 
-  MediaAsset({this.source, this.format, this.id, this.file, this.rawEntity});
+  MediaAsset({this.thumbData, this.source, this.format, this.id, this.file, this.rawEntity});
 }
 
-enum MediaFormat { image, video, audio }
+enum MediaType { image, video, audio }
 enum MediaSource { galery, camera }

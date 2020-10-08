@@ -4,42 +4,57 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:wechat_camera_picker/wechat_camera_picker.dart';
 
 class MediaPicker extends IMediaPicker {
-  Map<Set<MediaFormat>, RequestType> _requestTypeMapper = {
-    {MediaFormat.audio}: RequestType.audio,
-    {MediaFormat.video}: RequestType.video,
-    {MediaFormat.image}: RequestType.image,
-    {MediaFormat.image, MediaFormat.video}: RequestType.common,
-    {MediaFormat.audio, MediaFormat.video, MediaFormat.image}: RequestType.all,
-    {MediaFormat.audio, MediaFormat.video}: RequestType.video,
-    {MediaFormat.audio, MediaFormat.image}: RequestType.image,
+  Map<Set<MediaType>, RequestType> _requestTypeMapper = {
+    {MediaType.audio}: RequestType.audio,
+    {MediaType.video}: RequestType.video,
+    {MediaType.image}: RequestType.image,
+    {MediaType.image, MediaType.video}: RequestType.common,
+    {MediaType.audio, MediaType.video, MediaType.image}: RequestType.all,
+    {MediaType.audio, MediaType.video}: RequestType.video,
+    {MediaType.audio, MediaType.image}: RequestType.image,
   };
 
-  Future<List<MediaAsset>> _processAssetsList(List<AssetEntity> assets) async {
+  Map _typeMap = {AssetType.image: MediaType.image, AssetType.video: MediaType.video, AssetType.audio: MediaType.audio};
+
+  Future<List<MediaAsset>> _processAssetsList(
+    List<AssetEntity> assets,
+    MediaSource source,
+  ) async {
     List<Future<MediaAsset>> _fileList = assets.map<Future<MediaAsset>>((asset) async {
+      print('SSET ID : ${asset.id}');
       return MediaAsset(
         file: await asset.file,
         id: asset.id,
+        source: source,
+        thumbData: await asset.thumbDataWithSize(200, 200),
+        format: _typeMap[asset.type],
+        rawEntity: asset,
       );
-    });
+    }).toList();
     return await Future.wait(_fileList);
   }
 
   @override
-  Future<List<MediaAsset>> selectMediaFromCamera({Set<MediaFormat> formats}) async {
+  Future<List<MediaAsset>> selectMediaFromCamera({
+    Set<MediaType> formats = const {MediaType.image, MediaType.video},
+  }) async {
     final AssetEntity _assetList = await CameraPicker.pickFromCamera(
       Get.context,
-      isOnlyAllowRecording: !formats.contains(MediaFormat.image),
-      isAllowRecording: formats.contains(MediaFormat.video),
+      isOnlyAllowRecording: !formats.contains(MediaType.image),
+      isAllowRecording: formats.contains(MediaType.video),
       resolutionPreset: ResolutionPreset.medium,
     );
 
     if (_assetList == null) return null;
 
-    return _processAssetsList([_assetList]);
+    return _processAssetsList([_assetList], MediaSource.camera);
   }
 
   @override
-  Future<List<MediaAsset>> selectMediaFromGalery({Set<MediaFormat> formats, List<MediaAsset> selectedItemId}) async {
+  Future<List<MediaAsset>> selectMediaFromGalery({
+    Set<MediaType> formats = const {MediaType.image, MediaType.video},
+    List<MediaAsset> selectedItemId = const [],
+  }) async {
     List<AssetEntity> _lastSelection = await Future.wait(selectedItemId.map((e) => AssetEntity.fromId(e.id)).toList());
 
     RequestType _requestType = _requestTypeMapper[formats];
@@ -51,6 +66,6 @@ class MediaPicker extends IMediaPicker {
 
     if (_assetList == null) return null;
 
-    return _processAssetsList(_assetList);
+    return _processAssetsList(_assetList, MediaSource.galery);
   }
 }

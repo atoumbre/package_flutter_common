@@ -21,6 +21,7 @@ class LocationService extends ILocationService {
         _locationStream = location.onLocationChanged.map((locationData) {
           _currentLocation = locationData;
           locationAvailable = true;
+          print(_currentLocation.toString());
           return locationData;
         });
       } else {
@@ -35,7 +36,7 @@ class LocationService extends ILocationService {
   @override
   Future<void> start() async {
     if (!serviceStopped) {
-      //  Impplement service start
+      _locationStream.listen((event) => print(event.toString()));
 
       await super.start();
     }
