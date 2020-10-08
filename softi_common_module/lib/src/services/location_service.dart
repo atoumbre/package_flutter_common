@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:location/location.dart';
-
-import 'package:softi_core_module/src/interfaces/external/i_location_service.dart';
+import 'package:softi_core_module/softi_core_module.dart';
 
 class LocationService implements ILocationService {
   // Location Available
