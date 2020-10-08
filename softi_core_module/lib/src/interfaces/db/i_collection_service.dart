@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:softi_core_module/src/interfaces/i_base_service.dart';
 import 'package:softi_core_module/src/models/base_model.dart';
 
-abstract class ICollectionService {
+abstract class ICollectionService extends IBaseService {
   Future<QueryResult<T>> getData<T extends IBaseModel>(
     QueryParam queryParams, {
     String lastId,

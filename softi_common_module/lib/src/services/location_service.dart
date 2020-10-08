@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:location/location.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
-class LocationService implements ILocationService {
+class LocationService extends ILocationService {
   // Location Available
   bool locationAvailable;
 
@@ -31,6 +31,18 @@ class LocationService implements ILocationService {
 
   Stream<LocationData> get locationStream => _locationStream;
   LocationData get currentLocation => _currentLocation;
+
+  @override
+  Future<void> start() {
+    // TODO: implement start
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> stop() {
+    // TODO: implement stop
+    throw UnimplementedError();
+  }
 
   // Future<LocationData> getLocation() async {
   //   try {

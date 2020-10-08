@@ -1,4 +1,6 @@
-abstract class IDynamicLinkService {
+import 'package:softi_core_module/src/interfaces/i_base_service.dart';
+
+abstract class IDynamicLinkService extends IBaseService {
   /// Resgister deeplink handler
   /// Many handlers can be registered, incomimg deepLink will be pass through
   /// all of them

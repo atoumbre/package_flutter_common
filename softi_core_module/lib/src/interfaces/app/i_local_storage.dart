@@ -1,5 +1,6 @@
-abstract class ILocalStore {
-  Future<void> init();
+import 'package:softi_core_module/src/interfaces/i_base_service.dart';
+
+abstract class ILocalStore extends IBaseService {
   Future<String> getKey(String key);
   Future<String> getSecuredKey(String key);
   Future<void> setKey(String key, dynamic value);

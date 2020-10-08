@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:softi_core_module/src/interfaces/i_base_service.dart';
 
-abstract class IAlertService {
+abstract class IAlertService extends IBaseService {
   /// Registers a callback function. Typically to show the dialog
   void registerDialogListener(void Function(AlertRequest, Completer) showDialogListener);
 

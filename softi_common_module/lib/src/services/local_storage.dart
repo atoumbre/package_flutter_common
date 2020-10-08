@@ -36,4 +36,13 @@ class DefaultLocalStore extends ILocalStore {
   Future<void> setSecuredKey(String key, value) async {
     return _secureStorage.write(key: key, value: value);
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+  }
+
+  @override
+  // TODO: implement errorStream
+  Stream get errorStream => throw UnimplementedError();
 }

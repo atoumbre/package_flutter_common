@@ -2,7 +2,7 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 import 'package:softi_firebase_module/src/settings.dart';
 
-class FirebaseDeeplinkService implements IDynamicLinkService {
+class FirebaseDeeplinkService extends IDynamicLinkService {
   FirebaseDeeplinkService(this.settings);
 
   final FirebaseSettings settings;

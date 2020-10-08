@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:softi_core_module/src/interfaces/i_base_service.dart';
 
-abstract class IRemoteStorageService {
+abstract class IRemoteStorageService extends IBaseService {
   Future<CloudStorageResult> uploadImage({
     @required File imageToUpload,
     @required String title,

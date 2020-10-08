@@ -4,7 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
-class FirebaseStorageService implements IRemoteStorageService {
+class FirebaseStorageService extends IRemoteStorageService {
   Future<CloudStorageResult> uploadImage({
     @required File imageToUpload,
     @required String title,

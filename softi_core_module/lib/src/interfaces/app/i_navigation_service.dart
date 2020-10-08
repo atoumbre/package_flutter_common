@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:softi_core_module/src/interfaces/i_base_service.dart';
 
-abstract class INavigationService {
+abstract class INavigationService extends IBaseService {
   GlobalKey<NavigatorState> get navigationKey;
 
   back<T>(T result);

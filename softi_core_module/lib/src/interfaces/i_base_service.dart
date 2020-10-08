@@ -1,13 +1,25 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+
 abstract class IBaseService {
-  Stream<dynamic> get errorStream;
+  final StreamController _errorStreamController = StreamController();
+
+  @protected
+  Future<T> catchError<T>(Future<T> Function() task) {
+    return task().catchError((onError) => _errorStreamController.sink.add(onError));
+  }
+
+  Stream<dynamic> get errorStream => _errorStreamController.stream;
+
+  Future<dynamic> init() async {}
+
+  void dispose() => _errorStreamController.close();
 }
 
-abstract class IBaseStopableService extends IBaseService {
+abstract class IBaseStoppableService extends IBaseService {
   Future<void> stop();
   Future<void> start();
 }
 
-abstract class IBaseDisposableService extends IBaseService {
-  void init();
-  void dispose();
-}
+// abstract class IBaseDisposableService extends IBaseService {}
