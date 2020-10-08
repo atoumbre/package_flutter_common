@@ -4,13 +4,17 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
 class DefaultLocalStore extends ILocalStore {
-  GetStorage _storage;
-  FlutterSecureStorage _secureStorage;
+  final GetStorage _storage;
+  final FlutterSecureStorage _secureStorage;
 
-  init() async {
-    GetStorage.init();
-    _storage = GetStorage();
-    _secureStorage = new FlutterSecureStorage();
+  DefaultLocalStore()
+      : _storage = GetStorage(),
+        _secureStorage = FlutterSecureStorage();
+
+  Future<ILocalStore> init([String container = 'GetStorage']) async {
+    await GetStorage.init(container);
+    // return GetStorage();
+    return this;
   }
 
   @override

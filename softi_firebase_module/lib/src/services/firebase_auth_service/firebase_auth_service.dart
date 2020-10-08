@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 import 'package:softi_firebase_module/src/services/firebase_auth_service/firebase_auth_provider.dart';
 import 'package:softi_firebase_module/src/services/firebase_auth_service/providers/firebase_auth_apple.dart';
@@ -52,6 +53,11 @@ class FirebaseAuthService implements IAuthService {
 
   final StreamController _errorStreamController = StreamController();
 
+  Future<FirebaseAuthService> init() async {
+    await Firebase.initializeApp();
+    return this;
+  }
+
   Future<T> _catchError<T>(Future<T> Function() task) {
     return task().catchError((onError) => _errorStreamController.sink.add(onError));
   }
@@ -61,8 +67,6 @@ class FirebaseAuthService implements IAuthService {
 
   @override
   Stream<AuthUser> get authUserStream => firebaseAuth.authStateChanges().map(FirebaseAuthProvider.userFromFirebase);
-
-  ///! Ananymous sign in
 
   @override
   void refresh() {
