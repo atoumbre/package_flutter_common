@@ -11,11 +11,7 @@ class DefaultLocalStore extends ILocalStore {
       : _storage = GetStorage(),
         _secureStorage = FlutterSecureStorage();
 
-  Future<ILocalStore> init([String container = 'GetStorage']) async {
-    await GetStorage.init(container);
-    // return GetStorage();
-    return this;
-  }
+  // Future<ILocalStore> init([String container = 'GetStorage']) async {}
 
   @override
   Future<String> getKey(String key) async {

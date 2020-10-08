@@ -15,6 +15,8 @@ dependencies:
   get:
   get_storage:
   flutter_secure_storage:
+  wechat_assets_picker: 
+  wechat_camera_picker:
 
   softi_core_module:
     path: ../softi_core_module
