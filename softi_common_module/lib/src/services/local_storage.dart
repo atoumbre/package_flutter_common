@@ -14,22 +14,22 @@ class DefaultLocalStore extends ILocalStore {
   }
 
   @override
-  Future<String> getKey(String key) {
+  Future<String> getKey(String key) async {
     return _storage.read(key);
   }
 
   @override
-  Future<String> getSecuredKey(String key) {
+  Future<String> getSecuredKey(String key) async {
     return _secureStorage.read(key: key);
   }
 
   @override
-  Future<void> setKey(String key, value) {
+  Future<void> setKey(String key, value) async {
     return _storage.write(key, value);
   }
 
   @override
-  Future<void> setSecuredKey(String key, value) {
+  Future<void> setSecuredKey(String key, value) async {
     return _secureStorage.write(key: key, value: value);
   }
 }

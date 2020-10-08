@@ -13,6 +13,8 @@ dependencies:
     sdk: flutter
   
   get:
+  get_storage:
+  flutter_secure_storage:
 
   softi_core_module:
     path: ../softi_core_module
