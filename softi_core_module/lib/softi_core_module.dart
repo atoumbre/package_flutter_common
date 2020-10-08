@@ -6,9 +6,12 @@ export 'package:softi_core_module/src/interfaces/auth/i_auth_service.dart';
 export 'package:softi_core_module/src/interfaces/db/i_collection_service.dart';
 export 'package:softi_core_module/src/interfaces/db/i_filters.dart';
 export 'package:softi_core_module/src/interfaces/external/i_dynamiclink_service.dart';
-export 'package:softi_core_module/src/interfaces/external/i_remote_storage.dart';
 export 'package:softi_core_module/src/interfaces/external/i_location_service.dart';
 export 'package:softi_core_module/src/interfaces/external/i_remote_config.dart';
+export 'package:softi_core_module/src/interfaces/external/i_remote_storage.dart';
+
+/// Base service
+export 'package:softi_core_module/src/interfaces/i_base_service.dart';
 
 /// Core models
 export 'package:softi_core_module/src/models/auth_user.dart';

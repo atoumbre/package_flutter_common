@@ -17,9 +17,15 @@ abstract class IBaseService {
   void dispose() => _errorStreamController.close();
 }
 
-abstract class IBaseStoppableService extends IBaseService {
-  Future<void> stop();
-  Future<void> start();
+abstract class IStoppableService extends IBaseService {
+  bool serviceStopped;
+  Future<void> stop() async {
+    serviceStopped = true;
+  }
+
+  Future<void> start() async {
+    return serviceStopped = true;
+  }
 }
 
 // abstract class IBaseDisposableService extends IBaseService {}

@@ -33,15 +33,21 @@ class LocationService extends ILocationService {
   LocationData get currentLocation => _currentLocation;
 
   @override
-  Future<void> start() {
-    // TODO: implement start
-    throw UnimplementedError();
+  Future<void> start() async {
+    if (!serviceStopped) {
+      //  Impplement service start
+
+      await super.start();
+    }
   }
 
   @override
-  Future<void> stop() {
-    // TODO: implement stop
-    throw UnimplementedError();
+  Future<void> stop() async {
+    if (serviceStopped) {
+      //  Impplement service stop
+
+      await super.stop();
+    }
   }
 
   // Future<LocationData> getLocation() async {
