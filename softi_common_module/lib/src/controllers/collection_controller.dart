@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:get/get.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
-class DataCollection<T extends IBaseModel> {
+class DataCollection<T extends IResourceData> {
   DataCollection(ICollectionService collectionService, IResource<T> res)
       : _collectionService = collectionService,
         _res = res;
@@ -158,7 +158,7 @@ class DataCollection<T extends IBaseModel> {
 
 }
 
-class _PageData<T extends IBaseModel> {
+class _PageData<T extends IResourceData> {
   List<T> docs;
   List<Change<T>> changes;
   int snapshotCount;

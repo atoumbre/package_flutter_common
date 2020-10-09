@@ -14,11 +14,11 @@ class FirestoreCollectionService extends ICollectionService {
 
   final FirebaseFirestore _firestoreInstance;
 
-  CollectionReference _getRef<T extends IBaseModel>(Resource<T> res) {
+  CollectionReference _getRef<T extends IResourceData>(Resource<T> res) {
     return _firestoreInstance.collection(res.endpointResolver());
   }
 
-  Future<QueryResult<T>> getData<T extends IBaseModel>(
+  Future<QueryResult<T>> getData<T extends IResourceData>(
     IResource<T> res,
     QueryParam queryParams, {
     int limit = 10,
@@ -36,7 +36,7 @@ class FirestoreCollectionService extends ICollectionService {
     return _resultStream.first;
   }
 
-  Future<Stream<QueryResult<T>>> streamData<T extends IBaseModel>(
+  Future<Stream<QueryResult<T>>> streamData<T extends IResourceData>(
     IResource<T> res,
     QueryParam queryParams, {
     int limit = 10,
@@ -83,27 +83,27 @@ class FirestoreCollectionService extends ICollectionService {
   }
 
   @override
-  Future<bool> exists<T extends IBaseModel>(IResource<T> res, String recordId) async {
+  Future<bool> exists<T extends IResourceData>(IResource<T> res, String recordId) async {
     return (await _getRef<T>(res).doc(recordId).snapshots().first).exists;
   }
 
   // Get documenent from db
-  Future<T> get<T extends IBaseModel>(IResource<T> res, String recordId) async {
+  Future<T> get<T extends IResourceData>(IResource<T> res, String recordId) async {
     return stream<T>(res, recordId).first;
   }
 
   // Stream documenent from db
-  Stream<T> stream<T extends IBaseModel>(IResource<T> res, String recordId) {
+  Stream<T> stream<T extends IResourceData>(IResource<T> res, String recordId) {
     return _getRef<T>(res).doc(recordId).snapshots().map<T>((snapshot) => fromFirestore<T>(res, snapshot));
   }
 
-  Future<void> update<T extends IBaseModel>(IResource<T> res, String id, Map<String, dynamic> values) async {
+  Future<void> update<T extends IResourceData>(IResource<T> res, String id, Map<String, dynamic> values) async {
     DocumentReference docRef = _getRef<T>(res).doc(id);
 
     await docRef.set(firestireMap(values, false), SetOptions(merge: true));
   }
 
-  Future<T> save<T extends IBaseModel>(IResource<T> res, T doc, {refresh = false}) async {
+  Future<T> save<T extends IResourceData>(IResource<T> res, T doc, {refresh = false}) async {
     String id = doc.getId() ?? '';
     DocumentReference docRef;
     if (id == '') {
@@ -116,7 +116,7 @@ class FirestoreCollectionService extends ICollectionService {
     }
   }
 
-  Future<void> delete<T extends IBaseModel>(IResource<T> res, String documentId) async {
+  Future<void> delete<T extends IResourceData>(IResource<T> res, String documentId) async {
     await _getRef<T>(res).doc(documentId).delete();
   }
 

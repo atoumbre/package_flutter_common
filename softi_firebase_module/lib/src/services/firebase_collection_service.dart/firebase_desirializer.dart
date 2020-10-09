@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 import 'package:softi_firebase_module/src/services/firebase_collection_service.dart/firebase_resource.dart';
 
-T fromFirestore<T extends IBaseModel>(Resource<T> res, DocumentSnapshot docSnap) {
+T fromFirestore<T extends IResourceData>(Resource<T> res, DocumentSnapshot docSnap) {
   Map<String, dynamic> map = docSnap.data();
   if (map == null) return null;
 
@@ -11,13 +11,14 @@ T fromFirestore<T extends IBaseModel>(Resource<T> res, DocumentSnapshot docSnap)
 
   T _result = res.deserializer({
     'id': docSnap.id,
+    'path': docSnap.reference.path,
     ..._map,
   });
 
   return _result;
 }
 
-Map<String, dynamic> toFirestore(IBaseModel doc) {
+Map<String, dynamic> toFirestore(IResourceData doc) {
   Map<String, dynamic> map = doc.toJson();
   if (map == null) return null;
 

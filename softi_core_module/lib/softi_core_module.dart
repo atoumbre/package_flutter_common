@@ -16,4 +16,3 @@ export 'package:softi_core_module/src/interfaces/i_base_service.dart';
 
 /// Core models
 export 'package:softi_core_module/src/models/auth_user.dart';
-export 'package:softi_core_module/src/models/base_model.dart';

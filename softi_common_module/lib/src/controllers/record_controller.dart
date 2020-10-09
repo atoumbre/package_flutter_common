@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:softi_core_module/softi_core_module.dart';
 
-class Record<T extends IBaseModel> {
+class Record<T extends IResourceData> {
   Record(id, this._api, this._res) : _id = id;
 
   final ICollectionService _api;

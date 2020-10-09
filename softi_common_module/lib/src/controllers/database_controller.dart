@@ -10,16 +10,16 @@ class DatabaseController {
 
   get api => _api;
 
-  DataCollection<T> collection<T extends IBaseModel>([IResource _res]) {
+  DataCollection<T> collection<T extends IResourceData>([IResource _res]) {
     return DataCollection<T>(_api, _res ?? _resourceMapper[T]);
   }
 
-  Record<T> record<T extends IBaseModel>(String id, [IResource _res]) {
+  Record<T> record<T extends IResourceData>(String id, [IResource _res]) {
     return Record<T>(id, _api, _res ?? _resourceMapper[T]);
   }
 
   //  Transition helper
-  String endpointResolver<T extends IBaseModel>([Type doc]) {
+  String endpointResolver<T extends IResourceData>([Type doc]) {
     if (_resourceMapper[doc ?? T] == null) {
       throw ('${T.toString()} not registred for endpoint resolution');
     }
@@ -27,11 +27,11 @@ class DatabaseController {
     return _resourceMapper[doc ?? T].endpointResolver();
   }
 
-  T deserializer<T extends IBaseModel>(map) {
+  T deserializer<T extends IResourceData>(map) {
     return _resourceMapper[T].deserializer(map);
   }
 
-  IResource<T> res<T extends IBaseModel>() {
+  IResource<T> res<T extends IResourceData>() {
     return _resourceMapper[T];
   }
 }
