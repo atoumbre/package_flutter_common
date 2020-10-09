@@ -19,12 +19,13 @@ abstract class IBaseService {
 
 abstract class IStoppableService extends IBaseService {
   bool serviceStopped = true;
+
   Future<void> stop() async {
     serviceStopped = true;
   }
 
   Future<void> start() async {
-    return serviceStopped = true;
+    serviceStopped = false;
   }
 }
 

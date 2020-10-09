@@ -4,6 +4,8 @@ import 'package:location/location.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
 class LocationService extends ILocationService {
+  StreamSubscription<LocationData> _streamSubscription;
+
   // Location Available
   bool locationAvailable;
 
@@ -17,13 +19,9 @@ class LocationService extends ILocationService {
 
   LocationService() {
     location.requestPermission().then((granted) {
+      _locationStream = location.onLocationChanged;
       if (granted == PermissionStatus.granted) {
-        _locationStream = location.onLocationChanged.map((locationData) {
-          _currentLocation = locationData;
-          locationAvailable = true;
-          print(_currentLocation.toString());
-          return locationData;
-        });
+        locationAvailable = true;
       } else {
         locationAvailable = false;
       }
@@ -35,8 +33,13 @@ class LocationService extends ILocationService {
 
   @override
   Future<void> start() async {
-    if (!serviceStopped) {
-      _locationStream.listen((event) => print(event.toString()));
+    if (serviceStopped) {
+      _streamSubscription = _locationStream.listen((locationData) {
+        _currentLocation = locationData;
+        locationAvailable = true;
+        print(_currentLocation.toString());
+        return locationData;
+      });
 
       await super.start();
     }
@@ -44,24 +47,10 @@ class LocationService extends ILocationService {
 
   @override
   Future<void> stop() async {
-    if (serviceStopped) {
-      //  Impplement service stop
+    if (!serviceStopped) {
+      _streamSubscription.cancel();
 
       await super.stop();
     }
   }
-
-  // Future<LocationData> getLocation() async {
-  //   try {
-  //     var userLocation = await location.getLocation();
-  //     _currentLocation = UserLocation(
-  //       latitude: userLocation.latitude,
-  //       longitude: userLocation.longitude,
-  //     );
-  //   } catch (e) {
-  //     print('Could not get the location: $e');
-  //   }
-
-  //   return _currentLocation;
-  // }
 }

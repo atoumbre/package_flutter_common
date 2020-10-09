@@ -47,12 +47,24 @@ class FirestoreCollectionService extends ICollectionService {
       lastId: lastId,
     );
 
+    List<dynamic> _cursor;
+
     var _querySnapshot = _query.snapshots();
 
     return _querySnapshot.map<QueryResult<T>>(
       (snapshot) {
         var data = snapshot.docs
             //! Filter possible here
+            .map((docSnapshot) {
+              // Testing cursor
+
+              _cursor = queryParams.sortList.map((querySort) {
+                return docSnapshot.data()[querySort.field];
+                // _cursor.add(docSnapshot.data()[querySort.field]);
+              }).toList();
+              print(_cursor.toString());
+              return docSnapshot;
+            })
             .map<T>((doc) => _fromFirestore<T>(doc))
             .toList();
 
@@ -150,6 +162,8 @@ class FirestoreCollectionService extends ICollectionService {
       queryParam.sortList.forEach((orderBy) {
         _query = _query.orderBy(orderBy.field, descending: orderBy.desc);
       });
+
+    // _query = _query.orderBy(FieldPath.documentId);
 
     // Get the last Document
     if (lastId != null) {

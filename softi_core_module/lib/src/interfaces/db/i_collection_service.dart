@@ -78,7 +78,7 @@ class QueryFilter {
 }
 
 class QuerySort {
-  QuerySort(this.field, {this.desc});
+  QuerySort(this.field, {this.desc = false});
   final String field;
   final bool desc;
 }
