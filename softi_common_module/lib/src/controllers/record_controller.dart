@@ -6,7 +6,7 @@ class Record<T extends IBaseModel> {
   Record(id, this._api, this._res) : _id = id;
 
   final ICollectionService _api;
-  final Resource<T> _res;
+  final IResource<T> _res;
 
   bool _exist;
   T _data;

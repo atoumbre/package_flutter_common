@@ -5,12 +5,12 @@ import 'package:get/get.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
 class DataCollection<T extends IBaseModel> {
-  DataCollection(ICollectionService collectionService, Resource<T> res)
+  DataCollection(ICollectionService collectionService, IResource<T> res)
       : _collectionService = collectionService,
         _res = res;
 
   final ICollectionService _collectionService;
-  final Resource<T> _res;
+  final IResource<T> _res;
 
   // Pagination variables
   List<_PageData<T>> _allPages = [];

@@ -2,6 +2,10 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:softi_core_module/softi_core_module.dart';
+import 'package:softi_firebase_module/src/services/firebase_collection_service.dart/firebase_desirializer.dart';
+import 'package:softi_firebase_module/src/services/firebase_collection_service.dart/firebase_resource.dart';
+
+export 'package:softi_firebase_module/src/services/firebase_collection_service.dart/firebase_resource.dart';
 
 class FirestoreCollectionService extends ICollectionService {
   FirestoreCollectionService(
@@ -10,12 +14,12 @@ class FirestoreCollectionService extends ICollectionService {
 
   final FirebaseFirestore _firestoreInstance;
 
-  CollectionReference _getRef<T extends IBaseModel>(Resource res) {
+  CollectionReference _getRef<T extends IBaseModel>(Resource<T> res) {
     return _firestoreInstance.collection(res.endpointResolver());
   }
 
   Future<QueryResult<T>> getData<T extends IBaseModel>(
-    Resource<T> res,
+    IResource<T> res,
     QueryParam queryParams, {
     int limit = 10,
     dynamic cursor,
@@ -33,7 +37,7 @@ class FirestoreCollectionService extends ICollectionService {
   }
 
   Future<Stream<QueryResult<T>>> streamData<T extends IBaseModel>(
-    Resource<T> res,
+    IResource<T> res,
     QueryParam queryParams, {
     int limit = 10,
     dynamic cursor,
@@ -52,16 +56,20 @@ class FirestoreCollectionService extends ICollectionService {
       (snapshot) {
         var data = snapshot.docs
             //! Filter possible here
-            .map<T>((doc) => _fromFirestore<T>(res, doc))
+            .map<T>((doc) => fromFirestore<T>(res, doc))
             .toList();
 
         var changes = snapshot.docChanges
             //! Filter possible here
             .map((DocumentChange docChange) => Change<T>(
-                  document: _fromFirestore<T>(res, docChange.doc),
+                  document: fromFirestore<T>(res, docChange.doc),
                   oldIndex: docChange.oldIndex,
                   newIndex: docChange.newIndex,
-                  type: _firestoreEntityChangeMapper[docChange.type],
+                  type: {
+                    DocumentChangeType.added: ChangeType.added,
+                    DocumentChangeType.modified: ChangeType.modified,
+                    DocumentChangeType.removed: ChangeType.removed,
+                  }[docChange.type],
                 ))
             .toList();
 
@@ -75,40 +83,40 @@ class FirestoreCollectionService extends ICollectionService {
   }
 
   @override
-  Future<bool> exists<T extends IBaseModel>(Resource<T> res, String recordId) async {
+  Future<bool> exists<T extends IBaseModel>(IResource<T> res, String recordId) async {
     return (await _getRef<T>(res).doc(recordId).snapshots().first).exists;
   }
 
   // Get documenent from db
-  Future<T> get<T extends IBaseModel>(Resource<T> res, String recordId) async {
+  Future<T> get<T extends IBaseModel>(IResource<T> res, String recordId) async {
     return stream<T>(res, recordId).first;
   }
 
   // Stream documenent from db
-  Stream<T> stream<T extends IBaseModel>(Resource<T> res, String recordId) {
-    return _getRef<T>(res).doc(recordId).snapshots().map<T>((snapshot) => _fromFirestore<T>(res, snapshot));
+  Stream<T> stream<T extends IBaseModel>(IResource<T> res, String recordId) {
+    return _getRef<T>(res).doc(recordId).snapshots().map<T>((snapshot) => fromFirestore<T>(res, snapshot));
   }
 
-  Future<void> update<T extends IBaseModel>(Resource<T> res, String id, Map<String, dynamic> values) async {
+  Future<void> update<T extends IBaseModel>(IResource<T> res, String id, Map<String, dynamic> values) async {
     DocumentReference docRef = _getRef<T>(res).doc(id);
 
-    await docRef.set(_firestireMap(values, false), SetOptions(merge: true));
+    await docRef.set(firestireMap(values, false), SetOptions(merge: true));
   }
 
-  Future<T> save<T extends IBaseModel>(Resource<T> res, T doc, {refresh = false}) async {
+  Future<T> save<T extends IBaseModel>(IResource<T> res, T doc, {refresh = false}) async {
     String id = doc.getId() ?? '';
     DocumentReference docRef;
     if (id == '') {
-      docRef = await _getRef<T>(res).add(_toFirestore(doc));
-      return _fromFirestore<T>(res, await docRef.snapshots().first);
+      docRef = await _getRef<T>(res).add(toFirestore(doc));
+      return fromFirestore<T>(res, await docRef.snapshots().first);
     } else {
       docRef = _getRef<T>(res).doc(id);
-      await docRef.set(_toFirestore(doc), SetOptions(merge: true));
-      return refresh ? _fromFirestore<T>(res, await docRef.snapshots().first) : Future.value(doc);
+      await docRef.set(toFirestore(doc), SetOptions(merge: true));
+      return refresh ? fromFirestore<T>(res, await docRef.snapshots().first) : Future.value(doc);
     }
   }
 
-  Future<void> delete<T extends IBaseModel>(Resource<T> res, String documentId) async {
+  Future<void> delete<T extends IBaseModel>(IResource<T> res, String documentId) async {
     await _getRef<T>(res).doc(documentId).delete();
   }
 
@@ -169,88 +177,4 @@ class FirestoreCollectionService extends ICollectionService {
 
     return _query;
   }
-
-  T _fromFirestore<T extends IBaseModel>(Resource<T> res, DocumentSnapshot docSnap) {
-    Map<String, dynamic> map = docSnap.data();
-    if (map == null) return null;
-
-    Map<String, dynamic> _map = _firestireMap(map, true);
-    if (_map == null) return null;
-
-    T _result = res.deserializer({
-      'id': docSnap.id,
-      ..._map,
-    });
-
-    return _result;
-  }
-
-  Map<String, dynamic> _toFirestore(IBaseModel doc) {
-    Map<String, dynamic> map = doc.toJson();
-    if (map == null) return null;
-
-    Map<String, dynamic> _map = _firestireMap(map, false);
-    if (_map == null) return null;
-
-    return _map;
-  }
-
-  Map<String, dynamic> _firestireMap(Map<String, dynamic> input, bool fromFirestore, [bool skipNull = true]) {
-    Map<String, dynamic> result = {};
-
-    input.forEach((k, v) {
-      if (skipNull && v == null)
-        return;
-      else if (v is Map)
-        result[k] = _firestireMap(v, fromFirestore);
-      else if (v is List)
-        result[k] = _firestireList(v, fromFirestore);
-      else
-        result[k] = _firestoreTransform(v, fromFirestore);
-    });
-    return result;
-  }
-
-  List _firestireList(List input, bool fromFirestore, [bool skipNull = true]) {
-    List result = [];
-
-    input.forEach((v) {
-      if (skipNull && v == null)
-        return;
-      else if (v is Map)
-        result.add(_firestireMap(v, fromFirestore));
-      else if (v is List)
-        result.add(_firestireList(v, fromFirestore));
-      else
-        result.add(_firestoreTransform(v, fromFirestore));
-    });
-
-    return result;
-  }
-
-  dynamic _firestoreTransform(dynamic v, bool fromFirestore) {
-    if (fromFirestore) {
-      //FROM FIRESTORE
-
-      if (v is Timestamp)
-        return v.toDate();
-      else if (v is DocumentReference)
-        return v.id;
-      else
-        return v;
-    } else {
-      // TO FIRESTORE
-
-      if (v is DateTime)
-        return Timestamp.fromDate(v);
-      else
-        return v;
-    }
-  }
-
-  Map _firestoreEntityChangeMapper = {
-    DocumentChangeType.added: ChangeType.added,
-    DocumentChangeType.modified: ChangeType.modified,
-    DocumentChangeType.removed: ChangeType.removed,
-  };
 }

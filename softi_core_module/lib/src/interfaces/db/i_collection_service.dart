@@ -10,32 +10,14 @@ typedef Deserializer<T> = T Function(Map<String, dynamic>);
 enum ResourceRequestType { list, read, create, replace, update, delete }
 
 abstract class IResource<T> {
-  String get collectionName => 't_' + T.toString().snakeCase + 's';
+  String get collectionName => T.toString().snakeCase + 's';
   T deserializer(Map<String, dynamic> serializedData);
   String endpointResolver({ResourceRequestType requestType, QueryParam queryParam, dynamic id, T dataObject});
 }
 
-class Resource<T> extends IResource<T> {
-  final String endpointOveride;
-  final Deserializer extenalDeserializer;
-
-  Resource(this.extenalDeserializer, this.endpointOveride);
-
-  @override
-  String endpointResolver({ResourceRequestType requestType, QueryParam queryParam, id, dataObject}) {
-    // var _endpoint = prefix + (endpointOveride ?? (T.toString().snakeCase + 's'));
-    return collectionName;
-  }
-
-  @override
-  T deserializer(Map<String, dynamic> serializedData) {
-    return extenalDeserializer(serializedData);
-  }
-}
-
 abstract class ICollectionService extends IBaseService {
   Future<QueryResult<T>> getData<T extends IBaseModel>(
-    Resource<T> res,
+    IResource<T> res,
     QueryParam queryParams, {
     dynamic cursor,
     int skip,
@@ -43,19 +25,19 @@ abstract class ICollectionService extends IBaseService {
   });
 
   Future<Stream<QueryResult<T>>> streamData<T extends IBaseModel>(
-    Resource<T> res,
+    IResource<T> res,
     QueryParam queryParams, {
     dynamic cursor,
     int skip,
     int limit = 10,
   });
 
-  Future<T> get<T extends IBaseModel>(Resource<T> res, String id);
-  Stream<T> stream<T extends IBaseModel>(Resource<T> res, String id);
-  Future<bool> exists<T extends IBaseModel>(Resource<T> res, String id);
-  Future<T> save<T extends IBaseModel>(Resource<T> res, T record, {refresh = false});
-  Future<void> update<T extends IBaseModel>(Resource<T> res, String id, Map<String, dynamic> values);
-  Future<void> delete<T extends IBaseModel>(Resource<T> res, String id);
+  Future<T> get<T extends IBaseModel>(IResource<T> res, String id);
+  Stream<T> stream<T extends IBaseModel>(IResource<T> res, String id);
+  Future<bool> exists<T extends IBaseModel>(IResource<T> res, String id);
+  Future<T> save<T extends IBaseModel>(IResource<T> res, T record, {refresh = false});
+  Future<void> update<T extends IBaseModel>(IResource<T> res, String id, Map<String, dynamic> values);
+  Future<void> delete<T extends IBaseModel>(IResource<T> res, String id);
 }
 
 class QueryResult<T extends IBaseModel> {
