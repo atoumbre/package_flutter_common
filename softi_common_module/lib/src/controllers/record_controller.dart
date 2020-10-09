@@ -22,7 +22,10 @@ class Record<T extends IResourceData> {
     _result = reactive ? _result : Stream.fromFuture(_result.first);
 
     _result.listen((event) {
-      _data(event);
+      if (_data == null)
+        _data = event.obs;
+      else
+        _data(event);
       // _initialized = true;
       if (!_initCompleter.isCompleted) _initCompleter.complete(true);
     });
