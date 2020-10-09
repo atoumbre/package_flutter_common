@@ -2,9 +2,10 @@ import 'package:softi_core_module/softi_core_module.dart';
 
 class Resource<T> extends IResource<T> {
   final String endpointOveride;
-  final Deserializer<T> extenalDeserializer;
+  final Deserializer<T> deserializerOveride;
+  final T instanceOveride;
 
-  Resource(this.extenalDeserializer, [this.endpointOveride]);
+  Resource(this.deserializerOveride, this.instanceOveride, [this.endpointOveride]);
 
   @override
   String endpointResolver({requestType, queryParam, dataPath, dataObject}) {
@@ -14,6 +15,9 @@ class Resource<T> extends IResource<T> {
 
   @override
   T deserializer(Map<String, dynamic> serializedData) {
-    return extenalDeserializer(serializedData);
+    return deserializerOveride(serializedData);
   }
+
+  @override
+  T get defautInstance => throw UnimplementedError();
 }
