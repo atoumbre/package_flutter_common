@@ -11,7 +11,7 @@ enum ResourceRequestType { list, read, create, replace, update, delete }
 abstract class IResource<T> {
   String get collectionName => T.toString().snakeCase + 's';
   T deserializer(Map<String, dynamic> serializedData);
-  String endpointResolver({ResourceRequestType requestType, QueryParam queryParam, dynamic id, T dataObject});
+  String endpointResolver({ResourceRequestType requestType, QueryParam queryParam, dynamic dataPath, T dataObject});
 }
 
 abstract class IResourceData {
@@ -30,26 +30,18 @@ mixin BaseResourceDataMixin {
 }
 
 abstract class ICollectionService extends IBaseService {
-  Future<QueryResult<T>> getData<T extends IResourceData>(
-    IResource<T> res,
-    QueryParam queryParams, {
-    dynamic cursor,
-    int skip,
-    int limit = 10,
-  });
-
   Future<Stream<QueryResult<T>>> streamData<T extends IResourceData>(
     IResource<T> res,
     QueryParam queryParams, {
     dynamic cursor,
     int skip,
     int limit = 10,
+    bool watch = true,
   });
 
-  Future<T> get<T extends IResourceData>(IResource<T> res, String id);
-  Stream<T> stream<T extends IResourceData>(IResource<T> res, String id);
+  Stream<T> get<T extends IResourceData>(IResource<T> res, String id, {bool watch = true});
   Future<bool> exists<T extends IResourceData>(IResource<T> res, String id);
-  Future<T> save<T extends IResourceData>(IResource<T> res, T record, {refresh = false});
+  Future<T> save<T extends IResourceData>(IResource<T> res, T record, {bool refresh = false});
   Future<void> update<T extends IResourceData>(IResource<T> res, String id, Map<String, dynamic> values);
   Future<void> delete<T extends IResourceData>(IResource<T> res, String id);
 }

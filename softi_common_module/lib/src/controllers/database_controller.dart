@@ -14,8 +14,8 @@ class DatabaseController {
     return DataCollection<T>(_api, _res ?? _resourceMapper[T]);
   }
 
-  Record<T> record<T extends IResourceData>(String id, [IResource _res]) {
-    return Record<T>(id, _api, _res ?? _resourceMapper[T]);
+  Record<T> record<T extends IResourceData>(T id, [IResource _res]) {
+    return Record<T>(_api, _res ?? _resourceMapper[T]);
   }
 
   //  Transition helper

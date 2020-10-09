@@ -18,30 +18,13 @@ class FirestoreCollectionService extends ICollectionService {
     return _firestoreInstance.collection(res.endpointResolver());
   }
 
-  Future<QueryResult<T>> getData<T extends IResourceData>(
-    IResource<T> res,
-    QueryParam queryParams, {
-    int limit = 10,
-    dynamic cursor,
-    int skip,
-  }) async {
-    var _resultStream = (await streamData<T>(
-      res,
-      queryParams,
-      limit: limit,
-      cursor: cursor,
-      skip: skip,
-    ));
-
-    return _resultStream.first;
-  }
-
   Future<Stream<QueryResult<T>>> streamData<T extends IResourceData>(
     IResource<T> res,
     QueryParam queryParams, {
     int limit = 10,
     dynamic cursor,
     int skip,
+    bool watch = true,
   }) async {
     var _query = _firestoreQueryBuilder(
       _getRef<T>(res),
@@ -82,18 +65,13 @@ class FirestoreCollectionService extends ICollectionService {
     );
   }
 
-  @override
+  // Check if record exsits
   Future<bool> exists<T extends IResourceData>(IResource<T> res, String recordId) async {
     return (await _getRef<T>(res).doc(recordId).snapshots().first).exists;
   }
 
-  // Get documenent from db
-  Future<T> get<T extends IResourceData>(IResource<T> res, String recordId) async {
-    return stream<T>(res, recordId).first;
-  }
-
   // Stream documenent from db
-  Stream<T> stream<T extends IResourceData>(IResource<T> res, String recordId) {
+  Stream<T> get<T extends IResourceData>(IResource<T> res, String recordId, {bool watch = true}) {
     return _getRef<T>(res).doc(recordId).snapshots().map<T>((snapshot) => fromFirestore<T>(res, snapshot));
   }
 
@@ -105,15 +83,19 @@ class FirestoreCollectionService extends ICollectionService {
 
   Future<T> save<T extends IResourceData>(IResource<T> res, T doc, {refresh = false}) async {
     String id = doc.getId() ?? '';
+
     DocumentReference docRef;
     if (id == '') {
       docRef = await _getRef<T>(res).add(toFirestore(doc));
-      return fromFirestore<T>(res, await docRef.snapshots().first);
     } else {
       docRef = _getRef<T>(res).doc(id);
-      await docRef.set(toFirestore(doc), SetOptions(merge: true));
-      return refresh ? fromFirestore<T>(res, await docRef.snapshots().first) : Future.value(doc);
+      await docRef.set(toFirestore(doc), SetOptions(merge: false));
     }
+
+    if (refresh)
+      return fromFirestore<T>(res, await docRef.snapshots().first);
+    else
+      return doc;
   }
 
   Future<void> delete<T extends IResourceData>(IResource<T> res, String documentId) async {
