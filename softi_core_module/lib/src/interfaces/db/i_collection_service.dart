@@ -1,57 +1,75 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:recase/recase.dart';
 import 'package:softi_core_module/src/interfaces/i_base_service.dart';
 import 'package:softi_core_module/src/models/base_model.dart';
 
+typedef Deserializer<T> = T Function(Map<String, dynamic>);
+
+enum ResourceRequestType { list, read, create, replace, update, delete }
+
+abstract class IResource<T> {
+  String get collectionName => 't_' + T.toString().snakeCase + 's';
+  T deserializer(Map<String, dynamic> serializedData);
+  String endpointResolver({ResourceRequestType requestType, QueryParam queryParam, dynamic id, T dataObject});
+}
+
+class Resource<T> extends IResource<T> {
+  final String endpointOveride;
+  final Deserializer extenalDeserializer;
+
+  Resource(this.extenalDeserializer, this.endpointOveride);
+
+  @override
+  String endpointResolver({ResourceRequestType requestType, QueryParam queryParam, id, dataObject}) {
+    // var _endpoint = prefix + (endpointOveride ?? (T.toString().snakeCase + 's'));
+    return collectionName;
+  }
+
+  @override
+  T deserializer(Map<String, dynamic> serializedData) {
+    return extenalDeserializer(serializedData);
+  }
+}
+
 abstract class ICollectionService extends IBaseService {
   Future<QueryResult<T>> getData<T extends IBaseModel>(
+    Resource<T> res,
     QueryParam queryParams, {
-    String lastId,
-    int skip,
-    int limit,
-  });
-
-  Future<Stream<QueryResult<T>>> streamData<T extends IBaseModel>(
-    QueryParam queryParams, {
-    String lastId,
+    dynamic cursor,
     int skip,
     int limit = 10,
   });
 
-  Future<T> get<T extends IBaseModel>(String id);
-  Stream<T> stream<T extends IBaseModel>(String id);
-  Future<bool> exists<T extends IBaseModel>(String id);
-  Future<T> save<T extends IBaseModel>(T record, {refresh = false});
-  Future<void> update<T extends IBaseModel>(String id, Map<String, dynamic> values);
-  Future<void> delete<T extends IBaseModel>(String id);
+  Future<Stream<QueryResult<T>>> streamData<T extends IBaseModel>(
+    Resource<T> res,
+    QueryParam queryParams, {
+    dynamic cursor,
+    int skip,
+    int limit = 10,
+  });
+
+  Future<T> get<T extends IBaseModel>(Resource<T> res, String id);
+  Stream<T> stream<T extends IBaseModel>(Resource<T> res, String id);
+  Future<bool> exists<T extends IBaseModel>(Resource<T> res, String id);
+  Future<T> save<T extends IBaseModel>(Resource<T> res, T record, {refresh = false});
+  Future<void> update<T extends IBaseModel>(Resource<T> res, String id, Map<String, dynamic> values);
+  Future<void> delete<T extends IBaseModel>(Resource<T> res, String id);
 }
 
 class QueryResult<T extends IBaseModel> {
   final List<T> data;
   final List<Change<T>> changes;
+  final dynamic cursor;
+  final dynamic metadata;
 
   List<T> call() => data;
 
-  QueryResult(this.data, this.changes);
+  QueryResult(this.data, this.changes, {this.cursor, this.metadata});
 }
 
-// class Res<T extends IBaseModel> {
-//   int code;
-//   String message;
-//   T data;
-
-//   Res({this.code, this.message, this.data});
-// }
-
-// class ResList<T extends IBaseModel> {
-//   int code;
-//   String message;
-//   List<T> dataList;
-
-//   ResList({this.code, this.message, this.dataList});
-// }
-
+/// Data access object
 class Change<T extends IBaseModel> {
   T document;
   int oldIndex;

@@ -6,28 +6,26 @@ import 'package:softi_core_module/softi_core_module.dart';
 class FirestoreCollectionService extends ICollectionService {
   FirestoreCollectionService(
     this._firestoreInstance,
-    this.endpointResolver,
-    this.deserializer,
   );
 
   final FirebaseFirestore _firestoreInstance;
-  final String Function<T extends IBaseModel>([Type type]) endpointResolver;
-  final T Function<T extends IBaseModel>(Map<String, Object>) deserializer;
 
-  CollectionReference _getRef<T extends IBaseModel>([Type type]) {
-    return _firestoreInstance.collection(endpointResolver<T>(type));
+  CollectionReference _getRef<T extends IBaseModel>(Resource res) {
+    return _firestoreInstance.collection(res.endpointResolver());
   }
 
   Future<QueryResult<T>> getData<T extends IBaseModel>(
+    Resource<T> res,
     QueryParam queryParams, {
-    int limit,
-    String lastId,
+    int limit = 10,
+    dynamic cursor,
     int skip,
   }) async {
-    var _resultStream = (await streamData(
+    var _resultStream = (await streamData<T>(
+      res,
       queryParams,
       limit: limit,
-      lastId: lastId,
+      cursor: cursor,
       skip: skip,
     ));
 
@@ -35,19 +33,18 @@ class FirestoreCollectionService extends ICollectionService {
   }
 
   Future<Stream<QueryResult<T>>> streamData<T extends IBaseModel>(
+    Resource<T> res,
     QueryParam queryParams, {
     int limit = 10,
-    String lastId,
+    dynamic cursor,
     int skip,
   }) async {
-    var _query = await _firestoreQueryBuilder(
-      _getRef<T>(),
+    var _query = _firestoreQueryBuilder(
+      _getRef<T>(res),
       queryParam: queryParams,
       limit: limit,
-      lastId: lastId,
+      cursor: cursor,
     );
-
-    List<dynamic> _cursor;
 
     var _querySnapshot = _query.snapshots();
 
@@ -55,75 +52,73 @@ class FirestoreCollectionService extends ICollectionService {
       (snapshot) {
         var data = snapshot.docs
             //! Filter possible here
-            .map((docSnapshot) {
-              // Testing cursor
-
-              _cursor = queryParams.sortList.map((querySort) {
-                return docSnapshot.data()[querySort.field];
-                // _cursor.add(docSnapshot.data()[querySort.field]);
-              }).toList();
-              print(_cursor.toString());
-              return docSnapshot;
-            })
-            .map<T>((doc) => _fromFirestore<T>(doc))
+            .map<T>((doc) => _fromFirestore<T>(res, doc))
             .toList();
 
         var changes = snapshot.docChanges
             //! Filter possible here
             .map((DocumentChange docChange) => Change<T>(
-                  document: _fromFirestore<T>(docChange.doc),
+                  document: _fromFirestore<T>(res, docChange.doc),
                   oldIndex: docChange.oldIndex,
                   newIndex: docChange.newIndex,
                   type: _firestoreEntityChangeMapper[docChange.type],
                 ))
             .toList();
 
-        return QueryResult<T>(data, changes);
+        return QueryResult<T>(
+          data,
+          changes,
+          cursor: snapshot.docs.length > 0 ? snapshot.docs.last : null,
+        );
       },
     );
   }
 
   @override
-  Future<bool> exists<T extends IBaseModel>(String recordId) async {
-    return (await _getRef<T>().doc(recordId).snapshots().first).exists;
+  Future<bool> exists<T extends IBaseModel>(Resource<T> res, String recordId) async {
+    return (await _getRef<T>(res).doc(recordId).snapshots().first).exists;
   }
 
   // Get documenent from db
-  Future<T> get<T extends IBaseModel>(String recordId) async {
-    return stream<T>(recordId).first;
+  Future<T> get<T extends IBaseModel>(Resource<T> res, String recordId) async {
+    return stream<T>(res, recordId).first;
   }
 
   // Stream documenent from db
-  Stream<T> stream<T extends IBaseModel>(String recordId) {
-    return _getRef<T>().doc(recordId).snapshots().map<T>((snapshot) => _fromFirestore<T>(snapshot));
+  Stream<T> stream<T extends IBaseModel>(Resource<T> res, String recordId) {
+    return _getRef<T>(res).doc(recordId).snapshots().map<T>((snapshot) => _fromFirestore<T>(res, snapshot));
   }
 
-  Future<void> update<T extends IBaseModel>(String id, Map<String, dynamic> values) async {
-    DocumentReference docRef = _getRef<T>().doc(id);
+  Future<void> update<T extends IBaseModel>(Resource<T> res, String id, Map<String, dynamic> values) async {
+    DocumentReference docRef = _getRef<T>(res).doc(id);
 
     await docRef.set(_firestireMap(values, false), SetOptions(merge: true));
   }
 
-  Future<T> save<T extends IBaseModel>(T doc, {refresh = false}) async {
+  Future<T> save<T extends IBaseModel>(Resource<T> res, T doc, {refresh = false}) async {
     String id = doc.getId() ?? '';
     DocumentReference docRef;
     if (id == '') {
-      docRef = await _getRef<T>().add(_toFirestore(doc));
-      return _fromFirestore<T>(await docRef.snapshots().first);
+      docRef = await _getRef<T>(res).add(_toFirestore(doc));
+      return _fromFirestore<T>(res, await docRef.snapshots().first);
     } else {
-      docRef = _getRef<T>().doc(id);
+      docRef = _getRef<T>(res).doc(id);
       await docRef.set(_toFirestore(doc), SetOptions(merge: true));
-      return refresh ? _fromFirestore<T>(await docRef.snapshots().first) : Future.value(doc);
+      return refresh ? _fromFirestore<T>(res, await docRef.snapshots().first) : Future.value(doc);
     }
   }
 
-  Future<void> delete<T extends IBaseModel>(String documentId) async {
-    await _getRef<T>().doc(documentId).delete();
+  Future<void> delete<T extends IBaseModel>(Resource<T> res, String documentId) async {
+    await _getRef<T>(res).doc(documentId).delete();
   }
 
   /// Internala fmethodes
-  Future<Query> _firestoreQueryBuilder(CollectionReference ref,
-      {QueryParam queryParam, String lastId, int limit = 50}) async {
+  Query _firestoreQueryBuilder(
+    CollectionReference ref, {
+    QueryParam queryParam,
+    dynamic cursor,
+    int limit = 50,
+  }) {
     Query _query = ref;
 
     if (queryParam?.filterList != null)
@@ -166,8 +161,8 @@ class FirestoreCollectionService extends ICollectionService {
     // _query = _query.orderBy(FieldPath.documentId);
 
     // Get the last Document
-    if (lastId != null) {
-      _query = _query.startAfterDocument(await ref.doc(lastId).get(GetOptions(source: Source.cache)));
+    if (cursor != null) {
+      _query = _query.startAfterDocument(cursor);
     }
 
     _query = _query.limit(limit);
@@ -175,14 +170,14 @@ class FirestoreCollectionService extends ICollectionService {
     return _query;
   }
 
-  T _fromFirestore<T extends IBaseModel>(DocumentSnapshot docSnap) {
+  T _fromFirestore<T extends IBaseModel>(Resource<T> res, DocumentSnapshot docSnap) {
     Map<String, dynamic> map = docSnap.data();
     if (map == null) return null;
 
     Map<String, dynamic> _map = _firestireMap(map, true);
     if (_map == null) return null;
 
-    T _result = deserializer<T>({
+    T _result = res.deserializer({
       'id': docSnap.id,
       ..._map,
     });

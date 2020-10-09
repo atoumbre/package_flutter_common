@@ -5,14 +5,16 @@ import 'package:get/get.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
 class DataCollection<T extends IBaseModel> {
-  DataCollection([ICollectionService collectionService])
-      : _collectionService = collectionService ?? Get.find<ICollectionService>();
+  DataCollection(ICollectionService collectionService, Resource<T> res)
+      : _collectionService = collectionService,
+        _res = res;
 
   final ICollectionService _collectionService;
+  final Resource<T> _res;
 
   // Pagination variables
   List<_PageData<T>> _allPages = [];
-  String _lastId;
+  dynamic _cursor;
 
   // Save params for next call
   QueryParam _queryParams;
@@ -59,7 +61,6 @@ class DataCollection<T extends IBaseModel> {
 
     int _queryLimit = _limit == null ? _pageSize : min(_limit - _allPages.length * _pageSize, _pageSize);
 
-    print('_queryLimit : $_queryLimit');
     int currentRequestIndex = _allPages.length;
     _PageData<T> currentPage = _PageData<T>(
       snapshotCount: 0,
@@ -71,9 +72,10 @@ class DataCollection<T extends IBaseModel> {
     _allPages.add(currentPage);
 
     Stream<QueryResult<T>> snapshots = await _collectionService.streamData(
+      _res,
       _queryParams,
       limit: _queryLimit, // Api call with pagesize as linimt
-      lastId: _lastId,
+      cursor: _cursor,
     );
 
     _allPages[currentRequestIndex].subscription = snapshots.listen((queryResult) {
@@ -82,12 +84,12 @@ class DataCollection<T extends IBaseModel> {
 
       // Stream data
       if (_allPages[currentRequestIndex].snapshotCount == 1 || _realtime) {
-        _processDocumentsSnapshot(queryResult.data, currentRequestIndex);
+        _processDocumentsSnapshot(queryResult, currentRequestIndex);
       }
 
       // Stream changes
       if (_allPages[currentRequestIndex].snapshotCount > 1 || _realtime) {
-        _processChangesSnapshot(queryResult.changes, currentRequestIndex);
+        _processChangesSnapshot(queryResult, currentRequestIndex);
       } else {
         _changes.assignAll([]);
       }
@@ -99,7 +101,8 @@ class DataCollection<T extends IBaseModel> {
     });
   }
 
-  void _processDocumentsSnapshot(List<T> data, int requestIndex) {
+  void _processDocumentsSnapshot(QueryResult querResult, int requestIndex) {
+    var data = querResult.data;
     // if (data.isNotEmpty) {
     _allPages[requestIndex].docs = data;
 
@@ -110,7 +113,7 @@ class DataCollection<T extends IBaseModel> {
     _data.assignAll(allData);
 
     if (requestIndex == _allPages.length - 1 && data.isNotEmpty) {
-      _lastId = data.last.getId();
+      _cursor = querResult.cursor;
     }
 
     _hasMoreData.value =
@@ -120,7 +123,8 @@ class DataCollection<T extends IBaseModel> {
     // }
   }
 
-  void _processChangesSnapshot(List<Change<T>> changes, int requestIndex) {
+  void _processChangesSnapshot(QueryResult querResult, int requestIndex) {
+    List<Change<T>> changes = querResult.changes;
     if (changes.isNotEmpty) {
       _allPages[requestIndex].changes.addAll(changes);
 
@@ -140,7 +144,7 @@ class DataCollection<T extends IBaseModel> {
 
     _allPages = [];
     _hasMoreData.value = true;
-    _lastId = null;
+    _cursor = null;
 
     _data.assignAll([]);
     _changes.assignAll([]);

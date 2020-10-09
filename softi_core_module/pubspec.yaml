@@ -13,6 +13,7 @@ dependencies:
 
   freezed_annotation:
   location:
+  recase:
 
 
 # flutter packages pub run build_runner watch --delete-conflicting-outputs\
