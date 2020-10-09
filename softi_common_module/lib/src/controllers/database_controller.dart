@@ -8,17 +8,18 @@ class DatabaseController {
 
   DatabaseController(this._api, this._resourceMapper);
 
-  get api => _api;
-
   DataCollection<T> collection<T extends IResourceData>([IResource _res]) {
     return DataCollection<T>(_api, _res ?? _resourceMapper[T]);
   }
 
-  Record<T> record<T extends IResourceData>(T id, [IResource _res]) {
+  Record<T> record<T extends IResourceData>([IResource _res]) {
     return Record<T>(_api, _res ?? _resourceMapper[T]);
   }
 
   //  Transition helper
+
+  get api => _api;
+
   String endpointResolver<T extends IResourceData>([Type doc]) {
     if (_resourceMapper[doc ?? T] == null) {
       throw ('${T.toString()} not registred for endpoint resolution');
