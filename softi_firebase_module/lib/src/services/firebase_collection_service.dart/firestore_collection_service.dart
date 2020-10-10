@@ -66,24 +66,35 @@ class FirestoreCollectionService extends ICollectionService {
 
   // Check if record exsits
   Future<bool> exists<T extends IResourceData>(IResource<T> res, String recordId) async {
-    return (await _getRef<T>(res).doc(recordId).snapshots().first).exists;
+    var _result = await _getRef<T>(res) //
+        .doc(recordId)
+        .snapshots()
+        .first;
+
+    return _result.exists;
   }
 
   // Stream documenent from db
   Stream<T> get<T extends IResourceData>(IResource<T> res, String recordId, {bool reactive = true}) {
-    return _getRef<T>(res).doc(recordId).snapshots().map<T>((snapshot) => fromFirestore<T>(res, snapshot));
+    var _result = _getRef<T>(res) //
+        .doc(recordId)
+        .snapshots()
+        .map<T>((snapshot) => fromFirestore<T>(res, snapshot));
+
+    return reactive ? _result : Stream.fromFuture(_result.first);
   }
 
   Future<void> update<T extends IResourceData>(IResource<T> res, String id, Map<String, dynamic> values) async {
-    DocumentReference docRef = _getRef<T>(res).doc(id);
+    DocumentReference docRef = _getRef<T>(res) //
+        .doc(id);
 
     await docRef.set(firestireMap(values, false), SetOptions(merge: true));
   }
 
   Future<T> save<T extends IResourceData>(IResource<T> res, T doc, {refresh = false}) async {
     String id = doc.getId() ?? '';
-
     DocumentReference docRef;
+
     if (id == '') {
       docRef = await _getRef<T>(res).add(toFirestore(doc));
     } else {
@@ -98,7 +109,9 @@ class FirestoreCollectionService extends ICollectionService {
   }
 
   Future<void> delete<T extends IResourceData>(IResource<T> res, String documentId) async {
-    await _getRef<T>(res).doc(documentId).delete();
+    await _getRef<T>(res) //
+        .doc(documentId)
+        .delete();
   }
 
   /// Internala fmethodes
@@ -146,14 +159,12 @@ class FirestoreCollectionService extends ICollectionService {
         _query = _query.orderBy(orderBy.field, descending: orderBy.desc);
       });
 
-    // _query = _query.orderBy(FieldPath.documentId);
-
     // Get the last Document
     if (pagination?.cursor != null) {
       _query = _query.startAfterDocument(pagination?.cursor);
     }
 
-    _query = _query.limit(pagination?.limit);
+    _query = _query.limit(pagination?.limit ?? 10);
 
     return _query;
   }

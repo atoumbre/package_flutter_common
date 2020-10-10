@@ -61,7 +61,7 @@ class DataCollection<T extends IResourceData> {
     int _queryLimit =
         _maxRecordNumber == null ? _pageSize : min(_maxRecordNumber - _allPages.length * _pageSize, _pageSize);
 
-    _pagination.update(
+    _pagination = QueryPagination(
       limit: _queryLimit,
       cursor: _lastCursor,
     );
