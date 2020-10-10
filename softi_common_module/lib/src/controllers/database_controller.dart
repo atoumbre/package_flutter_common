@@ -12,13 +12,11 @@ class DatabaseController {
     return DataCollection<T>(_api, _res ?? _resourceMapper[T]);
   }
 
-  DataRecord<T> record<T extends IResourceData>(T initialData, [IResource<T> _res]) {
-    return DataRecord<T>(initialData, _api, _res ?? _resourceMapper[T]);
+  DataRecord<T> record<T extends IResourceData>([IResource<T> _res]) {
+    return DataRecord<T>(_api, _res ?? _resourceMapper[T]);
   }
 
   //  Transition helper
-
-  // get api => _api;
 
   String endpointResolver<T extends IResourceData>([Type doc]) {
     if (_resourceMapper[doc ?? T] == null) {
@@ -32,9 +30,9 @@ class DatabaseController {
     return _resourceMapper[T].deserializer(map);
   }
 
-  IResource<T> res<T extends IResourceData>() {
-    return _resourceMapper[T];
-  }
+  // IResource<T> res<T extends IResourceData>() {
+  //   return _resourceMapper[T];
+  // }
 
   // Expose API
 

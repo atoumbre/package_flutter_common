@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
 class DataRecord<T extends IResourceData> {
-  DataRecord(T initialData, this._api, this._res) : _data = initialData.obs;
+  DataRecord(this._api, this._res);
 
-  final Rx<T> _data; //= Rx<T>();
+  final Rx<T> _data = Rx<T>();
   bool _reactive = false;
   // bool _initialized = false;
 
@@ -54,4 +54,10 @@ class DataRecord<T extends IResourceData> {
   Future<void> update(Map<String, dynamic> data) async {
     return _api.update(_res, id, data);
   }
+
+  void deserialize(Map<String, dynamic> data) {
+    _data(_res.deserializer(data));
+  }
+
+  call() => _data.value;
 }
