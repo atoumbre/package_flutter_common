@@ -13,86 +13,92 @@ class DataCollection<T extends IResourceData> {
   final IResource<T> _res;
 
   // Pagination variables
-  List<_PageData<T>> _allPages = [];
-  dynamic _cursor;
+  List<_DataPageInfo<T>> _allPages = [];
+  dynamic _lastCursor;
 
   // Save params for next call
-  QueryParam _queryParams;
   int _pageSize;
-  int _limit;
-  bool _realtime;
+  QueryParameters _params;
+  int _maxRecordNumber;
+  bool _reactive;
+
+  //
+  QueryPagination _pagination;
 
   RxBool _hasMoreData = true.obs;
   RxList<T> _data = <T>[].obs;
-  RxList<Change<T>> _changes = <Change<T>>[].obs;
+  RxList<DataChange<T>> _changes = <DataChange<T>>[].obs;
   RxBool _waiting = false.obs;
 
   //+ Exposed data
   RxBool get hasMoreData => _hasMoreData;
-  RxList<Change<T>> get changes => _changes;
+  RxList<DataChange<T>> get changes => _changes;
   RxList<T> get data => _data;
   RxBool get waiting => _waiting;
 
-  //+ Exposed data Streams
-  Stream<bool> get noMoreDataStream => _hasMoreData.stream;
-  Stream<List<Change<T>>> get changesStream => _changes.stream;
-  Stream<List<T>> get dataStream => _data.stream;
-  Stream<bool> get waitingStream => _waiting.stream;
-
-  //+ PageSize
-  int get pageSize => _pageSize;
-
-  void requestData(QueryParam queryParam, {int pageSize, bool realtime, int limit}) {
+  void requestData(QueryParameters params, {int pageSize, bool reactive, int maxRecordNumber}) {
     // reset on each call of streamData, use streamMoreData for more data
     _reset();
-    _queryParams = queryParam;
+
+    _params = params;
     _pageSize = pageSize ?? _pageSize;
-    _realtime = realtime ?? _realtime;
-    _limit = limit ?? _limit;
+    _reactive = reactive ?? _reactive;
+    _maxRecordNumber = maxRecordNumber ?? _maxRecordNumber;
     _requestData();
   }
 
-  void requestMoreData() => _requestData();
+  void requestMoreData({refresh = false}) {
+    if (refresh) _reset();
+    _requestData();
+  }
 
   void _requestData() async {
     if (!_hasMoreData.value) return;
 
     _waiting(true);
 
-    int _queryLimit = _limit == null ? _pageSize : min(_limit - _allPages.length * _pageSize, _pageSize);
+    /// Update pagination params
+    int _queryLimit =
+        _maxRecordNumber == null ? _pageSize : min(_maxRecordNumber - _allPages.length * _pageSize, _pageSize);
 
+    _pagination.update(
+      limit: _queryLimit,
+      cursor: _lastCursor,
+    );
+
+    //* Create the new page if it is a new batch
     int currentRequestIndex = _allPages.length;
-    _PageData<T> currentPage = _PageData<T>(
+    _DataPageInfo<T> currentPage = _DataPageInfo<T>(
       snapshotCount: 0,
       docs: [],
       changes: [],
     );
-
-    //* Create the new page
     _allPages.add(currentPage);
 
-    Stream<QueryResult<T>> snapshots = await _collectionService.streamData(
+    Stream<QueryResult<T>> snapshots = await _collectionService.find(
       _res,
-      _queryParams,
-      limit: _queryLimit, // Api call with pagesize as linimt
-      cursor: _cursor,
+      _params,
+      pagination: _pagination,
+      reactive: _reactive,
     );
 
+    /// Reques a page and listen to the result event
     _allPages[currentRequestIndex].subscription = snapshots.listen((queryResult) {
       // Increment Snapshot count
       _allPages[currentRequestIndex].snapshotCount++;
 
       // Stream data
-      if (_allPages[currentRequestIndex].snapshotCount == 1 || _realtime) {
+      if (_allPages[currentRequestIndex].snapshotCount == 1 || _reactive) {
         _processDocumentsSnapshot(queryResult, currentRequestIndex);
       }
 
       // Stream changes
-      if (_allPages[currentRequestIndex].snapshotCount > 1 || _realtime) {
+      if (_allPages[currentRequestIndex].snapshotCount > 1 && _reactive) {
         _processChangesSnapshot(queryResult, currentRequestIndex);
       } else {
         _changes.assignAll([]);
       }
+
       _waiting(false);
     });
 
@@ -103,7 +109,7 @@ class DataCollection<T extends IResourceData> {
 
   void _processDocumentsSnapshot(QueryResult querResult, int requestIndex) {
     var data = querResult.data;
-    // if (data.isNotEmpty) {
+
     _allPages[requestIndex].docs = data;
 
     List<T> allData = _allPages.fold<List<T>>(
@@ -113,23 +119,22 @@ class DataCollection<T extends IResourceData> {
     _data.assignAll(allData);
 
     if (requestIndex == _allPages.length - 1 && data.isNotEmpty) {
-      _cursor = querResult.cursor;
+      _lastCursor = querResult.cursor;
     }
 
-    _hasMoreData.value =
-        (data.length >= _pageSize) || (data.length >= _pageSize && _limit != null && allData.length < _limit);
+    _hasMoreData.value = (data.length >= _pageSize) ||
+        (data.length >= _pageSize && _maxRecordNumber != null && allData.length < _maxRecordNumber);
 
     print('_hasMoreData : $_hasMoreData ${T.toString()}');
-    // }
   }
 
   void _processChangesSnapshot(QueryResult querResult, int requestIndex) {
-    List<Change<T>> changes = querResult.changes;
+    List<DataChange<T>> changes = querResult.changes;
     if (changes.isNotEmpty) {
       _allPages[requestIndex].changes.addAll(changes);
 
-      List<Change<T>> allChanges = _allPages.fold<List<Change<T>>>(
-        List<Change<T>>(),
+      List<DataChange<T>> allChanges = _allPages.fold<List<DataChange<T>>>(
+        List<DataChange<T>>(),
         (initialValue, pageItems) => initialValue..addAll(pageItems.changes),
       );
       _changes.assignAll(allChanges);
@@ -137,34 +142,29 @@ class DataCollection<T extends IResourceData> {
   }
 
   void _reset() {
-    _queryParams = null;
-    _pageSize = 10;
-    _realtime = true;
-    _limit = null;
-
     _allPages = [];
     _hasMoreData.value = true;
-    _cursor = null;
+    _lastCursor = null;
 
     _data.assignAll([]);
     _changes.assignAll([]);
   }
 
   void dispose() {
-    _allPages.forEach((element) => element.dispose());
+    _allPages.forEach((pageInfo) => pageInfo.dispose());
   }
 
-  // Extends With add and delete
+  //? Extends With add and delete
 
 }
 
-class _PageData<T extends IResourceData> {
+class _DataPageInfo<T extends IResourceData> {
   List<T> docs;
-  List<Change<T>> changes;
+  List<DataChange<T>> changes;
   int snapshotCount;
   StreamSubscription subscription;
 
-  _PageData({
+  _DataPageInfo({
     this.docs,
     this.changes,
     this.snapshotCount,

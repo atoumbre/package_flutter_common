@@ -19,5 +19,5 @@ class Resource<T> extends IResource<T> {
   }
 
   @override
-  T get defautInstance => throw UnimplementedError();
+  T get defautInstance => instanceOveride;
 }

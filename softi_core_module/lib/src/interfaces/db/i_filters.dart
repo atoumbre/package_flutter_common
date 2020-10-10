@@ -1,7 +1,7 @@
 import 'package:softi_core_module/src/interfaces/db/i_collection_service.dart';
 
 abstract class IFilter {
-  QueryParam build();
+  QueryParameters build();
 }
 
 class _FilterBuilder {
@@ -21,8 +21,8 @@ class _FilterBuilder {
   }
 
   //+ Build query Params
-  QueryParam build() {
-    return QueryParam(sortList: _orders, filterList: _params);
+  QueryParameters build() {
+    return QueryParameters(sortList: _orders, filterList: _params);
   }
 
   //+ Build query Params
@@ -71,7 +71,7 @@ mixin BaseFilterMixin {
   FieldFilterExtended $filter$contains(String field, value) => $field(field).$contains(value);
   FieldFilterExtended $filter$containsAny(String field, value) => $field(field).$containsAny(value);
 
-  QueryParam build() => _filterBuilder.build();
+  QueryParameters build() => _filterBuilder.build();
   void reset() => _filterBuilder.reset();
 }
 

@@ -18,24 +18,21 @@ class FirestoreCollectionService extends ICollectionService {
     return _firestoreInstance.collection(res.endpointResolver());
   }
 
-  Future<Stream<QueryResult<T>>> streamData<T extends IResourceData>(
+  Future<Stream<QueryResult<T>>> find<T extends IResourceData>(
     IResource<T> res,
-    QueryParam queryParams, {
-    int limit = 10,
-    dynamic cursor,
-    int skip,
-    bool watch = true,
+    QueryParameters params, {
+    QueryPagination pagination,
+    bool reactive = true,
   }) async {
     var _query = _firestoreQueryBuilder(
       _getRef<T>(res),
-      queryParam: queryParams,
-      limit: limit,
-      cursor: cursor,
+      params: params,
+      pagination: pagination,
     );
 
     var _querySnapshot = _query.snapshots();
 
-    return _querySnapshot.map<QueryResult<T>>(
+    var _result = _querySnapshot.map<QueryResult<T>>(
       (snapshot) {
         var data = snapshot.docs
             //! Filter possible here
@@ -44,14 +41,14 @@ class FirestoreCollectionService extends ICollectionService {
 
         var changes = snapshot.docChanges
             //! Filter possible here
-            .map((DocumentChange docChange) => Change<T>(
+            .map((DocumentChange docChange) => DataChange<T>(
                   document: fromFirestore<T>(res, docChange.doc),
                   oldIndex: docChange.oldIndex,
                   newIndex: docChange.newIndex,
                   type: {
-                    DocumentChangeType.added: ChangeType.added,
-                    DocumentChangeType.modified: ChangeType.modified,
-                    DocumentChangeType.removed: ChangeType.removed,
+                    DocumentChangeType.added: DataChangeType.added,
+                    DocumentChangeType.modified: DataChangeType.modified,
+                    DocumentChangeType.removed: DataChangeType.removed,
                   }[docChange.type],
                 ))
             .toList();
@@ -63,6 +60,8 @@ class FirestoreCollectionService extends ICollectionService {
         );
       },
     );
+
+    return reactive ? _result : Stream.fromFuture(_result.first);
   }
 
   // Check if record exsits
@@ -71,7 +70,7 @@ class FirestoreCollectionService extends ICollectionService {
   }
 
   // Stream documenent from db
-  Stream<T> get<T extends IResourceData>(IResource<T> res, String recordId, {bool watch = true}) {
+  Stream<T> get<T extends IResourceData>(IResource<T> res, String recordId, {bool reactive = true}) {
     return _getRef<T>(res).doc(recordId).snapshots().map<T>((snapshot) => fromFirestore<T>(res, snapshot));
   }
 
@@ -105,14 +104,13 @@ class FirestoreCollectionService extends ICollectionService {
   /// Internala fmethodes
   Query _firestoreQueryBuilder(
     CollectionReference ref, {
-    QueryParam queryParam,
-    dynamic cursor,
-    int limit = 50,
+    QueryParameters params,
+    QueryPagination pagination,
   }) {
     Query _query = ref;
 
-    if (queryParam?.filterList != null)
-      queryParam.filterList.forEach((where) {
+    if (params?.filterList != null)
+      params.filterList.forEach((where) {
         switch (where.condition) {
           case QueryOperator.equal:
             _query = _query.where(where.field, isEqualTo: where.value);
@@ -143,19 +141,19 @@ class FirestoreCollectionService extends ICollectionService {
       });
 
     // Set orderBy
-    if (queryParam?.sortList != null)
-      queryParam.sortList.forEach((orderBy) {
+    if (params?.sortList != null)
+      params.sortList.forEach((orderBy) {
         _query = _query.orderBy(orderBy.field, descending: orderBy.desc);
       });
 
     // _query = _query.orderBy(FieldPath.documentId);
 
     // Get the last Document
-    if (cursor != null) {
-      _query = _query.startAfterDocument(cursor);
+    if (pagination?.cursor != null) {
+      _query = _query.startAfterDocument(pagination?.cursor);
     }
 
-    _query = _query.limit(limit);
+    _query = _query.limit(pagination?.limit);
 
     return _query;
   }

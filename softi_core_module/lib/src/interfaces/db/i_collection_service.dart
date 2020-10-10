@@ -12,7 +12,8 @@ abstract class IResource<T> {
   T get defautInstance;
   String get collectionName => T.toString().snakeCase + 's';
   T deserializer(Map<String, dynamic> serializedData);
-  String endpointResolver({ResourceRequestType requestType, QueryParam queryParam, dynamic dataPath, T dataObject});
+  String endpointResolver(
+      {ResourceRequestType requestType, QueryParameters queryParam, dynamic dataPath, T dataObject});
 }
 
 abstract class IResourceData {
@@ -31,16 +32,14 @@ mixin BaseResourceDataMixin {
 }
 
 abstract class ICollectionService extends IBaseService {
-  Future<Stream<QueryResult<T>>> streamData<T extends IResourceData>(
+  Future<Stream<QueryResult<T>>> find<T extends IResourceData>(
     IResource<T> res,
-    QueryParam queryParams, {
-    dynamic cursor,
-    int skip,
-    int limit = 10,
-    bool watch = true,
+    QueryParameters queryParams, {
+    QueryPagination pagination,
+    bool reactive = true,
   });
 
-  Stream<T> get<T extends IResourceData>(IResource<T> res, String id, {bool watch = true});
+  Stream<T> get<T extends IResourceData>(IResource<T> res, String id, {bool reactive = true});
   Future<bool> exists<T extends IResourceData>(IResource<T> res, String id);
   Future<T> save<T extends IResourceData>(IResource<T> res, T record, {bool refresh = false});
   Future<void> update<T extends IResourceData>(IResource<T> res, String id, Map<String, dynamic> values);
@@ -49,7 +48,7 @@ abstract class ICollectionService extends IBaseService {
 
 class QueryResult<T extends IResourceData> {
   final List<T> data;
-  final List<Change<T>> changes;
+  final List<DataChange<T>> changes;
   final dynamic cursor;
   final dynamic metadata;
 
@@ -59,13 +58,13 @@ class QueryResult<T extends IResourceData> {
 }
 
 /// Data access object
-class Change<T extends IResourceData> {
+class DataChange<T extends IResourceData> {
   T document;
   int oldIndex;
   int newIndex;
-  ChangeType type;
+  DataChangeType type;
 
-  Change({
+  DataChange({
     this.oldIndex,
     this.newIndex,
     this.document,
@@ -74,30 +73,55 @@ class Change<T extends IResourceData> {
 }
 
 class QueryFilter {
-  QueryFilter({
-    this.field,
-    this.condition,
-    this.value,
-  });
   final String field;
   final QueryOperator condition;
   final dynamic value;
+
+  QueryFilter({this.field, this.condition, this.value});
 }
 
 class QuerySort {
-  QuerySort(this.field, {this.desc = false});
   final String field;
   final bool desc;
+
+  QuerySort(this.field, {this.desc = false});
 }
 
-class QueryParam {
-  QueryParam({
-    @required this.sortList,
-    this.filterList,
-  });
+class QueryParameters {
+  List<QuerySort> sortList;
+  List<QueryFilter> filterList;
 
-  final List<QuerySort> sortList;
-  final List<QueryFilter> filterList;
+  QueryParameters({@required this.sortList, this.filterList});
+}
+
+class QueryPagination {
+  int skip, limit;
+  dynamic cursor;
+
+  int _skip, _limit;
+  dynamic _cursor;
+
+  QueryPagination({this.skip, this.limit, this.cursor}) {
+    cache();
+  }
+
+  void update({limit, skip, cursor}) {
+    this.limit = limit ?? this.limit;
+    this.skip = skip ?? this.skip;
+    this.cursor = cursor ?? this.cursor;
+  }
+
+  void reset() {
+    limit = _limit;
+    skip = _skip;
+    cursor = _cursor;
+  }
+
+  void cache() {
+    _limit = limit;
+    _skip = skip;
+    _cursor = cursor;
+  }
 }
 
 enum QueryOperator {
@@ -111,7 +135,7 @@ enum QueryOperator {
   arrayContainsAny,
 }
 
-enum ChangeType {
+enum DataChangeType {
   /// Indicates a new document was added to the set of documents matching the query.
   added,
 
