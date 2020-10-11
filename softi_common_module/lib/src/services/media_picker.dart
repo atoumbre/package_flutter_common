@@ -43,6 +43,7 @@ class MediaPicker extends IMediaPicker {
       isOnlyAllowRecording: !formats.contains(MediaType.image),
       isAllowRecording: formats.contains(MediaType.video),
       resolutionPreset: ResolutionPreset.medium,
+      textDelegate: EnglishCameraPickerTextDelegate(),
     );
 
     if (_assetList == null) return null;
@@ -62,6 +63,7 @@ class MediaPicker extends IMediaPicker {
       Get.context,
       requestType: _requestType,
       selectedAssets: _lastSelection,
+      textDelegate: EnglishTextDelegate(),
     );
 
     if (_assetList == null) return null;
