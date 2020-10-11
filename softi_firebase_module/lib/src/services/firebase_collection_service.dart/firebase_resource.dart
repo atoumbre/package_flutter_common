@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
-class Resource<T> extends IResource<T> {
+class FirestoreResource<T> extends IResource<T> {
   final String endpoint;
   final Deserializer<T> fromJson;
 
-  Resource({
+  FirestoreResource({
     @required this.fromJson,
     this.endpoint,
   });

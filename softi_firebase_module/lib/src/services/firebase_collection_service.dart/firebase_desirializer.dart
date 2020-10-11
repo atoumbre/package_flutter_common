@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 import 'package:softi_firebase_module/src/services/firebase_collection_service.dart/firebase_resource.dart';
 
-T fromFirestore<T extends IResourceData>(Resource<T> res, DocumentSnapshot docSnap) {
+T fromFirestore<T extends IResourceData>(FirestoreResource<T> res, DocumentSnapshot docSnap) {
   Map<String, dynamic> map = docSnap.data();
   if (map == null) return null;
 

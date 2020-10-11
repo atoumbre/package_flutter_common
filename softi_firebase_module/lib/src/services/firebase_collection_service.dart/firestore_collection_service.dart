@@ -14,7 +14,7 @@ class FirestoreCollectionService extends ICollectionService {
 
   final FirebaseFirestore _firestoreInstance;
 
-  CollectionReference _getRef<T extends IResourceData>(Resource<T> res) {
+  CollectionReference _getRef<T extends IResourceData>(FirestoreResource<T> res) {
     return _firestoreInstance.collection(res.endpointResolver());
   }
 
