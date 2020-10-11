@@ -9,11 +9,16 @@ typedef Deserializer<T> = T Function(Map<String, dynamic>);
 enum ResourceRequestType { list, read, create, replace, update, delete }
 
 abstract class IResource<T> {
-  T get defautInstance;
   String get collectionName => T.toString().snakeCase + 's';
   T deserializer(Map<String, dynamic> serializedData);
-  String endpointResolver(
-      {ResourceRequestType requestType, QueryParameters queryParam, dynamic dataPath, T dataObject});
+  String endpointResolver({
+    ResourceRequestType requestType,
+    QueryParameters queryParams,
+    QueryPagination querypagination,
+    String id,
+    String dataPath,
+    T dataObject,
+  });
 }
 
 abstract class IResourceData {

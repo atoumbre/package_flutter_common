@@ -1,23 +1,29 @@
+import 'package:flutter/foundation.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
 class Resource<T> extends IResource<T> {
-  final String endpointOveride;
-  final Deserializer<T> deserializerOveride;
-  final T instanceOveride;
+  final String endpoint;
+  final Deserializer<T> fromJson;
 
-  Resource(this.deserializerOveride, this.instanceOveride, [this.endpointOveride]);
+  Resource({
+    @required this.fromJson,
+    this.endpoint,
+  });
 
   @override
-  String endpointResolver({requestType, queryParam, dataPath, dataObject}) {
-    // var _endpoint = prefix + (endpointOveride ?? (T.toString().snakeCase + 's'));
-    return endpointOveride ?? collectionName;
+  String endpointResolver({
+    ResourceRequestType requestType,
+    QueryParameters queryParams,
+    QueryPagination querypagination,
+    String id,
+    String dataPath,
+    T dataObject,
+  }) {
+    return endpoint ?? collectionName;
   }
 
   @override
   T deserializer(Map<String, dynamic> serializedData) {
-    return deserializerOveride(serializedData);
+    return fromJson(serializedData);
   }
-
-  @override
-  T get defautInstance => instanceOveride;
 }
