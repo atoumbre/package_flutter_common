@@ -1,20 +1,26 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
 class FirebaseStorageService extends IRemoteStorageService {
-  Future<CloudStorageResult> uploadImage({
-    @required File imageToUpload,
+  Future<NetworkMediaAsset> uploadImage({
+    @required dynamic imageToUpload,
     @required String title,
     bool addTimestamp = false,
+    bool isFile = false,
   }) async {
+    print('Start up load');
+
     String imageFileName = title + (addTimestamp ? DateTime.now().millisecondsSinceEpoch.toString() : '');
 
     final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(imageFileName);
 
-    StorageUploadTask uploadTask = firebaseStorageRef.putFile(imageToUpload);
+    StorageUploadTask uploadTask = isFile
+        ? firebaseStorageRef.putFile(imageToUpload as File)
+        : firebaseStorageRef.putData(imageToUpload as Uint8List);
 
     StorageTaskSnapshot storageSnapshot = await uploadTask.onComplete;
 
@@ -22,9 +28,9 @@ class FirebaseStorageService extends IRemoteStorageService {
 
     if (uploadTask.isComplete) {
       var url = downloadUrl.toString();
-      return CloudStorageResult(
-        imageUrl: url,
-        imageFileName: imageFileName,
+      return NetworkMediaAsset(
+        url: url,
+        title: storageSnapshot.storageMetadata.path,
       );
     }
 

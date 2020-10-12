@@ -16,16 +16,17 @@ class MediaPicker extends IMediaPicker {
 
   Map _typeMap = {AssetType.image: MediaType.image, AssetType.video: MediaType.video, AssetType.audio: MediaType.audio};
 
-  Future<List<MediaAsset>> _processAssetsList(
+  Future<List<FileMediaAsset>> _processAssetsList(
     List<AssetEntity> assets,
     MediaSource source,
   ) async {
-    List<Future<MediaAsset>> _fileList = assets.map<Future<MediaAsset>>((asset) async {
+    List<Future<FileMediaAsset>> _fileList = assets.map<Future<FileMediaAsset>>((asset) async {
       print('SSET ID : ${asset.id}');
-      return MediaAsset(
+      return FileMediaAsset(
         file: await asset.file,
+
         id: asset.id,
-        source: source,
+        //source: source,
         thumbData: await asset.thumbDataWithSize(200, 200),
         format: _typeMap[asset.type],
         rawEntity: asset,
@@ -35,7 +36,7 @@ class MediaPicker extends IMediaPicker {
   }
 
   @override
-  Future<List<MediaAsset>> selectMediaFromCamera({
+  Future<List<FileMediaAsset>> selectMediaFromCamera({
     Set<MediaType> formats = const {MediaType.image, MediaType.video},
   }) async {
     final AssetEntity _assetList = await CameraPicker.pickFromCamera(
@@ -52,9 +53,10 @@ class MediaPicker extends IMediaPicker {
   }
 
   @override
-  Future<List<MediaAsset>> selectMediaFromGalery({
+  Future<List<FileMediaAsset>> selectMediaFromGalery({
     Set<MediaType> formats = const {MediaType.image, MediaType.video},
-    List<MediaAsset> selectedItemId = const [],
+    List<FileMediaAsset> selectedItemId = const [],
+    int maxItem,
   }) async {
     List<AssetEntity> _lastSelection = await Future.wait(selectedItemId.map((e) => AssetEntity.fromId(e.id)).toList());
 
@@ -64,6 +66,7 @@ class MediaPicker extends IMediaPicker {
       requestType: _requestType,
       selectedAssets: _lastSelection,
       textDelegate: EnglishTextDelegate(),
+      maxAssets: maxItem,
     );
 
     if (_assetList == null) return null;

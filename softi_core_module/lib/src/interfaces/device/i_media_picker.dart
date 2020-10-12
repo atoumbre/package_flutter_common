@@ -3,27 +3,85 @@ import 'dart:typed_data';
 
 import 'package:softi_core_module/softi_core_module.dart';
 
+enum MediaType { image, video, audio }
+enum MediaSource { galery, camera, network, memory, asset }
+
 abstract class IMediaPicker extends IBaseService {
-  Future<List<MediaAsset>> selectMediaFromGalery({
+  Future<List<FileMediaAsset>> selectMediaFromGalery({
     Set<MediaType> formats = const {MediaType.image, MediaType.video},
-    List<MediaAsset> selectedItemId = const [],
+    List<FileMediaAsset> selectedItemId = const [],
+    int maxItem,
   });
 
-  Future<List<MediaAsset>> selectMediaFromCamera({
+  Future<List<FileMediaAsset>> selectMediaFromCamera({
     Set<MediaType> formats = const {MediaType.image, MediaType.video},
   });
 }
 
-class MediaAsset {
-  final String id;
-  final File file;
+abstract class MediaAsset {
   final dynamic rawEntity;
-  final MediaSource source;
   final MediaType format;
   final Uint8List thumbData;
 
-  MediaAsset({this.thumbData, this.source, this.format, this.id, this.file, this.rawEntity});
+  MediaAsset({
+    this.thumbData,
+    this.format,
+    this.rawEntity,
+  });
 }
 
-enum MediaType { image, video, audio }
-enum MediaSource { galery, camera }
+class NetworkMediaAsset extends MediaAsset {
+  final String title;
+  final String url;
+
+  NetworkMediaAsset({
+    this.title,
+    this.url,
+    thumbData,
+    format,
+    rawEntity,
+  }) : super(
+          thumbData: thumbData,
+          rawEntity: rawEntity,
+          format: format,
+        );
+}
+
+class MemoryMediaAsset extends MediaAsset {
+  final Uint8List data;
+
+  MemoryMediaAsset({
+    this.data,
+    thumbData,
+    format,
+    rawEntity,
+  }) : super(
+          thumbData: thumbData,
+          rawEntity: rawEntity,
+          format: format,
+        );
+}
+
+class FileMediaAsset extends MediaAsset {
+  final String id;
+  final File file;
+
+  // File (Galery and Camera)
+  // final dynamic rawEntity;
+  // final MediaType format;
+  // final Uint8List thumbData;
+  // Data
+  // final MediaSource source;
+
+  FileMediaAsset({
+    this.id,
+    this.file,
+    thumbData,
+    format,
+    rawEntity,
+  }) : super(
+          thumbData: thumbData,
+          rawEntity: rawEntity,
+          format: format,
+        );
+}
