@@ -91,7 +91,7 @@ class FirestoreCollectionService extends ICollectionService {
     await docRef.set(firestireMap(values, false), SetOptions(merge: true));
   }
 
-  Future<T> save<T extends IResourceData>(IResource<T> res, T doc, {refresh = false}) async {
+  Future<T> save<T extends IResourceData>(IResource<T> res, T doc) async {
     String id = doc.getId() ?? '';
     DocumentReference docRef;
 
@@ -102,10 +102,11 @@ class FirestoreCollectionService extends ICollectionService {
       await docRef.set(toFirestore(doc), SetOptions(merge: false));
     }
 
-    if (refresh)
-      return fromFirestore<T>(res, await docRef.snapshots().first);
-    else
-      return doc;
+    return fromFirestore<T>(res, await docRef.snapshots().first);
+    // if (refresh)
+    //   return fromFirestore<T>(res, await docRef.snapshots().first);
+    // else
+    //   return doc;
   }
 
   Future<void> delete<T extends IResourceData>(IResource<T> res, String documentId) async {

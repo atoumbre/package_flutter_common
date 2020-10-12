@@ -46,7 +46,7 @@ abstract class ICollectionService extends IBaseService {
 
   Stream<T> get<T extends IResourceData>(IResource<T> res, String id, {bool reactive = true});
   Future<bool> exists<T extends IResourceData>(IResource<T> res, String id);
-  Future<T> save<T extends IResourceData>(IResource<T> res, T record, {bool refresh = false});
+  Future<T> save<T extends IResourceData>(IResource<T> res, T record);
   Future<void> update<T extends IResourceData>(IResource<T> res, String id, Map<String, dynamic> values);
   Future<void> delete<T extends IResourceData>(IResource<T> res, String id);
 }
@@ -103,12 +103,10 @@ class QueryPagination {
   int skip, limit;
   dynamic cursor;
 
-  int _skip, _limit;
-  dynamic _cursor;
+  // int _skip, _limit;
+  // dynamic _cursor;
 
-  QueryPagination({this.skip, this.limit, this.cursor}) {
-    cache();
-  }
+  QueryPagination({this.skip, this.limit, this.cursor});
 
   void update({limit, skip, cursor}) {
     this.limit = limit ?? this.limit;
@@ -116,17 +114,17 @@ class QueryPagination {
     this.cursor = cursor ?? this.cursor;
   }
 
-  void reset() {
-    limit = _limit;
-    skip = _skip;
-    cursor = _cursor;
-  }
+  // void reset() {
+  //   limit = _limit;
+  //   skip = _skip;
+  //   cursor = _cursor;
+  // }
 
-  void cache() {
-    _limit = limit;
-    _skip = skip;
-    _cursor = cursor;
-  }
+  // void cache() {
+  //   _limit = limit;
+  //   _skip = skip;
+  //   _cursor = cursor;
+  // }
 }
 
 enum QueryOperator {

@@ -44,7 +44,7 @@ class DataRecord<T extends IResourceData> {
   }
 
   Future<void> save() async {
-    return _api.save<T>(_res, _data.value, refresh: false);
+    return _api.save<T>(_res, _data.value);
   }
 
   Future<void> delete() async {

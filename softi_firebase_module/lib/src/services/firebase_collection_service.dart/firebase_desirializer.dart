@@ -25,7 +25,7 @@ Map<String, dynamic> toFirestore(IResourceData doc) {
   Map<String, dynamic> _map = firestireMap(map, false);
   if (_map == null) return null;
 
-  return _map;
+  return _map..remove('id')..remove('path');
 }
 
 Map<String, dynamic> firestireMap(Map<String, dynamic> input, bool fromFirestore, [bool skipNull = true]) {

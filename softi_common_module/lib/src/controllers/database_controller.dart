@@ -40,8 +40,8 @@ class DatabaseController {
     return _api.get<T>(res ?? _resourceMapper[T], id);
   }
 
-  Future<T> save<T extends IResourceData>(T record, {bool refresh = false, IResource<T> res}) {
-    return _api.save<T>(res ?? _resourceMapper[T], record, refresh: refresh);
+  Future<T> save<T extends IResourceData>(T record, {IResource<T> res}) {
+    return _api.save<T>(res ?? _resourceMapper[T], record);
   }
 
   Future<void> update<T extends IResourceData>(String id, Map<String, dynamic> values, {IResource<T> res}) {
