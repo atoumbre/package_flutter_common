@@ -7,7 +7,7 @@ enum MediaType { image, video, audio }
 enum MediaSource { galery, camera, network, memory, asset }
 
 abstract class IMediaPicker extends IBaseService {
-  Future<List<FileMediaAsset>> selectMediaFromGalery({
+  Future<List<FileMediaAsset>> selectMediaFromGallery({
     Set<MediaType> formats = const {MediaType.image, MediaType.video},
     List<FileMediaAsset> selectedItemId = const [],
     int maxItem,
@@ -66,7 +66,7 @@ class FileMediaAsset extends MediaAsset {
   final String id;
   final File file;
 
-  // File (Galery and Camera)
+  // File (Gallery and Camera)
   // final dynamic rawEntity;
   // final MediaType format;
   // final Uint8List thumbData;

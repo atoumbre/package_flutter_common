@@ -53,7 +53,7 @@ class MediaPicker extends IMediaPicker {
   }
 
   @override
-  Future<List<FileMediaAsset>> selectMediaFromGalery({
+  Future<List<FileMediaAsset>> selectMediaFromGallery({
     Set<MediaType> formats = const {MediaType.image, MediaType.video},
     List<FileMediaAsset> selectedItemId = const [],
     int maxItem,
