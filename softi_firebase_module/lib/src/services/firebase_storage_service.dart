@@ -5,13 +5,21 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
+var _eventTypeMap = {
+  StorageTaskEventType.failure: UploadEnventType.failure,
+  StorageTaskEventType.success: UploadEnventType.success,
+  StorageTaskEventType.pause: UploadEnventType.pause,
+  StorageTaskEventType.resume: UploadEnventType.resume,
+  StorageTaskEventType.progress: UploadEnventType.progress,
+};
+
 class FirebaseStorageService extends IRemoteStorageService {
-  Future<NetworkMediaAsset> uploadImage({
+  Stream<UploadEvent> uploadImage({
     @required dynamic imageToUpload,
     @required String title,
     bool addTimestamp = false,
     bool isFile = false,
-  }) async {
+  }) {
     print('Start up load');
 
     String imageFileName = title + (addTimestamp ? DateTime.now().millisecondsSinceEpoch.toString() : '');
@@ -22,19 +30,34 @@ class FirebaseStorageService extends IRemoteStorageService {
         ? firebaseStorageRef.putFile(imageToUpload as File)
         : firebaseStorageRef.putData(imageToUpload as Uint8List);
 
-    StorageTaskSnapshot storageSnapshot = await uploadTask.onComplete;
+    return uploadTask.events.asyncMap<UploadEvent>((event) async {
+      // event.snapshot.
+      return UploadEvent(
+          type: _eventTypeMap[event.type],
+          total: event.snapshot.totalByteCount.toDouble(),
+          uploaded: event.snapshot.bytesTransferred.toDouble(),
+          rawrResult: event.type == StorageTaskEventType.success ? event.snapshot : null,
+          result: event.type != StorageTaskEventType.success
+              ? null
+              : NetworkMediaAsset(
+                  url: (await event.snapshot.ref.getDownloadURL()).toString(),
+                  title: event.snapshot.storageMetadata.path,
+                ));
+    });
 
-    var downloadUrl = await storageSnapshot.ref.getDownloadURL();
+    // StorageTaskSnapshot storageSnapshot = await uploadTask.onComplete;
 
-    if (uploadTask.isComplete) {
-      var url = downloadUrl.toString();
-      return NetworkMediaAsset(
-        url: url,
-        title: storageSnapshot.storageMetadata.path,
-      );
-    }
+    // var downloadUrl = await storageSnapshot.ref.getDownloadURL();
 
-    return null;
+    // if (uploadTask.isComplete) {
+    //   var url = downloadUrl.toString();
+    //   return NetworkMediaAsset(
+    //     url: url,
+    //     title: storageSnapshot.storageMetadata.path,
+    //   );
+    // }
+
+    // return null;
   }
 
   Future deleteImage(String imageFileName) async {
