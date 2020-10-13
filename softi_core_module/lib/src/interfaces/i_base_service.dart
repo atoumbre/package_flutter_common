@@ -17,23 +17,11 @@ abstract class IBaseService {
   void dispose() => _errorStreamController.close();
 }
 
-// abstract class IStoppableService extends IBaseService {
-//   bool serviceStopped = true;
-
-//   Future<void> stop() async {
-//     serviceStopped = true;
-//   }
-
-//   Future<void> start() async {
-//     serviceStopped = false;
-//   }
-// }
-
 typedef VoidAsyncCallback = Future<void> Function();
 
 abstract class IStoppableService extends IBaseService {
   bool _serviceIsActive = false;
-  bool _serviceIsEnabled = true;
+  bool _serviceIsEnabled = false;
 
   VoidAsyncCallback get startCallback;
   VoidAsyncCallback get stopCallback;
@@ -41,10 +29,19 @@ abstract class IStoppableService extends IBaseService {
   get isOn => _serviceIsActive;
   get isEnabled => _serviceIsEnabled;
 
-  @protected
-  enable() => _serviceIsEnabled = true;
+  Future<void> enable({bool statLate = false}) {
+    if (statLate) {
+      _serviceIsEnabled = true;
+      return Future.value(true);
+    } else {
+      return start();
+    }
+  }
 
-  disable() => _serviceIsEnabled = false;
+  Future<void> disable() {
+    _serviceIsEnabled = false;
+    return stop();
+  }
 
   Future<void> stop() async {
     if (!_serviceIsEnabled) return;
@@ -56,7 +53,7 @@ abstract class IStoppableService extends IBaseService {
   Future<void> start() async {
     if (!_serviceIsEnabled) return;
 
-    await start();
+    await startCallback();
     _serviceIsActive = false;
   }
 }

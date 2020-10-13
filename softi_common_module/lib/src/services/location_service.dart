@@ -43,6 +43,6 @@ class LocationService extends ILocationService {
 
   @override
   VoidAsyncCallback get stopCallback => () async {
-        _streamSubscription.cancel();
+        _streamSubscription?.cancel();
       };
 }
