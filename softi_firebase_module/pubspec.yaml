@@ -15,10 +15,10 @@ dependencies:
   sign_in_with_apple:
   flutter_webview_plugin:
 
-  cloud_firestore: 0.14.0
+  cloud_firestore: #0.14.0
   firebase_auth:
   firebase_dynamic_links:
-  firebase_storage:
+  firebase_storage: ^5.0.0-dev.3
   firebase_remote_config:
   firebase_messaging:
   firebase_database:

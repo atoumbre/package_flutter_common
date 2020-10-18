@@ -6,11 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
 var _eventTypeMap = {
-  StorageTaskEventType.failure: UploadEnventType.failure,
-  StorageTaskEventType.success: UploadEnventType.success,
-  StorageTaskEventType.pause: UploadEnventType.pause,
-  StorageTaskEventType.resume: UploadEnventType.resume,
-  StorageTaskEventType.progress: UploadEnventType.progress,
+  TaskState.error: UploadEnventType.error,
+  TaskState.success: UploadEnventType.success,
+  TaskState.paused: UploadEnventType.paused,
+  TaskState.canceled: UploadEnventType.canceled,
+  TaskState.running: UploadEnventType.progress,
 };
 
 class FirebaseStorageService extends IRemoteStorageService {
@@ -24,25 +24,31 @@ class FirebaseStorageService extends IRemoteStorageService {
 
     String imageFileName = title + (addTimestamp ? DateTime.now().millisecondsSinceEpoch.toString() : '');
 
-    final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(imageFileName);
+    final Reference firebaseStorageRef = FirebaseStorage.instance.ref().child(imageFileName);
 
-    StorageUploadTask uploadTask = isFile
+    UploadTask uploadTask = isFile
         ? firebaseStorageRef.putFile(imageToUpload as File)
         : firebaseStorageRef.putData(imageToUpload as Uint8List);
 
-    return uploadTask.events.asyncMap<UploadEvent>((event) async {
-      // event.snapshot.
+    return uploadTask.snapshotEvents.asyncMap<UploadEvent>((event) async {
+      event.state;
       // print('${event.type} ${event.snapshot.bytesTransferred} / ${event.snapshot.totalByteCount}');
+
+      uploadTask.snapshot.ref.getDownloadURL();
+
       return UploadEvent(
-          type: _eventTypeMap[event.type],
-          total: event.snapshot.totalByteCount.toDouble(),
-          uploaded: event.snapshot.bytesTransferred.toDouble(),
-          rawrResult: event.type == StorageTaskEventType.success ? event.snapshot : null,
-          result: event.type != StorageTaskEventType.success
+          type: _eventTypeMap[event.state],
+          total: event.totalBytes.toDouble(),
+          uploaded: event.bytesTransferred.toDouble(),
+          // rawrResult: event.state == TaskState.success ? event.metadata. : null,
+          result: event.state != TaskState.success
               ? null
               : NetworkMediaAsset(
-                  url: (await event.snapshot.ref.getDownloadURL()).toString(),
-                  title: event.snapshot.storageMetadata.path,
+                  url: (await event.ref.getDownloadURL()).toString(),
+                  title: event.metadata.fullPath,
+
+                  // url: (await event.snapshot.ref.getDownloadURL()).toString(),
+                  // title: event.snapshot.storageMetadata.path,
                 ));
     });
 
@@ -62,7 +68,7 @@ class FirebaseStorageService extends IRemoteStorageService {
   }
 
   Future deleteImage(String imageFileName) async {
-    final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(imageFileName);
+    final Reference firebaseStorageRef = FirebaseStorage.instance.ref().child(imageFileName);
 
     try {
       await firebaseStorageRef.delete();

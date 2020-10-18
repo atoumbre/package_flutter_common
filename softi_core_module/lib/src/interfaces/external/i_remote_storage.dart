@@ -3,11 +3,11 @@ import 'package:softi_core_module/src/interfaces/device/i_media_picker.dart';
 import 'package:softi_core_module/src/interfaces/i_base_service.dart';
 
 enum UploadEnventType {
-  resume,
   progress,
-  pause,
+  paused,
+  canceled,
+  error,
   success,
-  failure,
 }
 
 class UploadEvent {
