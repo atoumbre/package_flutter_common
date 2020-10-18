@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:softi_core_module/src/interfaces/device/i_media_picker.dart';
 import 'package:softi_core_module/src/interfaces/i_base_service.dart';
 
-enum UploadEnventType {
+enum UploadState {
   progress,
   paused,
   canceled,
@@ -11,7 +11,7 @@ enum UploadEnventType {
 }
 
 class UploadEvent {
-  final UploadEnventType type;
+  final UploadState type;
   final double uploaded;
   final double total;
 

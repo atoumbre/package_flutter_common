@@ -6,11 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
 var _eventTypeMap = {
-  TaskState.error: UploadEnventType.error,
-  TaskState.success: UploadEnventType.success,
-  TaskState.paused: UploadEnventType.paused,
-  TaskState.canceled: UploadEnventType.canceled,
-  TaskState.running: UploadEnventType.progress,
+  TaskState.error: UploadState.error,
+  TaskState.success: UploadState.success,
+  TaskState.paused: UploadState.paused,
+  TaskState.canceled: UploadState.canceled,
+  TaskState.running: UploadState.progress,
 };
 
 class FirebaseStorageService extends IRemoteStorageService {
@@ -31,10 +31,9 @@ class FirebaseStorageService extends IRemoteStorageService {
         : firebaseStorageRef.putData(imageToUpload as Uint8List);
 
     return uploadTask.snapshotEvents.asyncMap<UploadEvent>((event) async {
-      event.state;
-      // print('${event.type} ${event.snapshot.bytesTransferred} / ${event.snapshot.totalByteCount}');
+      // print('${event.state} ${event.bytesTransferred} / ${event.totalBytes}');
 
-      uploadTask.snapshot.ref.getDownloadURL();
+      // uploadTask.snapshot.ref.getDownloadURL();
 
       return UploadEvent(
           type: _eventTypeMap[event.state],
@@ -44,7 +43,7 @@ class FirebaseStorageService extends IRemoteStorageService {
           result: event.state != TaskState.success
               ? null
               : NetworkMediaAsset(
-                  url: (await event.ref.getDownloadURL()).toString(),
+                  url: await event.ref.getDownloadURL(),
                   title: event.metadata.fullPath,
 
                   // url: (await event.snapshot.ref.getDownloadURL()).toString(),
