@@ -32,6 +32,7 @@ class FirebaseStorageService extends IRemoteStorageService {
 
     return uploadTask.events.asyncMap<UploadEvent>((event) async {
       // event.snapshot.
+      // print('${event.type} ${event.snapshot.bytesTransferred} / ${event.snapshot.totalByteCount}');
       return UploadEvent(
           type: _eventTypeMap[event.type],
           total: event.snapshot.totalByteCount.toDouble(),
