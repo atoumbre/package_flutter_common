@@ -75,7 +75,7 @@ class DataCollection<T extends IResourceData> {
     );
     _allPages.add(currentPage);
 
-    Stream<QueryResult<T>> snapshots = await _collectionService.find(
+    Stream<QueryResult<T>> snapshots = _collectionService.find(
       _res,
       _params,
       pagination: _pagination,

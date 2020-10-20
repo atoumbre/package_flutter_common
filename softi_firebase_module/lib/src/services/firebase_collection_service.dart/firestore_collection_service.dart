@@ -18,12 +18,12 @@ class FirestoreCollectionService extends ICollectionService {
     return _firestoreInstance.collection(res.endpointResolver());
   }
 
-  Future<Stream<QueryResult<T>>> find<T extends IResourceData>(
+  find<T extends IResourceData>(
     IResource<T> res,
     QueryParameters params, {
     QueryPagination pagination,
     bool reactive = true,
-  }) async {
+  }) {
     var _query = _firestoreQueryBuilder(
       _getRef<T>(res),
       params: params,

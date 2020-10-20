@@ -37,7 +37,7 @@ mixin BaseResourceDataMixin {
 }
 
 abstract class ICollectionService extends IBaseService {
-  Future<Stream<QueryResult<T>>> find<T extends IResourceData>(
+  Stream<QueryResult<T>> find<T extends IResourceData>(
     IResource<T> res,
     QueryParameters queryParams, {
     QueryPagination pagination,

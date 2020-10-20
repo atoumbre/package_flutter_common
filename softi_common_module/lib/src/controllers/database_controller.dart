@@ -52,7 +52,7 @@ class DatabaseController {
     return _api.delete<T>(res ?? _resourceMapper[T], id);
   }
 
-  Future<Stream<QueryResult<T>>> find<T extends IResourceData>(
+  Stream<QueryResult<T>> find<T extends IResourceData>(
     QueryParameters params, {
     int limit = 10,
     int skip = 0,
