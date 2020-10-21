@@ -16,6 +16,7 @@ class _$AuthUserTearOff {
 // ignore: unused_element
   _AuthUser call(
       {String uid,
+      bool isNew,
       String displayName,
       String photoUrl,
       String email,
@@ -27,6 +28,7 @@ class _$AuthUserTearOff {
       String providerId}) {
     return _AuthUser(
       uid: uid,
+      isNew: isNew,
       displayName: displayName,
       photoUrl: photoUrl,
       email: email,
@@ -46,7 +48,8 @@ const $AuthUser = _$AuthUserTearOff();
 
 /// @nodoc
 mixin _$AuthUser {
-  String get uid; // Profile infos : Editable by the user
+  String get uid; // Is new ?
+  bool get isNew; // Profile infos : Editable by the user
   String get displayName;
   String get photoUrl;
   String get email;
@@ -66,6 +69,7 @@ abstract class $AuthUserCopyWith<$Res> {
       _$AuthUserCopyWithImpl<$Res>;
   $Res call(
       {String uid,
+      bool isNew,
       String displayName,
       String photoUrl,
       String email,
@@ -88,6 +92,7 @@ class _$AuthUserCopyWithImpl<$Res> implements $AuthUserCopyWith<$Res> {
   @override
   $Res call({
     Object uid = freezed,
+    Object isNew = freezed,
     Object displayName = freezed,
     Object photoUrl = freezed,
     Object email = freezed,
@@ -100,6 +105,7 @@ class _$AuthUserCopyWithImpl<$Res> implements $AuthUserCopyWith<$Res> {
   }) {
     return _then(_value.copyWith(
       uid: uid == freezed ? _value.uid : uid as String,
+      isNew: isNew == freezed ? _value.isNew : isNew as bool,
       displayName:
           displayName == freezed ? _value.displayName : displayName as String,
       photoUrl: photoUrl == freezed ? _value.photoUrl : photoUrl as String,
@@ -130,6 +136,7 @@ abstract class _$AuthUserCopyWith<$Res> implements $AuthUserCopyWith<$Res> {
   @override
   $Res call(
       {String uid,
+      bool isNew,
       String displayName,
       String photoUrl,
       String email,
@@ -153,6 +160,7 @@ class __$AuthUserCopyWithImpl<$Res> extends _$AuthUserCopyWithImpl<$Res>
   @override
   $Res call({
     Object uid = freezed,
+    Object isNew = freezed,
     Object displayName = freezed,
     Object photoUrl = freezed,
     Object email = freezed,
@@ -165,6 +173,7 @@ class __$AuthUserCopyWithImpl<$Res> extends _$AuthUserCopyWithImpl<$Res>
   }) {
     return _then(_AuthUser(
       uid: uid == freezed ? _value.uid : uid as String,
+      isNew: isNew == freezed ? _value.isNew : isNew as bool,
       displayName:
           displayName == freezed ? _value.displayName : displayName as String,
       photoUrl: photoUrl == freezed ? _value.photoUrl : photoUrl as String,
@@ -192,6 +201,7 @@ class __$AuthUserCopyWithImpl<$Res> extends _$AuthUserCopyWithImpl<$Res>
 class _$_AuthUser extends _AuthUser with DiagnosticableTreeMixin {
   const _$_AuthUser(
       {this.uid,
+      this.isNew,
       this.displayName,
       this.photoUrl,
       this.email,
@@ -205,6 +215,8 @@ class _$_AuthUser extends _AuthUser with DiagnosticableTreeMixin {
 
   @override
   final String uid;
+  @override // Is new ?
+  final bool isNew;
   @override // Profile infos : Editable by the user
   final String displayName;
   @override
@@ -226,7 +238,7 @@ class _$_AuthUser extends _AuthUser with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AuthUser(uid: $uid, displayName: $displayName, photoUrl: $photoUrl, email: $email, phoneNumber: $phoneNumber, isAnonymous: $isAnonymous, isEmailVerified: $isEmailVerified, creationTime: $creationTime, lastSignInTime: $lastSignInTime, providerId: $providerId)';
+    return 'AuthUser(uid: $uid, isNew: $isNew, displayName: $displayName, photoUrl: $photoUrl, email: $email, phoneNumber: $phoneNumber, isAnonymous: $isAnonymous, isEmailVerified: $isEmailVerified, creationTime: $creationTime, lastSignInTime: $lastSignInTime, providerId: $providerId)';
   }
 
   @override
@@ -235,6 +247,7 @@ class _$_AuthUser extends _AuthUser with DiagnosticableTreeMixin {
     properties
       ..add(DiagnosticsProperty('type', 'AuthUser'))
       ..add(DiagnosticsProperty('uid', uid))
+      ..add(DiagnosticsProperty('isNew', isNew))
       ..add(DiagnosticsProperty('displayName', displayName))
       ..add(DiagnosticsProperty('photoUrl', photoUrl))
       ..add(DiagnosticsProperty('email', email))
@@ -252,6 +265,8 @@ class _$_AuthUser extends _AuthUser with DiagnosticableTreeMixin {
         (other is _AuthUser &&
             (identical(other.uid, uid) ||
                 const DeepCollectionEquality().equals(other.uid, uid)) &&
+            (identical(other.isNew, isNew) ||
+                const DeepCollectionEquality().equals(other.isNew, isNew)) &&
             (identical(other.displayName, displayName) ||
                 const DeepCollectionEquality()
                     .equals(other.displayName, displayName)) &&
@@ -284,6 +299,7 @@ class _$_AuthUser extends _AuthUser with DiagnosticableTreeMixin {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(uid) ^
+      const DeepCollectionEquality().hash(isNew) ^
       const DeepCollectionEquality().hash(displayName) ^
       const DeepCollectionEquality().hash(photoUrl) ^
       const DeepCollectionEquality().hash(email) ^
@@ -303,6 +319,7 @@ abstract class _AuthUser extends AuthUser {
   const _AuthUser._() : super._();
   const factory _AuthUser(
       {String uid,
+      bool isNew,
       String displayName,
       String photoUrl,
       String email,
@@ -315,6 +332,8 @@ abstract class _AuthUser extends AuthUser {
 
   @override
   String get uid;
+  @override // Is new ?
+  bool get isNew;
   @override // Profile infos : Editable by the user
   String get displayName;
   @override

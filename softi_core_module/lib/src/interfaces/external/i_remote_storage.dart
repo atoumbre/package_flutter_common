@@ -21,7 +21,7 @@ class UploadEvent {
 
   UploadEvent({this.rawrResult, this.result, this.type, this.uploaded, this.total});
 
-  get progress => (total != 0 && uploaded != null) ? uploaded / total : 0;
+  double get progress => (total != 0 && uploaded != null) ? uploaded / total : 0;
 }
 
 abstract class IRemoteStorageService extends IBaseService {

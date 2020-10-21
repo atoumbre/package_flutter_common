@@ -14,9 +14,8 @@ class FirebaseAuthEmalPassword extends FirebaseAuthProvider {
   }
 
   Future<AuthUser> createUserWithEmailAndPassword(String email, String password) async {
-    final UserCredential authResult =
-        await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-    return FirebaseAuthProvider.userFromFirebase(authResult.user);
+    final authResult = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+    return FirebaseAuthProvider.userFromFirebase(authResult);
   }
 
   Future<void> sendPasswordResetEmail(String email) async {

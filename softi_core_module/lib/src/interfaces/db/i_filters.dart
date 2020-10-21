@@ -35,6 +35,7 @@ class _FilterBuilder {
 class Filter with BaseFilterMixin implements IFilter {
   Filter([_FilterBuilder filterBuilder]) : _filterBuilder = filterBuilder ?? _FilterBuilder();
 
+  @override
   final _FilterBuilder _filterBuilder;
 }
 
@@ -43,7 +44,10 @@ class FieldFilter with FieldFilterMixin {
       : _field = field,
         _filterBuilder = filterBuilder;
 
+  @override
   final _FilterBuilder _filterBuilder;
+
+  @override
   final String _field;
 }
 
@@ -52,7 +56,10 @@ class FieldFilterExtended with BaseFilterMixin, FieldFilterMixin implements IFil
       : _filterBuilder = filterBuilder ?? _FilterBuilder(),
         _field = field;
 
+  @override
   final _FilterBuilder _filterBuilder;
+
+  @override
   final String _field;
 }
 

@@ -17,11 +17,11 @@ class FirebaseGoogleSignin extends FirebaseAuthProvider {
   ) : super(firebaseAuth);
 
   Future<AuthCredential> getCredentialForGoogle() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    final GoogleSignInAccount googleUser = await googleSignIn.signIn();
+    final googleSignIn = GoogleSignIn();
+    final googleUser = await googleSignIn.signIn();
 
     if (googleUser != null) {
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final googleAuth = await googleUser.authentication;
       if (googleAuth.accessToken != null && googleAuth.idToken != null) {
         return GoogleAuthProvider.credential(
           idToken: googleAuth.idToken,

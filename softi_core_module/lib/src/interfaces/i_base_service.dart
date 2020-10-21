@@ -26,8 +26,8 @@ abstract class IStoppableService extends IBaseService {
   VoidAsyncCallback get startCallback;
   VoidAsyncCallback get stopCallback;
 
-  get isOn => _serviceIsActive;
-  get isEnabled => _serviceIsEnabled;
+  bool get isOn => _serviceIsActive;
+  bool get isEnabled => _serviceIsEnabled;
 
   Future<void> enable({bool statLate = false}) {
     if (statLate) {

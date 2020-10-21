@@ -17,13 +17,13 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
   }
 
   Future<PhoneAuthResult> sendSignInWithPhoneCodeWeb(String phoneNumber) async {
-    Completer<SendCodeResult> sendCodeCompleter = Completer<SendCodeResult>();
+    var sendCodeCompleter = Completer<SendCodeResult>();
 
     var confirmation = await firebaseAuth.signInWithPhoneNumber(phoneNumber);
 
     var result = SendCodeResult(
       phoneNumber: phoneNumber,
-      codeVerification: (code) async => FirebaseAuthProvider.userFromFirebase((await confirmation.confirm(code)).user),
+      codeVerification: (code) async => FirebaseAuthProvider.userFromFirebase((await confirmation.confirm(code))),
       resendCode: () => sendSignInWithPhoneCodeWeb(phoneNumber),
     );
 
@@ -41,10 +41,10 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
     bool autoRetrive = true,
     int autoRetrievalTimeoutSeconds = 30,
   }) async {
-    Completer<SendCodeResult> sendCodeCompleter = Completer<SendCodeResult>();
-    Completer<AuthUser> autoRetriveCompleter = Completer<AuthUser>();
+    var sendCodeCompleter = Completer<SendCodeResult>();
+    var autoRetriveCompleter = Completer<AuthUser>();
 
-    firebaseAuth.verifyPhoneNumber(
+    await firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       forceResendingToken: resendingId,
       codeSent: (verificationId, [resendingId]) {
@@ -73,7 +73,7 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
       timeout: Duration(seconds: autoRetrive ? autoRetrievalTimeoutSeconds : 0),
 
       verificationCompleted: (AuthCredential authCredential) async {
-        AuthUser _user = await signInWithCredential(authCredential);
+        var _user = await signInWithCredential(authCredential);
         autoRetriveCompleter.complete(_user);
       },
 

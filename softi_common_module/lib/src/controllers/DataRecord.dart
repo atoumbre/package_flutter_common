@@ -10,10 +10,10 @@ class DataRecord<T extends IResourceData> {
   bool _reactive = false;
   // bool _initialized = false;
 
-  get id => _data.value?.getId();
-  get exist => id != null;
-  get data => _data.value;
-  get isReactive => _reactive;
+  String get id => _data.value?.getId();
+  bool get exist => id != null;
+  T get data => _data.value;
+  bool get isReactive => _reactive;
 
   final ICollectionService _api;
   final IResource<T> _res;
@@ -26,14 +26,15 @@ class DataRecord<T extends IResourceData> {
     _reactive = reactive;
     _data(record);
 
-    if (fetch)
+    if (fetch) {
       return this.fetch();
-    else
+    } else {
       return Future.value(null);
+    }
   }
 
   Future<void> fetch() {
-    Completer<bool> _initCompleter = Completer<bool>();
+    var _initCompleter = Completer<bool>();
 
     _api.get<T>(_res, id, reactive: _reactive).listen((event) {
       _data(event);
@@ -59,5 +60,5 @@ class DataRecord<T extends IResourceData> {
     _data(_res.deserializer(data));
   }
 
-  call() => _data.value;
+  T call() => _data.value;
 }

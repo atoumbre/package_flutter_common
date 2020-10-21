@@ -16,13 +16,14 @@ dependencies:
   recase:
 
 
-# flutter packages pub run build_runner watch --delete-conflicting-outputs\
+# flutter packages pub run build_runner watch --delete-conflicting-outputs
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  pedantic:
   build_runner:
   freezed:
+  logger:
 
 flutter:
 

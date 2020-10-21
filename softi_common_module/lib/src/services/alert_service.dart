@@ -7,10 +7,12 @@ class DefaultAlertService extends IAlertService {
   Function(AlertRequest, Completer) _showToastListener;
 
   /// Registers a callback function. Typically to show the dialog
+  @override
   void registerDialogListener(Function(AlertRequest, Completer) showDialogListener) {
     _showDialogListener = showDialogListener;
   }
 
+  @override
   void registerToastListener(void Function(AlertRequest, Completer) showToastListener) {
     _showToastListener = showToastListener;
   }
@@ -24,7 +26,7 @@ class DefaultAlertService extends IAlertService {
     DialogStatus status = DialogStatus.info,
     bool needConfirmation = false,
   }) {
-    Completer<AlertResponse> _dialogCompleter = Completer<AlertResponse>();
+    var _dialogCompleter = Completer<AlertResponse>();
     _showDialogListener(
       AlertRequest(
         title: title,
@@ -37,6 +39,7 @@ class DefaultAlertService extends IAlertService {
     return _dialogCompleter.future;
   }
 
+  @override
   Future<AlertResponse> showSuccessDialog(
     String title,
     String message, {
@@ -50,6 +53,7 @@ class DefaultAlertService extends IAlertService {
     );
   }
 
+  @override
   Future<AlertResponse> showInfoDialog(
     String title,
     String message, {
@@ -63,6 +67,7 @@ class DefaultAlertService extends IAlertService {
     );
   }
 
+  @override
   Future<AlertResponse> showErrorDialog(
     String title,
     String message, {
@@ -95,14 +100,17 @@ class DefaultAlertService extends IAlertService {
     return _toastCompleter.future;
   }
 
+  @override
   Future<AlertResponse> showSuccessToast(String title, String message) {
     return showToast(title: title, message: message, status: DialogStatus.success);
   }
 
+  @override
   Future<AlertResponse> showInfoToast(String title, String message) {
     return showToast(title: title, message: message, status: DialogStatus.info);
   }
 
+  @override
   Future<AlertResponse> showErrorToast(String title, String message) {
     return showToast(title: title, message: message, status: DialogStatus.error);
   }

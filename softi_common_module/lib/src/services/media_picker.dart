@@ -4,7 +4,7 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:wechat_camera_picker/wechat_camera_picker.dart';
 
 class MediaPicker extends IMediaPicker {
-  Map<Set<MediaType>, RequestType> _requestTypeMapper = {
+  final _requestTypeMapper = {
     {MediaType.audio}: RequestType.audio,
     {MediaType.video}: RequestType.video,
     {MediaType.image}: RequestType.image,
@@ -14,13 +14,17 @@ class MediaPicker extends IMediaPicker {
     {MediaType.audio, MediaType.image}: RequestType.image,
   };
 
-  Map _typeMap = {AssetType.image: MediaType.image, AssetType.video: MediaType.video, AssetType.audio: MediaType.audio};
+  final _typeMap = {
+    AssetType.image: MediaType.image,
+    AssetType.video: MediaType.video,
+    AssetType.audio: MediaType.audio
+  };
 
   Future<List<FileMediaAsset>> _processAssetsList(
     List<AssetEntity> assets,
     MediaSource source,
   ) async {
-    List<Future<FileMediaAsset>> _fileList = assets.map<Future<FileMediaAsset>>((asset) async {
+    var _fileList = assets.map<Future<FileMediaAsset>>((asset) async {
       print('SSET ID : ${asset.id}');
       return FileMediaAsset(
         file: await asset.file,
@@ -39,7 +43,7 @@ class MediaPicker extends IMediaPicker {
   Future<List<FileMediaAsset>> selectMediaFromCamera({
     Set<MediaType> formats = const {MediaType.image, MediaType.video},
   }) async {
-    final AssetEntity _assetList = await CameraPicker.pickFromCamera(
+    final _assetList = await CameraPicker.pickFromCamera(
       Get.context,
       isOnlyAllowRecording: !formats.contains(MediaType.image),
       isAllowRecording: formats.contains(MediaType.video),
@@ -58,10 +62,10 @@ class MediaPicker extends IMediaPicker {
     List<FileMediaAsset> selectedItemId = const [],
     int maxItem,
   }) async {
-    List<AssetEntity> _lastSelection = await Future.wait(selectedItemId.map((e) => AssetEntity.fromId(e.id)).toList());
+    var _lastSelection = await Future.wait(selectedItemId.map((e) => AssetEntity.fromId(e.id)).toList());
 
-    RequestType _requestType = _requestTypeMapper[formats];
-    final List<AssetEntity> _assetList = await AssetPicker.pickAssets(
+    var _requestType = _requestTypeMapper[formats];
+    final _assetList = await AssetPicker.pickAssets(
       Get.context,
       requestType: _requestType,
       selectedAssets: _lastSelection,

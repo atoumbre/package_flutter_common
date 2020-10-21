@@ -25,10 +25,10 @@ class DataCollection<T extends IResourceData> {
   //
   QueryPagination _pagination;
 
-  RxBool _hasMoreData = true.obs;
-  RxList<T> _data = <T>[].obs;
-  RxList<DataChange<T>> _changes = <DataChange<T>>[].obs;
-  RxBool _waiting = false.obs;
+  final RxBool _hasMoreData = true.obs;
+  final RxList<T> _data = <T>[].obs;
+  final RxList<DataChange<T>> _changes = <DataChange<T>>[].obs;
+  final RxBool _waiting = false.obs;
 
   //+ Exposed data
   RxBool get hasMoreData => _hasMoreData;
@@ -58,7 +58,7 @@ class DataCollection<T extends IResourceData> {
     _waiting(true);
 
     /// Update pagination params
-    int _queryLimit =
+    var _queryLimit =
         _maxRecordNumber == null ? _pageSize : min(_maxRecordNumber - _allPages.length * _pageSize, _pageSize);
 
     _pagination = QueryPagination(
@@ -67,15 +67,15 @@ class DataCollection<T extends IResourceData> {
     );
 
     //* Create the new page if it is a new batch
-    int currentRequestIndex = _allPages.length;
-    _DataPageInfo<T> currentPage = _DataPageInfo<T>(
+    var currentRequestIndex = _allPages.length;
+    var currentPage = _DataPageInfo<T>(
       snapshotCount: 0,
       docs: [],
       changes: [],
     );
     _allPages.add(currentPage);
 
-    Stream<QueryResult<T>> snapshots = _collectionService.find(
+    var snapshots = _collectionService.find(
       _res,
       _params,
       pagination: _pagination,
@@ -112,8 +112,8 @@ class DataCollection<T extends IResourceData> {
 
     _allPages[requestIndex].docs = data;
 
-    List<T> allData = _allPages.fold<List<T>>(
-      List<T>(),
+    var allData = _allPages.fold<List<T>>(
+      <T>[],
       (initialValue, pageItems) => initialValue..addAll(pageItems.docs),
     );
     _data.assignAll(allData);
@@ -133,8 +133,8 @@ class DataCollection<T extends IResourceData> {
     if (changes.isNotEmpty) {
       _allPages[requestIndex].changes.addAll(changes);
 
-      List<DataChange<T>> allChanges = _allPages.fold<List<DataChange<T>>>(
-        List<DataChange<T>>(),
+      var allChanges = _allPages.fold<List<DataChange<T>>>(
+        <DataChange<T>>[],
         (initialValue, pageItems) => initialValue..addAll(pageItems.changes),
       );
       _changes.assignAll(allChanges);
@@ -170,7 +170,7 @@ class _DataPageInfo<T extends IResourceData> {
     this.snapshotCount,
   });
 
-  dispose() {
+  void dispose() {
     if (subscription != null) subscription.cancel();
   }
 }

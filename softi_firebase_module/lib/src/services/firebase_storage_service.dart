@@ -14,6 +14,7 @@ var _eventTypeMap = {
 };
 
 class FirebaseStorageService extends IRemoteStorageService {
+  @override
   Stream<UploadEvent> uploadImage({
     @required dynamic imageToUpload,
     @required String title,
@@ -22,11 +23,11 @@ class FirebaseStorageService extends IRemoteStorageService {
   }) {
     print('Start up load');
 
-    String imageFileName = title + (addTimestamp ? DateTime.now().millisecondsSinceEpoch.toString() : '');
+    var imageFileName = title + (addTimestamp ? DateTime.now().millisecondsSinceEpoch.toString() : '');
 
-    final Reference firebaseStorageRef = FirebaseStorage.instance.ref().child(imageFileName);
+    final firebaseStorageRef = FirebaseStorage.instance.ref().child(imageFileName);
 
-    UploadTask uploadTask = isFile
+    var uploadTask = isFile
         ? firebaseStorageRef.putFile(imageToUpload as File)
         : firebaseStorageRef.putData(imageToUpload as Uint8List);
 
@@ -66,8 +67,9 @@ class FirebaseStorageService extends IRemoteStorageService {
     // return null;
   }
 
+  @override
   Future deleteImage(String imageFileName) async {
-    final Reference firebaseStorageRef = FirebaseStorage.instance.ref().child(imageFileName);
+    final firebaseStorageRef = FirebaseStorage.instance.ref().child(imageFileName);
 
     try {
       await firebaseStorageRef.delete();

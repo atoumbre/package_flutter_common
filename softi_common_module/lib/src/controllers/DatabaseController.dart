@@ -1,12 +1,13 @@
-import 'package:softi_common_module/src/controllers/collection_controller.dart';
-import 'package:softi_common_module/src/controllers/record_controller.dart';
+import 'package:get/get.dart';
+import 'package:softi_common_module/src/controllers/DataCollection.dart';
+import 'package:softi_common_module/src/controllers/DataRecord.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
 class DatabaseController {
   final ICollectionService _api;
   final Map<dynamic, dynamic> _resourceMapper;
 
-  DatabaseController(this._api, this._resourceMapper);
+  DatabaseController(this._resourceMapper, [ICollectionService api]) : _api = api ?? Get.find();
 
   DataCollection<T> collection<T extends IResourceData>([IResource<T> _res]) {
     return DataCollection<T>(_api, _res ?? _resourceMapper[T]);

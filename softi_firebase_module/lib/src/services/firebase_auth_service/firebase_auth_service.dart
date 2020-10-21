@@ -60,7 +60,7 @@ class FirebaseAuthService extends IAuthService {
   Stream<dynamic> get errorStream => _errorStreamController.stream;
 
   @override
-  Stream<AuthUser> get authUserStream => firebaseAuth.authStateChanges().map(FirebaseAuthProvider.userFromFirebase);
+  Stream<AuthUser> get authUserStream => firebaseAuth.authStateChanges().map(FirebaseAuthProvider.authUserFromUser);
 
   @override
   void refresh() {
@@ -107,8 +107,8 @@ class FirebaseAuthService extends IAuthService {
   @override
   Future<AuthUser> signInAnonymously() {
     return _catchError<AuthUser>(() async {
-      final UserCredential authResult = await firebaseAuth.signInAnonymously();
-      return FirebaseAuthProvider.userFromFirebase(authResult.user);
+      final authResult = await firebaseAuth.signInAnonymously();
+      return FirebaseAuthProvider.userFromFirebase(authResult);
     });
   }
 

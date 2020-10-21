@@ -28,7 +28,10 @@ class LocationService extends ILocationService {
     });
   }
 
+  @override
   Stream<LocationData> get locationStream => _locationStream;
+
+  @override
   LocationData get currentLocation => _currentLocation;
 
   @override
@@ -43,6 +46,6 @@ class LocationService extends ILocationService {
 
   @override
   VoidAsyncCallback get stopCallback => () async {
-        _streamSubscription?.cancel();
+        await _streamSubscription?.cancel();
       };
 }

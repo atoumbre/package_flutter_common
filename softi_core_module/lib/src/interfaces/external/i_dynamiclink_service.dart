@@ -5,11 +5,11 @@ abstract class IDynamicLinkService extends IBaseService {
   /// Many handlers can be registered, incomimg deepLink will be pass through
   /// all of them
   ///
-  registerhandleDeeplinks(DeepLinkHandler uri);
+  void registerhandleDeeplinks(DeepLinkHandler uri);
 
   /// Initiate handling of deepLinks
   ///
-  handleDeeplinks();
+  void handleDeeplinks();
   Future<String> createDeepLink(String queryString);
 }
 

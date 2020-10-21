@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
-String facebookRedirectUrl; //"https://www.facebook.com/connect/login_success.html";
+String facebookRedirectUrl; //'https://www.facebook.com/connect/login_success.html';
 
 Widget facebookLoginWebView(
   // BuildContext context,
@@ -23,32 +23,32 @@ class _CustomWebView extends StatefulWidget {
 }
 
 class _CustomWebViewState extends State<_CustomWebView> {
-  final flutterWebviewPlugin = new FlutterWebviewPlugin();
+  final flutterWebviewPlugin = FlutterWebviewPlugin();
 
   @override
   void initState() {
     super.initState();
 
     flutterWebviewPlugin.onUrlChanged.listen((String url) {
-      if (url.contains("#access_token")) {
+      if (url.contains('#access_token')) {
         succeed(url);
       }
 
       if (url.contains(
-          "https://www.facebook.com/connect/login_success.html?error=access_denied&error_code=200&error_description=Permissions+error&error_reason=user_denied")) {
+          'https://www.facebook.com/connect/login_success.html?error=access_denied&error_code=200&error_description=Permissions+error&error_reason=user_denied')) {
         denied();
       }
     });
   }
 
-  denied() {
+  void denied() {
     Navigator.pop(context);
   }
 
-  succeed(String url) {
-    var params = url.split("access_token=");
+  void succeed(String url) {
+    var params = url.split('access_token=');
 
-    var endparam = params[1].split("&");
+    var endparam = params[1].split('&');
 
     Navigator.pop(context, endparam[0]);
   }
@@ -59,9 +59,9 @@ class _CustomWebViewState extends State<_CustomWebView> {
         url: widget.selectedUrl,
         hidden: true,
         initialChild: Center(child: CircularProgressIndicator()),
-        appBar: new AppBar(
+        appBar: AppBar(
           backgroundColor: Color.fromRGBO(66, 103, 178, 1),
-          title: new Text("Facebook login"),
+          title: Text('Facebook login'),
         ));
   }
 }

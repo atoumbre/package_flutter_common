@@ -17,6 +17,8 @@ dependencies:
   flutter_secure_storage:
   wechat_assets_picker: 
   wechat_camera_picker:
+  flutter_form_builder: ^4.0.0-pre.4
+  merge_map:
 
   softi_core_module:
     path: ../softi_core_module
@@ -24,6 +26,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  logger:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

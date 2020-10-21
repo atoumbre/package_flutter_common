@@ -1,15 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:softi_core_module/src/interfaces/i_base_service.dart';
 
 abstract class INavigationService extends IBaseService {
   GlobalKey<NavigatorState> get navigationKey;
 
-  back<T>(T result);
+  void back<T>(T result);
 
-  Future<T> to<T>(String routeName, {dynamic arguments, NavType type: NavType.Push});
-  Future<T> toView<T>(Widget view, {dynamic arguments, NavType type: NavType.Push});
+  Future<T> to<T>(String routeName, {dynamic arguments, NavType type = NavType.Push});
+  Future<T> toView<T>(Widget view, {dynamic arguments, NavType type = NavType.Push});
 
-  refresh();
+  Future<void> refresh();
 }
 
 enum NavType {

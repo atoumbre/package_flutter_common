@@ -20,7 +20,7 @@ class FirebaseAuthFacebookSignIn extends FirebaseAuthProvider {
     //   ),
     // );
 
-    String result = await navigator(facebookLoginWebView(facebookClientId));
+    var result = await navigator(facebookLoginWebView(facebookClientId));
 
     if (result != null) {
       return FacebookAuthProvider.credential(result);

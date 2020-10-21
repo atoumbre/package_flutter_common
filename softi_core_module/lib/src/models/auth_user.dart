@@ -10,6 +10,9 @@ abstract class AuthUser implements _$AuthUser {
   const factory AuthUser({
     final String uid,
 
+    // Is new ?
+    final bool isNew,
+
     // Profile infos : Editable by the user
     final String displayName,
     final String photoUrl,

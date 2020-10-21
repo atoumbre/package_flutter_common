@@ -18,7 +18,8 @@ class FirestoreCollectionService extends ICollectionService {
     return _firestoreInstance.collection(res.endpointResolver());
   }
 
-  find<T extends IResourceData>(
+  @override
+  Stream<QueryResult<T>> find<T extends IResourceData>(
     IResource<T> res,
     QueryParameters params, {
     QueryPagination pagination,
@@ -56,7 +57,7 @@ class FirestoreCollectionService extends ICollectionService {
         return QueryResult<T>(
           data,
           changes,
-          cursor: snapshot.docs.length > 0 ? snapshot.docs.last : null,
+          cursor: snapshot.docs.isNotEmpty ? snapshot.docs.last : null,
         );
       },
     );
@@ -65,6 +66,7 @@ class FirestoreCollectionService extends ICollectionService {
   }
 
   // Check if record exsits
+  @override
   Future<bool> exists<T extends IResourceData>(IResource<T> res, String recordId) async {
     var _result = await _getRef<T>(res) //
         .doc(recordId)
@@ -75,6 +77,7 @@ class FirestoreCollectionService extends ICollectionService {
   }
 
   // Stream documenent from db
+  @override
   Stream<T> get<T extends IResourceData>(IResource<T> res, String recordId, {bool reactive = true}) {
     var _result = _getRef<T>(res) //
         .doc(recordId)
@@ -84,15 +87,17 @@ class FirestoreCollectionService extends ICollectionService {
     return reactive ? _result : Stream.fromFuture(_result.first);
   }
 
+  @override
   Future<void> update<T extends IResourceData>(IResource<T> res, String id, Map<String, dynamic> values) async {
-    DocumentReference docRef = _getRef<T>(res) //
+    var docRef = _getRef<T>(res) //
         .doc(id);
 
     await docRef.set(firestireMap(values, false), SetOptions(merge: true));
   }
 
+  @override
   Future<T> save<T extends IResourceData>(IResource<T> res, T doc) async {
-    String id = doc.getId() ?? '';
+    var id = doc.getId() ?? '';
     DocumentReference docRef;
 
     if (id == '') {
@@ -109,6 +114,7 @@ class FirestoreCollectionService extends ICollectionService {
     //   return doc;
   }
 
+  @override
   Future<void> delete<T extends IResourceData>(IResource<T> res, String documentId) async {
     await _getRef<T>(res) //
         .doc(documentId)
@@ -123,7 +129,7 @@ class FirestoreCollectionService extends ICollectionService {
   }) {
     Query _query = ref;
 
-    if (params?.filterList != null)
+    if (params?.filterList != null) {
       params.filterList.forEach((where) {
         switch (where.condition) {
           case QueryOperator.equal:
@@ -153,12 +159,14 @@ class FirestoreCollectionService extends ICollectionService {
           default:
         }
       });
+    }
 
     // Set orderBy
-    if (params?.sortList != null)
+    if (params?.sortList != null) {
       params.sortList.forEach((orderBy) {
         _query = _query.orderBy(orderBy.field, descending: orderBy.desc);
       });
+    }
 
     // Get the last Document
     if (pagination?.cursor != null) {

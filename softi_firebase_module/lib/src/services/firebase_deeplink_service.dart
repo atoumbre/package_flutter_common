@@ -8,11 +8,12 @@ class FirebaseDeeplinkService extends IDynamicLinkService {
   final FirebaseSettings settings;
   final FirebaseDynamicLinks deepLinkInstance = FirebaseDynamicLinks.instance;
 
-  List<DeepLinkHandler> _deepLinkHandler = [];
+  final List<DeepLinkHandler> _deepLinkHandler = [];
 
+  @override
   Future<void> handleDeeplinks() async {
     // Get the initial dynamic link if the app is opened with a dynamic link
-    final PendingDynamicLinkData data = await deepLinkInstance.getInitialLink();
+    final data = await deepLinkInstance.getInitialLink();
 
     // handle link that has been retrieved
     _handleDeeplink(data);
@@ -34,7 +35,7 @@ class FirebaseDeeplinkService extends IDynamicLinkService {
   void _handleDeeplink(PendingDynamicLinkData data) async {
     if (data == null) return;
 
-    DynamicLinkData _data = DynamicLinkData(
+    var _data = DynamicLinkData(
       link: data.link,
       iosMinimumVersion: data.ios.minimumVersion,
       androidMinimumVersion: data?.android?.minimumVersion,
@@ -49,13 +50,14 @@ class FirebaseDeeplinkService extends IDynamicLinkService {
     });
   }
 
-  registerhandleDeeplinks(deepLinkHandler) {
+  @override
+  void registerhandleDeeplinks(deepLinkHandler) {
     _deepLinkHandler.add(deepLinkHandler);
   }
 
-  /// create a
+  @override
   Future<String> createDeepLink(String queryString) async {
-    final DynamicLinkParameters parameters = DynamicLinkParameters(
+    final parameters = DynamicLinkParameters(
       uriPrefix: settings.dynamicLinkPrefix,
       link: Uri.parse('${settings.url}/?$queryString'),
 
@@ -77,7 +79,7 @@ class FirebaseDeeplinkService extends IDynamicLinkService {
       ),
     );
 
-    final Uri dynamicUrl = await parameters.buildUrl();
+    final dynamicUrl = await parameters.buildUrl();
 
     return dynamicUrl.toString();
   }
