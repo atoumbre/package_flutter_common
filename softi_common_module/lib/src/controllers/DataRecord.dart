@@ -18,7 +18,7 @@ class DataRecord<T extends IResourceData> {
   final ICollectionService _api;
   final IResource<T> _res;
 
-  Future<void> init(
+  Future<T> init(
     T record, {
     bool fetch = true,
     bool reactive = true,
@@ -33,12 +33,12 @@ class DataRecord<T extends IResourceData> {
     }
   }
 
-  Future<void> fetch() {
-    var _initCompleter = Completer<bool>();
+  Future<T> fetch() {
+    var _initCompleter = Completer<T>();
 
     _api.get<T>(_res, id, reactive: _reactive).listen((event) {
       _data(event);
-      _initCompleter.complete(true);
+      _initCompleter.complete(_data());
     });
 
     return _initCompleter.future;
