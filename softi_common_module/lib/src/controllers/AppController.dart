@@ -62,6 +62,7 @@ class AppController extends GetxService {
 
   @override
   void onInit() {
+    super.onInit();
     getThemeMode();
   }
 }

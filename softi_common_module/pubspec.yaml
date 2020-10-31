@@ -14,6 +14,7 @@ dependencies:
   
   get:
   get_storage:
+  # logger:
   flutter_secure_storage:
   wechat_assets_picker: 
   wechat_camera_picker:
@@ -26,7 +27,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  logger:
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

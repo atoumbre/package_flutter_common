@@ -40,7 +40,10 @@ abstract class DataCollectionController<T extends IResourceData> extends BaseCon
   }
 
   @override
-  void onReady() => init();
+  void onReady() {
+    super.onReady();
+    init();
+  }
 
   @override
   void onClose() {

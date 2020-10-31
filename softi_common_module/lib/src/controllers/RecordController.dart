@@ -14,5 +14,8 @@ abstract class DataRecordController<T extends IResourceData> extends BaseControl
   }
 
   @override
-  void onReady() => init();
+  Future<void> onReady() {
+    super.onReady();
+    return init();
+  }
 }
