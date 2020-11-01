@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 import 'package:softi_firebase_module/src/services/firebase_auth_service/firebase_auth_provider.dart';
 
@@ -16,32 +15,34 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
     return signInWithCredential(await getCredentialForPhone(verificationId, smsOTP));
   }
 
-  Future<PhoneAuthResult> sendSignInWithPhoneCodeWeb(String phoneNumber) async {
-    var sendCodeCompleter = Completer<SendCodeResult>();
+  // ignore: unused_element
+  // Future<PhoneAuthResult> _sendSignInWithPhoneCodeWeb(String phoneNumber) async {
+  //   var sendCodeCompleter = Completer<SendCodeResult>();
 
-    var confirmation = await firebaseAuth.signInWithPhoneNumber(phoneNumber);
+  //   var confirmation = await firebaseAuth.signInWithPhoneNumber(phoneNumber);
 
-    var result = SendCodeResult(
-      phoneNumber: phoneNumber,
-      codeVerification: (code) async => FirebaseAuthProvider.userFromFirebase((await confirmation.confirm(code))),
-      resendCode: () => sendSignInWithPhoneCodeWeb(phoneNumber),
-    );
+  //   var result = SendCodeResult(
+  //     phoneNumber: phoneNumber,
+  //     codeVerification: (code) async => FirebaseAuthProvider.userFromFirebase((await confirmation.confirm(code))),
+  //     resendCode: () => _sendSignInWithPhoneCodeWeb(phoneNumber),
+  //   );
 
-    sendCodeCompleter.complete(result);
+  //   sendCodeCompleter.complete(result);
 
-    return PhoneAuthResult(
-      sendCodeFuture: sendCodeCompleter.future,
-      autoRetriveFuture: null,
-    );
-  }
+  //   return PhoneAuthResult(
+  //     sendCodeFuture: await sendCodeCompleter.future,
+  //     autoRetriveFuture: null,
+  //   );
+  // }
 
-  Future<PhoneAuthResult> sendSignInWithPhoneCodeNative({
+  Future<SendCodeResult> sendSignInWithPhoneCodeNative({
     String phoneNumber,
     dynamic resendingId,
     bool autoRetrive = true,
     int autoRetrievalTimeoutSeconds = 30,
   }) async {
-    var sendCodeCompleter = Completer<SendCodeResult>();
+    var _sendCodeCompleter = Completer<SendCodeResult>();
+
     var autoRetriveCompleter = Completer<AuthUser>();
 
     await firebaseAuth.verifyPhoneNumber(
@@ -49,22 +50,33 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
       forceResendingToken: resendingId,
       codeSent: (verificationId, [resendingId]) {
         var result = SendCodeResult(
+          ///
           phoneNumber: phoneNumber,
-          codeVerification: (code) => signInWithPhone(verificationId, code),
+
+          ///
+          codeVerification: (code) async {
+            var _result = await signInWithPhone(verificationId, code);
+            autoRetriveCompleter.complete(_result);
+            return _result;
+          },
+
+          ///
           resendCode: () => sendSignInWithPhoneCodeNative(
             phoneNumber: phoneNumber,
             resendingId: resendingId,
             autoRetrive: autoRetrive,
             autoRetrievalTimeoutSeconds: autoRetrievalTimeoutSeconds,
           ),
+
+          ///
+          authResult: autoRetriveCompleter.future,
         );
 
-        sendCodeCompleter.complete(result);
+        _sendCodeCompleter.complete(result);
       },
 
-      verificationFailed: (FirebaseAuthException authException) {
-        sendCodeCompleter.completeError(authException);
-
+      verificationFailed: (authException) {
+        _sendCodeCompleter.completeError(authException);
         return;
       },
 
@@ -83,27 +95,24 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
       },
     );
 
-    return PhoneAuthResult(
-      sendCodeFuture: sendCodeCompleter.future,
-      autoRetriveFuture: autoRetriveCompleter.future,
-    );
+    return _sendCodeCompleter.future;
   }
 
-  Future<PhoneAuthResult> sendSignInWithPhoneCode({
+  Future<SendCodeResult> sendSignInWithPhoneCode({
     String phoneNumber,
     dynamic resendingId,
     bool autoRetrive = true,
     int autoRetrievalTimeoutSeconds = 30,
   }) {
-    if (kIsWeb) {
-      return sendSignInWithPhoneCodeWeb(phoneNumber);
-    } else {
-      return sendSignInWithPhoneCodeNative(
-        phoneNumber: phoneNumber,
-        resendingId: resendingId,
-        autoRetrive: autoRetrive,
-        autoRetrievalTimeoutSeconds: autoRetrievalTimeoutSeconds,
-      );
-    }
+    // if (kIsWeb) {
+    //   return sendSignInWithPhoneCodeWeb(phoneNumber);
+    // } else {
+    return sendSignInWithPhoneCodeNative(
+      phoneNumber: phoneNumber,
+      resendingId: resendingId,
+      autoRetrive: autoRetrive,
+      autoRetrievalTimeoutSeconds: autoRetrievalTimeoutSeconds,
+    );
+    // }
   }
 }

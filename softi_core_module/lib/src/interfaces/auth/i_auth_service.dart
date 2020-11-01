@@ -29,7 +29,7 @@ abstract class IAuthService extends IBaseService {
 
   // Phone login
   Future<AuthUser> signInWithPhone(verificationId, smsOTP);
-  Future<PhoneAuthResult> sendSignInWithPhoneCode({
+  Future<SendCodeResult> sendSignInWithPhoneCode({
     String phoneNumber,
     dynamic resendingId,
     bool autoRetrive,
@@ -44,23 +44,37 @@ abstract class IAuthService extends IBaseService {
   void dispose();
 }
 
-class PhoneAuthResult {
-  final Future<SendCodeResult> sendCodeFuture;
-  final Future<AuthUser> autoRetriveFuture;
+// class PhoneAuthResult {
+//   final SendCodeResult sendCodeFuture;
+//   final Future<AuthUser> autoRetriveFuture;
 
-  PhoneAuthResult({
-    this.sendCodeFuture,
-    this.autoRetriveFuture,
-  });
-}
+//   PhoneAuthResult({
+//     this.sendCodeFuture,
+//     this.autoRetriveFuture,
+//   });
+// }
+
+// class SendCodeResult {
+//   final Future<AuthUser> Function(String) codeVerification;
+//   final Future<PhoneAuthResult> Function() resendCode;
+//   final String phoneNumber;
+
+//   SendCodeResult({
+//     @required this.phoneNumber,
+//     this.codeVerification,
+//     this.resendCode,
+//   });
+// }
 
 class SendCodeResult {
-  final Future<AuthUser> Function(String) codeVerification;
-  final Future<PhoneAuthResult> Function() resendCode;
   final String phoneNumber;
+  final Future<AuthUser> authResult;
+  final Future<SendCodeResult> Function() resendCode;
+  final Future<AuthUser> Function(String) codeVerification;
 
   SendCodeResult({
     @required this.phoneNumber,
+    this.authResult,
     this.codeVerification,
     this.resendCode,
   });

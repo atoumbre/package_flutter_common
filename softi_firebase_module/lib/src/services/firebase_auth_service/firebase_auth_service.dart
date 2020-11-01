@@ -88,13 +88,13 @@ class FirebaseAuthService extends IAuthService {
   }
 
   @override
-  Future<PhoneAuthResult> sendSignInWithPhoneCode({
+  Future<SendCodeResult> sendSignInWithPhoneCode({
     String phoneNumber,
     resendingId,
     bool autoRetrive,
     int autoRetrievalTimeoutSeconds = 30,
   }) {
-    return _catchError<PhoneAuthResult>(
+    return _catchError<SendCodeResult>(
       () => phoneSignin.sendSignInWithPhoneCode(
         phoneNumber: phoneNumber,
         resendingId: resendingId,
