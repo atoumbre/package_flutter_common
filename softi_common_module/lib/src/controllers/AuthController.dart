@@ -21,7 +21,9 @@ class AuthController extends GetxController {
   /// METHODS
 
   void init() {
-    authUser.bindStream(_auth.authUserStream.map((event) => event ?? AuthUser(uid: null)));
+    authUser.bindStream(_auth.authUserStream.map((event) {
+      return event ?? AuthUser(uid: null);
+    }));
 
     _auth.errorStream.listen((event) {
       _logger.d('[AUTH ERROR STREAM] ' + event.toString());
