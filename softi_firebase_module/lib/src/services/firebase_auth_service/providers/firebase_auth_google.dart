@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:softi_core_module/softi_core_module.dart';
-import 'package:softi_firebase_module/services/firebase_auth_service/firebase_auth_provider.dart';
+import 'package:softi_firebase_module/src/services/firebase_auth_service/firebase_auth_provider.dart';
 
 class FirebaseGoogleSignin extends FirebaseAuthProvider {
   FirebaseGoogleSignin(

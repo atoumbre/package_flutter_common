@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:softi_common_module/controllers/DataCollection.dart';
-import 'package:softi_common_module/controllers/DataRecord.dart';
+import 'package:softi_common_module/src/controllers/DataCollection.dart';
+import 'package:softi_common_module/src/controllers/DataRecord.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
 class DatabaseController {
