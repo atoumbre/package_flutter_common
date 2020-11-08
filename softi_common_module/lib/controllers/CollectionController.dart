@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:softi_common_module/softi_common_module.dart';
-import 'package:softi_common_module/src/controllers/BaseController.dart';
-import 'package:softi_common_module/src/controllers/DataCollection.dart';
-import 'package:softi_core_module/softi_core_module.dart';
 import 'package:logger/logger.dart';
+import 'package:softi_common_module/controllers/BaseController.dart';
+import 'package:softi_common_module/controllers/DataCollection.dart';
+import 'package:softi_common_module/controllers/DatabaseController.dart';
+import 'package:softi_core_module/softi_core_module.dart';
 
 abstract class DataCollectionController<T extends IResourceData> extends BaseController {
   final Logger _logger;

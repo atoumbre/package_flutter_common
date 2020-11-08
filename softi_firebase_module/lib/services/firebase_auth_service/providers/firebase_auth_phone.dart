@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:softi_core_module/softi_core_module.dart';
-import 'package:softi_firebase_module/src/services/firebase_auth_service/firebase_auth_provider.dart';
+import 'package:softi_firebase_module/services/firebase_auth_service/firebase_auth_provider.dart';
 
 class FirebaseAuthPhone extends FirebaseAuthProvider {
   FirebaseAuthPhone(FirebaseAuth firebaseAuth) : super(firebaseAuth);

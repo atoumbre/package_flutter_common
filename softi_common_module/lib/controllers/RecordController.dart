@@ -1,4 +1,5 @@
-import 'package:softi_common_module/softi_common_module.dart';
+import 'package:softi_common_module/controllers/DataRecord.dart';
+import 'package:softi_common_module/controllers/DatabaseController.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
 import 'BaseController.dart';
