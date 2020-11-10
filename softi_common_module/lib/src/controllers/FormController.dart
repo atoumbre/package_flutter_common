@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
 import 'package:softi_common_module/src/controllers/BaseController.dart';
-import 'package:softi_common_module/src/controllers/DatabaseController.dart';
+import 'package:softi_common_module/src/controllers/db/Database.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 import 'package:logger/logger.dart';
 import 'package:merge_map/merge_map.dart';
 
 abstract class FormController<T extends IResourceData> extends BaseController {
+  final DatabaseController _db;
+  final INavigationService _nav;
+  final Logger _logger;
+
   final bool isEdit;
   final T record;
   final GlobalKey<FormBuilderState> formKey = GlobalKey();
   final Map<String, dynamic> initialValue;
-  final INavigationService _nav;
-  final DatabaseController _db;
-  final Logger _logger;
 
   FormController(
     T editingRecord, [
@@ -77,18 +78,17 @@ abstract class FormController<T extends IResourceData> extends BaseController {
         /// Fire onSave with fresh data for side effect
         await afterSave(_product);
 
-        busy.toggle();
-
         ///
         onCompleted();
       } else {
         _logger.d('${T.toString()} Form : validation failed');
-        busy.toggle();
+
         return false;
       }
     } catch (e) {
-      busy.toggle();
       rethrow;
+    } finally {
+      busy.toggle();
     }
   }
 

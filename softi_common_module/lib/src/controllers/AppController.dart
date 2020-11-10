@@ -11,7 +11,7 @@ class AppController extends GetxService {
   AppController([ILocalStore store]) : _store = store ?? Get.find();
 
   final _themeMode = ThemeMode.system.obs;
-  final _locale = Locale('fr').obs;
+  final _locale = Locale('en').obs;
 
   ThemeMode get themeMode => _themeMode.value;
   Locale get locale => _locale.value;

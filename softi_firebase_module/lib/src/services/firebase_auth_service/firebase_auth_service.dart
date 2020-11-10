@@ -9,7 +9,7 @@ import 'package:softi_firebase_module/src/services/firebase_auth_service/provide
 import 'package:softi_firebase_module/src/services/firebase_auth_service/providers/firebase_auth_facebook.dart';
 import 'package:softi_firebase_module/src/services/firebase_auth_service/providers/firebase_auth_google.dart';
 import 'package:softi_firebase_module/src/services/firebase_auth_service/providers/firebase_auth_phone.dart';
-import 'package:softi_firebase_module/src/settings.dart';
+import 'package:softi_firebase_module/src/models/settings.dart';
 
 class FirebaseAuthService extends IAuthService {
   final FirebaseAuth firebaseAuth;
