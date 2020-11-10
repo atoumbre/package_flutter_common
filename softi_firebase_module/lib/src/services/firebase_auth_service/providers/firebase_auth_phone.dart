@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 import 'package:softi_firebase_module/src/services/firebase_auth_service/firebase_auth_provider.dart';
 
@@ -15,27 +16,17 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
     return signInWithCredential(await getCredentialForPhone(verificationId, smsOTP));
   }
 
-  // ignore: unused_element
-  // Future<PhoneAuthResult> _sendSignInWithPhoneCodeWeb(String phoneNumber) async {
-  //   var sendCodeCompleter = Completer<SendCodeResult>();
+  Future<SendCodeResult> _sendSignInWithPhoneCodeWeb(String phoneNumber) async {
+    var confirmation = await firebaseAuth.signInWithPhoneNumber(phoneNumber);
 
-  //   var confirmation = await firebaseAuth.signInWithPhoneNumber(phoneNumber);
+    return SendCodeResult(
+      phoneNumber: phoneNumber,
+      codeVerification: (code) async => FirebaseAuthProvider.userFromFirebase((await confirmation.confirm(code))),
+      resendCode: () => _sendSignInWithPhoneCodeWeb(phoneNumber),
+    );
+  }
 
-  //   var result = SendCodeResult(
-  //     phoneNumber: phoneNumber,
-  //     codeVerification: (code) async => FirebaseAuthProvider.userFromFirebase((await confirmation.confirm(code))),
-  //     resendCode: () => _sendSignInWithPhoneCodeWeb(phoneNumber),
-  //   );
-
-  //   sendCodeCompleter.complete(result);
-
-  //   return PhoneAuthResult(
-  //     sendCodeFuture: await sendCodeCompleter.future,
-  //     autoRetriveFuture: null,
-  //   );
-  // }
-
-  Future<SendCodeResult> sendSignInWithPhoneCodeNative({
+  Future<SendCodeResult> _sendSignInWithPhoneCodeNative({
     String phoneNumber,
     dynamic resendingId,
     bool autoRetrive = true,
@@ -61,7 +52,7 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
           },
 
           ///
-          resendCode: () => sendSignInWithPhoneCodeNative(
+          resendCode: () => _sendSignInWithPhoneCodeNative(
             phoneNumber: phoneNumber,
             resendingId: resendingId,
             autoRetrive: autoRetrive,
@@ -104,15 +95,15 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
     bool autoRetrive = true,
     int autoRetrievalTimeoutSeconds = 30,
   }) {
-    // if (kIsWeb) {
-    //   return sendSignInWithPhoneCodeWeb(phoneNumber);
-    // } else {
-    return sendSignInWithPhoneCodeNative(
-      phoneNumber: phoneNumber,
-      resendingId: resendingId,
-      autoRetrive: autoRetrive,
-      autoRetrievalTimeoutSeconds: autoRetrievalTimeoutSeconds,
-    );
-    // }
+    if (kIsWeb) {
+      return _sendSignInWithPhoneCodeWeb(phoneNumber);
+    } else {
+      return _sendSignInWithPhoneCodeNative(
+        phoneNumber: phoneNumber,
+        resendingId: resendingId,
+        autoRetrive: autoRetrive,
+        autoRetrievalTimeoutSeconds: autoRetrievalTimeoutSeconds,
+      );
+    }
   }
 }
