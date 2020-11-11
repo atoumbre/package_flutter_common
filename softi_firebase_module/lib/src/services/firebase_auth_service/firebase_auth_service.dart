@@ -60,6 +60,9 @@ class FirebaseAuthService extends IAuthService {
   Stream<dynamic> get errorStream => _errorStreamController.stream;
 
   @override
+  Future<AuthUser> get getCurrentUser => Future.value(FirebaseAuthProvider.authUserFromUser(firebaseAuth.currentUser));
+
+  @override
   Stream<AuthUser> get authUserStream => firebaseAuth.authStateChanges().map(FirebaseAuthProvider.authUserFromUser);
 
   @override

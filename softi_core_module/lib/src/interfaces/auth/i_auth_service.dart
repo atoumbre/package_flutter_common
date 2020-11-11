@@ -5,6 +5,7 @@ import 'package:softi_core_module/src/interfaces/i_base_service.dart';
 import 'package:softi_core_module/src/models/auth_user.dart';
 
 abstract class IAuthService extends IBaseService {
+  Future<AuthUser> get getCurrentUser;
   Stream<AuthUser> get authUserStream;
 
   // Anonymous login

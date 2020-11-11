@@ -7,7 +7,7 @@ class FirestoreResource<T> extends IResource<T> {
 
   FirestoreResource({
     @required this.fromJson,
-    this.endpoint,
+    @required this.endpoint,
   });
 
   @override
