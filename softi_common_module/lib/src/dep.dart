@@ -40,3 +40,5 @@ class CommonServices {
   // static IAlertService get alert => Get.find();
 
 }
+
+Future<void> commonStartupLogic() async {}

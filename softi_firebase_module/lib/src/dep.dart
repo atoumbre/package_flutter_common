@@ -5,12 +5,13 @@ import 'package:softi_core_module/softi_core_module.dart';
 import 'package:softi_firebase_module/softi_firebase_module.dart';
 import 'package:softi_firebase_module/src/services/firebase_auth_service/firebase_auth_service.dart';
 
-Future<void> firebaseDependenciesSetup(FirebaseSettings firebaseSettings, Map<dynamic, dynamic> resourceMapper) async {
+Future<void> firebaseDependenciesSetup(FirebaseSettings firebaseSettings) async {
   /// Third party lib initialization
   await Future.wait([
     Firebase.initializeApp(),
   ]);
 
+  // Global setings
   FirebaseStorage.instance.setMaxUploadRetryTime(Duration(minutes: 5));
 
   var firebaseDeeplinkService = FirebaseDeeplinkService(
