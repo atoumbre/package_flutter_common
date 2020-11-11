@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:softi_core_module/softi_core_module.dart';
+import 'package:softi_core_module/src/interfaces/db/i_collection_service.dart';
 
 class DataRecord<T extends IResourceData> {
   DataRecord(this._api, this._res);

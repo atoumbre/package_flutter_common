@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:get/get.dart';
-import 'package:softi_core_module/softi_core_module.dart';
+import 'package:softi_core_module/src/interfaces/db/i_collection_service.dart';
 
 class DataCollection<T extends IResourceData> {
   DataCollection(ICollectionService collectionService, IResource<T> res)

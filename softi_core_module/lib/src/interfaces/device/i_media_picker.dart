@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:softi_core_module/softi_core_module.dart';
+import 'package:softi_core_module/src/interfaces/i_base_service.dart';
 
 enum MediaType { image, video, audio }
 enum MediaSource { galery, camera, network, memory, asset }
