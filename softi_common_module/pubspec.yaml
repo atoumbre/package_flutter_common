@@ -14,6 +14,7 @@ dependencies:
   
   get:
   get_storage:
+  stacked_services:
   flutter_secure_storage:
   wechat_assets_picker: 
   wechat_camera_picker:

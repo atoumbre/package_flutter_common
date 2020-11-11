@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  get:
+
   logger:
   freezed_annotation:
   location:

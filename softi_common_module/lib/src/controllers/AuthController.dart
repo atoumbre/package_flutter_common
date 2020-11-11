@@ -20,10 +20,10 @@ class AuthController extends GetxController {
 
   /// METHODS
 
-  void init() async {
-    var _authUser = await _auth.authUserStream.first;
+  void init() {
+    // var _authUser = await _auth.getCurrentUser;
 
-    authUser(_authUser);
+    // authUser(_authUser ?? AuthUser(uid: null));
 
     authUser.bindStream(_auth.authUserStream.map((event) {
       return event ?? AuthUser(uid: null);
