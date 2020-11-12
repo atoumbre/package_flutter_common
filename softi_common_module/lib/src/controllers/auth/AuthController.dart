@@ -23,11 +23,12 @@ class AuthController {
   /// METHODS
 
   void init() async {
-    var _authUser = await _auth.getCurrentUser;
+    // var _authUser = await _auth.getCurrentUser;
 
-    authUser(_authUser ?? AuthUser(uid: null));
+    // authUser(_authUser ?? AuthUser(uid: null));
 
-    authUser.bindStream(_auth.authUserStream.map((event) {
+    authUser.bindStream(_auth.authUserStream.skip(1).map((event) {
+      print('authUser.bindStream');
       return event ?? AuthUser(uid: null);
     }));
 
