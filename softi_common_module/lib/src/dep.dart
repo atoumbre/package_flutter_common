@@ -11,9 +11,7 @@ Future<void> commonDependenciesSetup() async {
   Get.put<Logger>(Logger(printer: PrettyPrinter()), tag: 'NoStack');
 
   /// Third party lib initialization
-  await Future.wait([
-    GetStorage.init(),
-  ]);
+  await GetStorage.init();
 
   /// Device services
   Get.put<ILocationService>(LocationService());

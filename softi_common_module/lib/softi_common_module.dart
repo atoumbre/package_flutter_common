@@ -1,10 +1,9 @@
-///
 export 'package:softi_common_module/src/components/BackgroundServiceManager.dart';
 export 'package:softi_common_module/src/components/HideKeyboardManager.dart';
 export 'package:softi_common_module/src/components/ListItemCreationAware.dart';
 export 'package:softi_common_module/src/components/StateFullWrapper.dart';
-export 'package:softi_common_module/src/controllers/AuthController.dart';
 export 'package:softi_common_module/src/controllers/AppController.dart';
+export 'package:softi_common_module/src/controllers/AuthController.dart';
 export 'package:softi_common_module/src/controllers/base/BaseController.dart';
 export 'package:softi_common_module/src/controllers/base/CollectionController.dart';
 export 'package:softi_common_module/src/controllers/base/FormController.dart';
