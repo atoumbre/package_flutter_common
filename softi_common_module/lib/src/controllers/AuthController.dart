@@ -5,7 +5,7 @@ import 'package:logger/logger.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
 class AuthController extends GetxController {
-  static AuthController get find => Get.find();
+  static AuthController get find => Get.find<AuthController>();
 
   final IAuthService _auth;
   final Logger _logger;
@@ -25,9 +25,9 @@ class AuthController extends GetxController {
   void init() async {
     // var _authUser = await _auth.getCurrentUser;
 
-    authUser((await _auth.getCurrentUser) ?? AuthUser(uid: null));
+    // authUser(_authUser ?? AuthUser(uid: null));
 
-    authUser.bindStream(_auth.authUserStream.map((event) {
+    authUser.bindStream(_auth.authUserStream.skip(0).map((event) {
       return event ?? AuthUser(uid: null);
     }));
 
