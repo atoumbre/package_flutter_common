@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:softi_common_module/src/controllers/base/BaseController.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
-class AppController extends GetxService {
+class AppController extends BaseController {
   static AppController get find => Get.find();
 
   final ILocalStore _store;
