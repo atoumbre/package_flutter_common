@@ -25,7 +25,7 @@ class FirebaseServices {
   static IDynamicLinkService get dynLink => Get.find();
 }
 
-Future<void> firebaseStartupLogic(ILocalStore store, FirebaseAuthService auth) async {
+Future<void> firebaseDependenciesInit(ILocalStore store, FirebaseAuthService auth) async {
   /// Handle dynamic links
   FirebaseServices.dynLink.registerhandleDeeplinks(DeepLinkHandler((deepLink) async {
     var _authLink = deepLink.link.toString();

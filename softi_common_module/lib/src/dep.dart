@@ -41,4 +41,4 @@ class CommonServices {
 
 }
 
-Future<void> commonStartupLogic() async {}
+Future<void> commonDependenciesInit() async {}
