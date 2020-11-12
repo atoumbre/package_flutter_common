@@ -7,9 +7,7 @@ import 'package:softi_firebase_module/src/services/firebase_auth_service/firebas
 
 Future<void> firebaseDependenciesSetup(FirebaseSettings firebaseSettings) async {
   /// Third party lib initialization
-  await Future.wait([
-    Firebase.initializeApp(),
-  ]);
+  await Firebase.initializeApp();
 
   // Global setings
   FirebaseStorage.instance.setMaxUploadRetryTime(Duration(minutes: 5));

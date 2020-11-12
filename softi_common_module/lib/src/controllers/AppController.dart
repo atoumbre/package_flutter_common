@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
 class AppController extends GetxService {
+  static AppController get find => Get.find();
+
   final ILocalStore _store;
 
   AppController([ILocalStore store]) : _store = store ?? Get.find();

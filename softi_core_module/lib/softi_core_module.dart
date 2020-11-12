@@ -16,9 +16,3 @@ export 'package:softi_core_module/src/interfaces/i_base_service.dart';
 
 /// Core models
 export 'package:softi_core_module/src/models/auth_user.dart';
-
-/// Core controllers
-export 'package:softi_core_module/src/controllers/db/DataCollection.dart';
-export 'package:softi_core_module/src/controllers/db/DataRecord.dart';
-export 'package:softi_core_module/src/controllers/db/Database.dart';
-export 'package:softi_core_module/src/controllers/auth/auth_controller.dart';
