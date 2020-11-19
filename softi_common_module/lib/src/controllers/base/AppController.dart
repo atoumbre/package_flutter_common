@@ -13,14 +13,12 @@ class AppController extends BaseController {
 
   AppController([ILocalStore store]) : _store = store ?? Get.find();
 
-  final _themeMode = ThemeMode.system.obs;
-  final _locale = Locale('en').obs;
-
-  ThemeMode get themeMode => _themeMode.value;
-  Locale get locale => _locale.value;
-  ThemeData get theme => Get.theme;
-
   /// Theme management
+
+  final _themeMode = ThemeMode.system.obs;
+
+  ThemeData get theme => Get.theme;
+  ThemeMode get themeMode => _themeMode.value;
 
   void _setThemeMode(ThemeMode themeMode) {
     Get.changeThemeMode(themeMode);
@@ -44,6 +42,10 @@ class AppController extends BaseController {
   }
 
   /// Locale
+
+  final _locale = Locale('en').obs;
+
+  Locale get locale => _locale.value;
 
   Future<void> _setLanguage(Locale language) async {
     Get.updateLocale(language);

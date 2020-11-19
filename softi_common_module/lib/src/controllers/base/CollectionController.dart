@@ -14,6 +14,7 @@ abstract class DataCollectionController<T extends IResourceData> extends BaseCon
         _logger = logger ?? Get.find();
 
   QueryParameters get filter;
+
   int get pageSize => 10;
   int get maxRecordNumber => 100;
   bool get reactive => true;
@@ -41,8 +42,8 @@ abstract class DataCollectionController<T extends IResourceData> extends BaseCon
 
   @override
   void onReady() {
-    super.onReady();
     init();
+    super.onReady();
   }
 
   @override
