@@ -3,6 +3,7 @@ description: A new Flutter package project.
 version: 0.0.1
 author:
 homepage:
+publish_to: none
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -12,12 +13,12 @@ dependencies:
     sdk: flutter
 
   get:
-    
-  google_sign_in:
-  sign_in_with_apple:
   flutter_webview_plugin:
 
-  firebase_core:
+  google_sign_in:
+  sign_in_with_apple:
+
+  firebase_core: 
   cloud_firestore: 
   cloud_functions:
   firebase_auth:
