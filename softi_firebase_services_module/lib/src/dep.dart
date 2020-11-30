@@ -2,8 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:softi_core_module/softi_core_module.dart';
-import 'package:softi_firebase_services_module/src/models/settings.dart';
-import 'package:softi_firebase_services_module/src/services/firebase_auth_service/firebase_auth_service.dart';
+import 'package:softi_firebase_auth_module/index.dart';
+// import 'package:softi_firebase_services_module/src/models/settings.dart';
+// import 'package:softi_firebase_services_module/src/services/firebase_auth_service/firebase_auth_service.dart';
 import 'package:softi_firebase_services_module/src/services/firebase_deeplink_service.dart';
 
 Future<void> firebaseDependenciesSetup(FirebaseSettings firebaseSettings) async {

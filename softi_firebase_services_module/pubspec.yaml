@@ -19,8 +19,8 @@ dependencies:
   sign_in_with_apple:
 
   firebase_core:
-  cloud_functions:
-  firebase_auth:
+  # cloud_functions:
+  # firebase_auth:
   firebase_dynamic_links:
   firebase_storage:
   firebase_remote_config:
@@ -30,6 +30,9 @@ dependencies:
 
   softi_core_module:
     path: ../softi_core_module
+  
+  softi_firebase_auth_module:
+    path: ../softi_firebase_auth_module
 
 # flutter packages pub run build_runner watch --delete-conflicting-outputs
 # flutter packages pub run build_runner build --delete-conflicting-outputs
