@@ -5,11 +5,11 @@ import 'package:softi_common_module/src/controllers/db/DataCollection.dart';
 import 'package:softi_common_module/src/controllers/db/Database.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
-abstract class DataCollectionController<T extends IResourceData> extends BaseController {
+abstract class BaseCollectionController<T extends IResourceData> extends BaseController {
   final Logger _logger;
   final DataCollection<T> collection;
 
-  DataCollectionController([DatabaseController db, Logger logger])
+  BaseCollectionController([DatabaseController db, Logger logger])
       : collection = (db ?? Get.find()).collection<T>(),
         _logger = logger ?? Get.find();
 

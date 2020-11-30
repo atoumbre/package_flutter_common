@@ -4,8 +4,8 @@ import 'package:softi_core_module/softi_core_module.dart';
 
 import '../BaseController.dart';
 
-abstract class DataRecordController<T extends IResourceData> extends BaseController {
-  DataRecordController(this.intialData, [DatabaseController db]) : record = db.record<T>();
+abstract class BaseRecordController<T extends IResourceData> extends BaseController {
+  BaseRecordController(this.intialData, [DatabaseController db]) : record = db.record<T>();
 
   final DataRecord<T> record;
   final T intialData;

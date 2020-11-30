@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 import 'package:softi_common_module/softi_common_module.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
-class DataController extends BaseController {
-  static DataController get find => Get.find<DataController>();
+class BaseDataController extends BaseController {
+  static BaseDataController get find => Get.find<BaseDataController>();
 
   final DatabaseController _db;
 
-  DataController(DatabaseController db) : _db = db ?? Get.find();
+  BaseDataController(DatabaseController db) : _db = db ?? Get.find();
 
   final Map<dynamic, StreamSubscription> _bindRecordSubscriptions = {};
   final Map<dynamic, StreamSubscription> _bindUserRecordSubscriptions = {};
