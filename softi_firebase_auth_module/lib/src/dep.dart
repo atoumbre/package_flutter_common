@@ -1,5 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:softi_firebase_auth_module/softi_firebase_module.dart';
+import 'package:softi_firebase_auth_module/index.dart';
 
 Future<void> firebaseDependenciesSetup(FirebaseSettings firebaseSettings) async {
   /// Third party lib initialization
