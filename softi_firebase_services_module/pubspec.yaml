@@ -19,8 +19,8 @@ dependencies:
   sign_in_with_apple:
 
   firebase_core:
-  # cloud_functions:
   # firebase_auth:
+  cloud_functions:
   firebase_dynamic_links:
   firebase_storage:
   firebase_remote_config:
