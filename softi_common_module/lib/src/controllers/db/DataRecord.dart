@@ -8,7 +8,6 @@ class DataRecord<T extends IResourceData> {
 
   final Rx<T> _data = Rx<T>();
   bool _reactive = false;
-  // bool _initialized = false;
 
   String get id => _data.value?.getId();
   bool get exist => id != null;

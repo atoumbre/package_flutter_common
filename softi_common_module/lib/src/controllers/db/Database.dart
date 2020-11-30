@@ -34,7 +34,7 @@ class DatabaseController {
 
   // Expose API
 
-  Stream<T> get<T extends IResourceData>(String id, {IResource<T> res}) {
+  Stream<T> get<T extends IResourceData>(String id, {IResource<T> res, bool reactive}) {
     return _api.get<T>(res ?? _resourceMapper[T], id);
   }
 
