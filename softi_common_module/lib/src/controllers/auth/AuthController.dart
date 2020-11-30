@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:softi_core_module/softi_core_module.dart';
@@ -23,12 +21,8 @@ class AuthController {
   /// METHODS
 
   void init() async {
-    // var _authUser = await _auth.getCurrentUser;
-
-    // authUser(_authUser ?? AuthUser(uid: null));
-
-    authUser.bindStream(_auth.authUserStream.skip(1).map((event) {
-      print('authUser.bindStream');
+    authUser.bindStream(_auth.authUserStream.skip(0).map((event) {
+      print('authUser.bindStream fired');
       return event ?? AuthUser(uid: null);
     }));
 
