@@ -3,8 +3,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 import 'package:softi_firebase_auth_module/index.dart';
-// import 'package:softi_firebase_services_module/src/models/settings.dart';
-// import 'package:softi_firebase_services_module/src/services/firebase_auth_service/firebase_auth_service.dart';
 import 'package:softi_firebase_services_module/src/services/firebase_deeplink_service.dart';
 
 Future<void> firebaseDependenciesSetup(FirebaseSettings firebaseSettings) async {
@@ -22,19 +20,15 @@ Future<void> firebaseDependenciesSetup(FirebaseSettings firebaseSettings) async 
   Get.put<IDynamicLinkService>(firebaseDeeplinkService);
 }
 
-/// Services
-class FirebaseServices {
-  static IDynamicLinkService get dynLink => Get.find();
-}
-
-Future<void> firebaseDependenciesInit(ILocalStore store, FirebaseAuthService auth) async {
+Future<void> firebaseServicesInit(ILocalStore store, FirebaseAuthService auth) async {
   /// Handle dynamic links
-  FirebaseServices.dynLink.registerhandleDeeplinks(DeepLinkHandler((deepLink) async {
+  Get.find<IDynamicLinkService>().registerhandleDeeplinks(DeepLinkHandler((deepLink) async {
     var _authLink = deepLink.link.toString();
     if (await auth.isSignInWithEmailLink(link: _authLink)) {
       var email = await store.getSecuredKey('UserEmail');
       await auth.signInWithEmailAndLink(email: email, link: deepLink.link.toString());
     }
   }));
-  FirebaseServices.dynLink.handleDeeplinks();
+
+  Get.find<IDynamicLinkService>().handleDeeplinks();
 }
