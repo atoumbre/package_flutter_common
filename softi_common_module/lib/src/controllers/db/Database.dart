@@ -35,7 +35,7 @@ class DatabaseController {
   // Expose API
 
   Stream<T> get<T extends IResourceData>(String id, {IResource<T> res, bool reactive}) {
-    return _api.get<T>(res ?? _resourceMapper[T], id);
+    return _api.get<T>(res ?? _resourceMapper[T], id, reactive: reactive);
   }
 
   Future<T> save<T extends IResourceData>(T record, {IResource<T> res}) {
@@ -52,15 +52,14 @@ class DatabaseController {
 
   Stream<QueryResult<T>> find<T extends IResourceData>(
     QueryParameters params, {
-    int limit = 10,
-    int skip = 0,
-    dynamic cursor,
+    QueryPagination pagination,
     bool reactive = true,
     IResource<T> res,
   }) {
     return _api.find(
       res ?? _resourceMapper[T],
       params,
+      pagination: pagination,
       reactive: reactive,
     );
   }
