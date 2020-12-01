@@ -39,8 +39,8 @@ abstract class IStoppableService extends IBaseService {
   bool get isOn => _serviceIsActive;
   bool get isEnabled => _serviceIsEnabled;
 
-  Future<void> enable({bool statLate = false}) {
-    if (statLate) {
+  Future<void> enable({bool startLate = false}) {
+    if (startLate) {
       _serviceIsEnabled = true;
       return Future.value(true);
     } else {
