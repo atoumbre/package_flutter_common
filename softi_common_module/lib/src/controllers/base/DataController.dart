@@ -15,10 +15,10 @@ class BaseDataController extends BaseController {
   final Map<dynamic, StreamSubscription> _bindUserRecordSubscriptions = {};
 
   void bindUserRecord<T extends IResourceData>(
-    Rx<AuthUser> authUserRX, {
-    Rx<T> rxData,
+    Rx<AuthUser> authUserRX,
+    Rx<T> dataRX, {
     T initialData,
-    reactive = true,
+    bool reactive,
     Future Function(AuthUser) creationCallback,
     Future Function(AuthUser) updateCallback,
     Future Function() unauthedCallback,
@@ -31,19 +31,19 @@ class BaseDataController extends BaseController {
 
       if (authUser?.uid != null) {
         _bindUserRecordSubscriptions[T] = _db //
-            .get<T>(authUser.uid) //
+            .get<T>(authUser.uid, reactive: reactive) //
             .listen((dataEvent) async {
           if (dataEvent == null) {
             if (creationCallback != null) await creationCallback(authUser);
-            rxData(initialData);
+            dataRX(initialData);
           } else {
             if (updateCallback != null) await updateCallback(authUser);
-            rxData(dataEvent);
+            dataRX(dataEvent);
           }
         });
       } else {
         if (unauthedCallback != null) await unauthedCallback();
-        rxData(initialData);
+        dataRX(initialData);
       }
     }
 
@@ -56,7 +56,7 @@ class BaseDataController extends BaseController {
     Rx<S> masterDataRX,
     Rx<T> dataRX, {
     T initialData,
-    reactive = false,
+    bool reactive = false,
     Future Function() creationCallback,
     Future Function(T data) updateCallback,
     Future Function() unauthedCallback,

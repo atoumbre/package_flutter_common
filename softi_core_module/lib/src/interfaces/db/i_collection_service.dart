@@ -15,11 +15,7 @@ abstract class ICollectionService extends IBaseService {
     bool reactive = true,
   });
 
-  Stream<T> get<T extends IResourceData>(
-    IResource<T> res,
-    String id, {
-    bool reactive = true,
-  });
+  Stream<T> get<T extends IResourceData>(IResource<T> res, String id, {bool reactive = true});
 
   Future<bool> exists<T extends IResourceData>(IResource<T> res, String id);
   Future<T> save<T extends IResourceData>(IResource<T> res, T record);
