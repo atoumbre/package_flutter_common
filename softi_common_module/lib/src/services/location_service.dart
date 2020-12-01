@@ -35,17 +35,17 @@ class LocationService extends ILocationService {
   LocationData get currentLocation => _currentLocation;
 
   @override
-  VoidAsyncCallback get startCallback => () async {
-        _streamSubscription = _locationStream.listen((locationData) {
-          _currentLocation = locationData;
-          locationAvailable = true;
-          print(_currentLocation.toString());
-          return locationData;
-        });
-      };
+  Future<void> startCallback() async {
+    _streamSubscription = _locationStream.listen((locationData) {
+      _currentLocation = locationData;
+      locationAvailable = true;
+      print(_currentLocation.toString());
+      return locationData;
+    });
+  }
 
   @override
-  VoidAsyncCallback get stopCallback => () async {
-        await _streamSubscription?.cancel();
-      };
+  Future<void> stopCallback() async {
+    await _streamSubscription?.cancel();
+  }
 }

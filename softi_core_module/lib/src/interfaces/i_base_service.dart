@@ -24,7 +24,7 @@ abstract class IBaseService {
   }
 
   Future<dynamic> init() async {}
-  Future<void> dispose() async {}
+  Future<dynamic> dispose() async {}
 }
 
 typedef VoidAsyncCallback = Future<void> Function();
@@ -33,8 +33,8 @@ abstract class IStoppableService extends IBaseService {
   bool _serviceIsActive = false;
   bool _serviceIsEnabled = false;
 
-  VoidAsyncCallback get startCallback;
-  VoidAsyncCallback get stopCallback;
+  Future<dynamic> startCallback();
+  Future<dynamic> stopCallback();
 
   bool get isOn => _serviceIsActive;
   bool get isEnabled => _serviceIsEnabled;
