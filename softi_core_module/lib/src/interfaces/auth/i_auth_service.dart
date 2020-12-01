@@ -40,9 +40,6 @@ abstract class IAuthService extends IBaseService {
   Future<void> signOut();
 
   void refresh();
-
-  @override
-  void dispose();
 }
 
 // class PhoneAuthResult {

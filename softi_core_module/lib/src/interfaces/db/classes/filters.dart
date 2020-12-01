@@ -1,8 +1,9 @@
+import 'package:softi_core_module/src/interfaces/db/classes/query.dart';
 import 'package:softi_core_module/src/interfaces/db/i_collection_service.dart';
 
-abstract class IFilter {
-  QueryParameters build();
-}
+// abstract class IFilter {
+//   QueryParameters build();
+// }
 
 class _FilterBuilder {
   List<QueryFilter> _params = [];
@@ -32,7 +33,8 @@ class _FilterBuilder {
   }
 }
 
-class Filter with BaseFilterMixin implements IFilter {
+// implements IFilter
+class Filter with BaseFilterMixin {
   Filter([_FilterBuilder filterBuilder]) : _filterBuilder = filterBuilder ?? _FilterBuilder();
 
   @override
@@ -51,7 +53,8 @@ class FieldFilter with FieldFilterMixin {
   final String _field;
 }
 
-class FieldFilterExtended with BaseFilterMixin, FieldFilterMixin implements IFilter {
+// implements IFilter
+class FieldFilterExtended with BaseFilterMixin, FieldFilterMixin {
   FieldFilterExtended([String field, _FilterBuilder filterBuilder])
       : _filterBuilder = filterBuilder ?? _FilterBuilder(),
         _field = field;
@@ -62,6 +65,8 @@ class FieldFilterExtended with BaseFilterMixin, FieldFilterMixin implements IFil
   @override
   final String _field;
 }
+
+/// FILTERS MIXINS
 
 mixin BaseFilterMixin {
   _FilterBuilder _filterBuilder;

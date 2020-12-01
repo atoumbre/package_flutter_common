@@ -7,11 +7,8 @@ class AuthController extends BaseController {
   static AuthController get find => Get.find<AuthController>();
 
   final IAuthService _auth;
-  final Logger _logger;
 
-  AuthController([IAuthService auth, Logger logger])
-      : _auth = auth ?? Get.find(),
-        _logger = logger ?? Get.find();
+  AuthController([IAuthService auth, Logger logger]) : _auth = auth ?? Get.find();
 
   final authUser = AuthUser().obs;
 
@@ -22,13 +19,13 @@ class AuthController extends BaseController {
   /// METHODS
   void init() async {
     authUser.bindStream(_auth.authUserStream.skip(0).map((event) {
-      print('authUser.bindStream fired: ${event.uid}');
+      print('authUser.bindStream fired: ${event?.uid}');
       return event ?? AuthUser(uid: null);
     }));
 
-    _auth.errorStream.listen((event) {
-      _logger.d('[AUTH ERROR STREAM] ' + event.toString());
-    });
+    // _auth.errorStream.listen((event) {
+    //   _logger.d('[AUTH ERROR STREAM] ' + event.toString());
+    // });
   }
 
   /// Exposed AUTH SERVICE API

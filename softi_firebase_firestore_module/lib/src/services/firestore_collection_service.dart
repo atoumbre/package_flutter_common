@@ -41,7 +41,7 @@ class FirestoreCollectionService extends ICollectionService {
         var changes = snapshot.docChanges
             //! Filter possible here
             .map((DocumentChange docChange) => DataChange<T>(
-                  document: fromFirestore<T>(res, docChange.doc),
+                  data: fromFirestore<T>(res, docChange.doc),
                   oldIndex: docChange.oldIndex,
                   newIndex: docChange.newIndex,
                   type: {

@@ -15,6 +15,13 @@ class FirebaseAuthService extends IAuthService {
   final FirebaseAuth firebaseAuth;
   final FirebaseSettings settings;
 
+  final FirebaseAppleSignin appleSignin;
+  final FirebaseGoogleSignin googleSignin;
+  final FirebaseAuthFacebookSignIn facebookSignin;
+  final FirebaseAuthEmalPassword emailSignin;
+  final FirebaseAuthPhone phoneSignin;
+  final FirebaseAuthEmailLink emailLinkSignin;
+
   FirebaseAuthService(this.firebaseAuth, this.settings)
       : appleSignin = FirebaseAppleSignin(
           firebaseAuth,
@@ -43,22 +50,6 @@ class FirebaseAuthService extends IAuthService {
         emailSignin = FirebaseAuthEmalPassword(firebaseAuth),
         phoneSignin = FirebaseAuthPhone(firebaseAuth);
 
-  final FirebaseAppleSignin appleSignin;
-  final FirebaseGoogleSignin googleSignin;
-  final FirebaseAuthFacebookSignIn facebookSignin;
-  final FirebaseAuthEmalPassword emailSignin;
-  final FirebaseAuthPhone phoneSignin;
-  final FirebaseAuthEmailLink emailLinkSignin;
-
-  final StreamController _errorStreamController = StreamController();
-
-  Future<T> _catchError<T>(Future<T> Function() task) {
-    return task().catchError((onError) => _errorStreamController.sink.add(onError));
-  }
-
-  @override
-  Stream<dynamic> get errorStream => _errorStreamController.stream;
-
   @override
   Future<AuthUser> get getCurrentUser => Future.value(FirebaseAuthProvider.authUserFromUser(firebaseAuth.currentUser));
 
@@ -66,28 +57,33 @@ class FirebaseAuthService extends IAuthService {
   Stream<AuthUser> get authUserStream => firebaseAuth.authStateChanges().map(FirebaseAuthProvider.authUserFromUser);
 
   @override
+  Future<void> init() async {
+    // TODO: implement refresh
+  }
+
+  @override
+  Future<void> dispose() async {
+    // TODO: implement refresh
+  }
+
+  @override
   void refresh() {
     // TODO: implement refresh
   }
 
   @override
-  void dispose() {
-    _errorStreamController.close();
-  }
-
-  @override
   Future<AuthUser> createUserWithEmailAndPassword(String email, String password) {
-    return _catchError<AuthUser>(() => emailSignin.createUserWithEmailAndPassword(email, password));
+    return catchError<AuthUser>(() => emailSignin.createUserWithEmailAndPassword(email, password));
   }
 
   @override
   Future<void> sendPasswordResetEmail(String email) {
-    return _catchError<void>(() => emailSignin.sendPasswordResetEmail(email));
+    return catchError<void>(() => emailSignin.sendPasswordResetEmail(email));
   }
 
   @override
   Future<void> sendSignInWithEmailLink({String email}) {
-    return _catchError<void>(() => emailLinkSignin.sendSignInWithEmailLink(email: email));
+    return catchError<void>(() => emailLinkSignin.sendSignInWithEmailLink(email: email));
   }
 
   @override
@@ -97,7 +93,7 @@ class FirebaseAuthService extends IAuthService {
     bool autoRetrive,
     int autoRetrievalTimeoutSeconds = 30,
   }) {
-    return _catchError<SendCodeResult>(
+    return catchError<SendCodeResult>(
       () => phoneSignin.sendSignInWithPhoneCode(
         phoneNumber: phoneNumber,
         resendingId: resendingId,
@@ -109,7 +105,7 @@ class FirebaseAuthService extends IAuthService {
 
   @override
   Future<AuthUser> signInAnonymously() {
-    return _catchError<AuthUser>(() async {
+    return catchError<AuthUser>(() async {
       final authResult = await firebaseAuth.signInAnonymously();
       return FirebaseAuthProvider.userFromFirebase(authResult);
     });
@@ -117,41 +113,41 @@ class FirebaseAuthService extends IAuthService {
 
   @override
   Future<AuthUser> signInWithApple() {
-    return _catchError<AuthUser>(() => appleSignin.signInWithApple());
+    return catchError<AuthUser>(() => appleSignin.signInWithApple());
   }
 
   @override
   Future<AuthUser> signInWithEmailAndLink({String email, String link}) {
-    return _catchError<AuthUser>(() => emailLinkSignin.signInWithEmailAndLink(email: email, link: link));
+    return catchError<AuthUser>(() => emailLinkSignin.signInWithEmailAndLink(email: email, link: link));
   }
 
   @override
   Future<AuthUser> signInWithEmailAndPassword(String email, String password) {
-    return _catchError<AuthUser>(() => emailSignin.signInWithEmailAndPassword(email, password));
+    return catchError<AuthUser>(() => emailSignin.signInWithEmailAndPassword(email, password));
   }
 
   @override
   Future<AuthUser> signInWithFacebook(param) {
-    return _catchError<AuthUser>(() => facebookSignin.signInWithFacebook(param));
+    return catchError<AuthUser>(() => facebookSignin.signInWithFacebook(param));
   }
 
   @override
   Future<AuthUser> signInWithGoogle() {
-    return _catchError<AuthUser>(() => googleSignin.signInWithGoogle());
+    return catchError<AuthUser>(() => googleSignin.signInWithGoogle());
   }
 
   @override
   Future<AuthUser> signInWithPhone(verificationId, smsOTP) {
-    return _catchError<AuthUser>(() => phoneSignin.signInWithPhone(verificationId, smsOTP));
+    return catchError<AuthUser>(() => phoneSignin.signInWithPhone(verificationId, smsOTP));
   }
 
   @override
   Future<bool> isSignInWithEmailLink({String link}) {
-    return _catchError<bool>(() => emailLinkSignin.isSignInWithEmailLink(link));
+    return catchError<bool>(() => emailLinkSignin.isSignInWithEmailLink(link));
   }
 
   @override
   Future<void> signOut() {
-    return _catchError<void>(() => firebaseAuth.signOut());
+    return catchError<void>(() => firebaseAuth.signOut());
   }
 }

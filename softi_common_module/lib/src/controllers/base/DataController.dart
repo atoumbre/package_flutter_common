@@ -18,14 +18,12 @@ class BaseDataController extends BaseController {
     Rx<AuthUser> authUserRX, {
     Rx<T> rxData,
     T initialData,
-    reactive = false,
+    reactive = true,
     Future Function(AuthUser) creationCallback,
     Future Function(AuthUser) updateCallback,
-    Future Function() unauthenticatedCallback,
+    Future Function() unauthedCallback,
   }) async {
-    /// Listen to provided reactive user and bind user records
-    ///
-    authUserRX.listen((authUser) async {
+    Future<void> _bindUserRecord(authUser) async {
       if (_bindUserRecordSubscriptions[T] != null) {
         await _bindUserRecordSubscriptions[T].cancel();
         _bindUserRecordSubscriptions[T] = null;
@@ -37,48 +35,60 @@ class BaseDataController extends BaseController {
             .listen((dataEvent) async {
           if (dataEvent == null) {
             if (creationCallback != null) await creationCallback(authUser);
+            rxData(initialData);
           } else {
             if (updateCallback != null) await updateCallback(authUser);
             rxData(dataEvent);
           }
         });
       } else {
-        if (unauthenticatedCallback != null) await unauthenticatedCallback();
-        await AuthController.find.api.signInAnonymously();
+        if (unauthedCallback != null) await unauthedCallback();
+        rxData(initialData);
       }
-    });
+    }
+
+    /// Listen to provided reactive user and bind user records
+    await _bindUserRecord(authUserRX());
+    authUserRX.listen(_bindUserRecord);
   }
 
-  void bindRecord<T extends IResourceData>(
-    String id, {
-    Rx<T> rxData,
+  void bindRecord<S extends IResourceData, T extends IResourceData>(
+    Rx<S> masterDataRX,
+    Rx<T> dataRX, {
     T initialData,
     reactive = false,
     Future Function() creationCallback,
     Future Function(T data) updateCallback,
-    Future Function() unauthenticatedCallback,
+    Future Function() unauthedCallback,
+    String Function(S) filter,
   }) async {
     if (_bindRecordSubscriptions[T] != null) {
       await _bindRecordSubscriptions[T].cancel();
       _bindRecordSubscriptions[T] = null;
     }
 
-    if ((id ?? '') != '') {
-      _bindRecordSubscriptions[T] = _db //
-          .get<T>(id, reactive: reactive) //
-          .listen((dataEvent) async {
-        if (dataEvent == null) {
-          if (creationCallback != null) await creationCallback();
-          rxData(initialData);
-        } else {
-          if (updateCallback != null) await updateCallback(dataEvent);
-          rxData(dataEvent);
-        }
-      });
-    } else {
-      if (unauthenticatedCallback != null) await unauthenticatedCallback();
-      rxData(initialData);
+    Future<void> _bindRecord(String id) async {
+      if ((id ?? '') != '') {
+        _bindRecordSubscriptions[T] = _db //
+            .get<T>(id, reactive: reactive) //
+            .listen((dataEvent) async {
+          if (dataEvent == null) {
+            if (creationCallback != null) await creationCallback();
+            dataRX(initialData);
+          } else {
+            if (updateCallback != null) await updateCallback(dataEvent);
+            dataRX(dataEvent);
+          }
+        });
+      } else {
+        if (unauthedCallback != null) await unauthedCallback();
+        dataRX(initialData);
+      }
     }
+
+    var _filter = filter ?? (data) => data?.getId();
+    await _bindRecord(_filter(masterDataRX()));
+    masterDataRX.map(_filter).listen(_bindRecord);
   }
 
   // void bindCollection<T extends IResourceData>(AuthUser authUser, RxList<T> dataList, Filter fliter) async {

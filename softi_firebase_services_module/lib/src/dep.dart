@@ -5,7 +5,7 @@ import 'package:softi_core_module/softi_core_module.dart';
 import 'package:softi_firebase_auth_module/index.dart';
 import 'package:softi_firebase_services_module/src/services/firebase_deeplink_service.dart';
 
-Future<void> firebaseDependenciesSetup(FirebaseSettings firebaseSettings) async {
+Future<void> firebaseServiceSetup(FirebaseSettings firebaseSettings) async {
   /// Third party lib initialization
   await Firebase.initializeApp();
 

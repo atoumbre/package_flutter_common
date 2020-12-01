@@ -114,10 +114,4 @@ class DefaultAlertService extends IAlertService {
   Future<AlertResponse> showErrorToast(String title, String message) {
     return showToast(title: title, message: message, status: DialogStatus.error);
   }
-
-  @override
-  void dispose() {}
-
-  @override
-  Stream get errorStream => throw UnimplementedError();
 }

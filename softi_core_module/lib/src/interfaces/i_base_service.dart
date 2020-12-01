@@ -3,18 +3,28 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 abstract class IBaseService {
-  final StreamController _errorStreamController = StreamController();
+  // final StreamController _errorStreamController = StreamController();
 
   @protected
-  Future<T> catchError<T>(Future<T> Function() task) {
-    return task().catchError((onError) => _errorStreamController.sink.add(onError));
+  Future<T> catchError<T>(
+    Future<T> Function() task,
+  ) {
+    try {
+      return task();
+    } catch (e) {
+      if (!errorHandler(e)) rethrow;
+    } finally {
+      return null;
+    }
   }
 
-  Stream<dynamic> get errorStream => _errorStreamController.stream;
+  bool errorHandler(error) {
+    print(error.toString());
+    return false;
+  }
 
   Future<dynamic> init() async {}
-
-  void dispose() => _errorStreamController.close();
+  Future<void> dispose() async {}
 }
 
 typedef VoidAsyncCallback = Future<void> Function();
@@ -56,4 +66,12 @@ abstract class IStoppableService extends IBaseService {
     await startCallback();
     _serviceIsActive = false;
   }
+}
+
+abstract class IBaseServiceException implements Exception {
+  final String service;
+  final String code;
+  final String message;
+
+  IBaseServiceException({@required this.service, @required this.code, this.message});
 }

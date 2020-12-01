@@ -3,15 +3,18 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:softi_core_module/softi_core_module.dart';
 
-class DefaultLocalStore extends ILocalStore {
+class LocalStore extends ILocalStore {
   final GetStorage _storage;
   final FlutterSecureStorage _secureStorage;
 
-  DefaultLocalStore()
+  LocalStore()
       : _storage = GetStorage(),
         _secureStorage = FlutterSecureStorage();
 
-  // Future<ILocalStore> init([String container = 'GetStorage']) async {}
+  @override
+  Future<void> init([String container = 'GetStorage']) async {
+    return GetStorage.init();
+  }
 
   @override
   Future<String> getKey(String key) async {
@@ -32,13 +35,4 @@ class DefaultLocalStore extends ILocalStore {
   Future<void> setSecuredKey(String key, value) async {
     return _secureStorage.write(key: key, value: value);
   }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-  }
-
-  @override
-  // TODO: implement errorStream
-  Stream get errorStream => throw UnimplementedError();
 }
