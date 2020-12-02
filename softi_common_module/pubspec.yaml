@@ -21,8 +21,6 @@ dependencies:
   wechat_assets_picker: 
   wechat_camera_picker:
   flutter_easyloading:
-  flutter_form_builder: ^4.0.2
-  merge_map:
 
   softi_core_module:
     path: ../softi_core_module
