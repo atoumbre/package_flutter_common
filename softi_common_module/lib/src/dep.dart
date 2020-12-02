@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
-import 'package:softi_common_module/softi_common_module.dart';
+import 'package:softi_common_module/index.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 import 'package:stacked_services/stacked_services.dart' show DialogService, SnackbarService;
 

@@ -1,15 +1,15 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:softi_common_module/softi_common_module.dart';
+import 'package:softi_common_module/index.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
-class BaseDataController extends BaseController {
-  static BaseDataController get find => Get.find<BaseDataController>();
+class BindingController extends BaseController {
+  static BindingController get find => Get.find<BindingController>();
 
   final DatabaseController _db;
 
-  BaseDataController(DatabaseController db) : _db = db ?? Get.find();
+  BindingController(DatabaseController db) : _db = db ?? Get.find();
 
   final Map<dynamic, StreamSubscription> _bindRecordSubscriptions = {};
   final Map<dynamic, StreamSubscription> _bindUserRecordSubscriptions = {};

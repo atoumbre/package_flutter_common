@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:softi_common_module/softi_common_module.dart';
+import 'package:softi_common_module/index.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
 class AuthController extends BaseController {
