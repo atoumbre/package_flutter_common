@@ -13,6 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   
+  merge_map:
   flutter_form_builder: ^4.0.2
 
   softi_core_module:

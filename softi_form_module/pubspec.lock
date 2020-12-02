@@ -300,7 +300,7 @@ packages:
       name: get
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.20.0"
+    version: "3.21.2"
   get_storage:
     dependency: transitive
     description:
@@ -421,7 +421,7 @@ packages:
     source: hosted
     version: "0.12.10-nullsafety.1"
   merge_map:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: merge_map
       url: "https://pub.dartlang.org"
@@ -596,8 +596,8 @@ packages:
   softi_common_module:
     dependency: "direct main"
     description:
-      path: "/Users/atoumbre/AppPortfolio/packages/softi_common_module"
-      relative: false
+      path: "../softi_common_module"
+      relative: true
     source: path
     version: "0.0.1"
   softi_core_module:
