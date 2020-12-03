@@ -12,16 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  get:
-  flutter_webview_plugin:
-
-  google_sign_in:
-  sign_in_with_apple:
-
-  firebase_core:
-  # firebase_auth:
   cloud_functions:
-  firebase_dynamic_links:
+  # firebase_dynamic_links:
   firebase_storage:
   firebase_remote_config:
   firebase_messaging:

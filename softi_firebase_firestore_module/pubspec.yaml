@@ -12,17 +12,13 @@ dependencies:
   flutter:
     sdk: flutter
 
-  get:
-  flutter_webview_plugin:
-
-  google_sign_in:
-  sign_in_with_apple:
-
-  firebase_core: 
   cloud_firestore: 
 
   softi_core_module:
     path: ../softi_core_module
+  
+  softi_firebase_auth_module:
+    path: ../softi_firebase_auth_module
 
 # flutter packages pub run build_runner watch --delete-conflicting-outputs
 # flutter packages pub run build_runner build --delete-conflicting-outputs

@@ -20,13 +20,7 @@ dependencies:
 
   firebase_core:
   firebase_auth:
-  # cloud_functions:
-  # firebase_dynamic_links:
-  # firebase_storage:
-  # firebase_remote_config:
-  # firebase_messaging:
-  # firebase_analytics:
-  # firebase_database:
+  firebase_dynamic_links:
 
   softi_core_module:
     path: ../softi_core_module
