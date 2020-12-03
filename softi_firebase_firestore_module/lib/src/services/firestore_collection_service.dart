@@ -82,7 +82,7 @@ class FirestoreCollectionService extends ICollectionService {
         .snapshots()
         .map<T>((snapshot) => fromFirestore<T>(res, snapshot));
 
-    return reactive ? _result : Stream.fromFuture(_result.first);
+    return (reactive ?? false) ? _result : Stream.fromFuture(_result.first);
   }
 
   @override

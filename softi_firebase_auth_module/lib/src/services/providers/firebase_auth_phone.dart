@@ -98,12 +98,13 @@ class FirebaseAuthPhone extends FirebaseAuthProvider {
     if (kIsWeb) {
       return _sendSignInWithPhoneCodeWeb(phoneNumber);
     } else {
-      return _sendSignInWithPhoneCodeNative(
+      var test = _sendSignInWithPhoneCodeNative(
         phoneNumber: phoneNumber,
         resendingId: resendingId,
         autoRetrive: autoRetrive,
         autoRetrievalTimeoutSeconds: autoRetrievalTimeoutSeconds,
       );
+      return test;
     }
   }
 }

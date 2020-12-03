@@ -13,13 +13,13 @@ abstract class IBaseService {
       return task();
     } catch (e) {
       if (!errorHandler(e)) rethrow;
-    } finally {
+      // } finally {
       return null;
     }
   }
 
   bool errorHandler(error) {
-    print(error.toString());
+    print('[ERROR] ${error.toString()}');
     return false;
   }
 
