@@ -54,7 +54,7 @@ class FieldFilter with FieldFilterMixin {
 }
 
 // implements IFilter
-class FieldFilterExtended with BaseFilterMixin, FieldFilterMixin {
+class FieldFilterExtended with BaseFilterMixin, FieldFilterMixin implements Filter {
   FieldFilterExtended([String field, _FilterBuilder filterBuilder])
       : _filterBuilder = filterBuilder ?? _FilterBuilder(),
         _field = field;

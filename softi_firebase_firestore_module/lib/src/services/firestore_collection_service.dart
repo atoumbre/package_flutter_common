@@ -55,7 +55,8 @@ class FirestoreCollectionService extends ICollectionService {
         return QueryResult<T>(
           data,
           changes,
-          cursor: snapshot.docs.isNotEmpty ? snapshot.docs.last : null,
+          endCursor: snapshot.docs.isNotEmpty ? snapshot.docs.last : null,
+          startCursor: snapshot.docs.isNotEmpty ? snapshot.docs.first : null,
         );
       },
     );
@@ -166,9 +167,15 @@ class FirestoreCollectionService extends ICollectionService {
       });
     }
 
+    // _query = _query.orderBy(FieldPath.documentId, descending: true);
+
     // Get the last Document
-    if (pagination?.cursor != null) {
-      _query = _query.startAfterDocument(pagination?.cursor);
+    if (pagination?.startCursor != null) {
+      _query = _query.startAfterDocument(pagination?.startCursor);
+    }
+
+    if (pagination?.endCursor != null) {
+      _query = _query.endAtDocument(pagination?.endCursor);
     }
 
     _query = _query.limit(pagination?.limit ?? 10);

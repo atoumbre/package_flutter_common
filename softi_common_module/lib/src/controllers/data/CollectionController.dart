@@ -5,38 +5,44 @@ import 'package:softi_common_module/src/controllers/db/DataCollection.dart';
 import 'package:softi_common_module/src/controllers/db/Database.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
-abstract class BaseCollectionController<T extends IResourceData> extends BaseController {
+class BaseCollectionController<T extends IResourceData> extends BaseController {
   final Logger _logger;
-  final DataCollection<T> collection;
+  final DataCollection<T> _collection;
+  final QueryParameters _params;
 
-  BaseCollectionController([DatabaseController db, Logger logger])
-      : collection = (db ?? Get.find()).collection<T>(),
+  final int pageSize;
+  final int maxRecordNumber;
+  final bool reactive;
+
+  BaseCollectionController(
+    Filter filter, {
+    this.pageSize = 10,
+    this.maxRecordNumber = 100,
+    this.reactive = true,
+    DatabaseController db,
+    Logger logger,
+  })  : _params = (filter ?? Filter()).build(),
+        _collection = (db ?? Get.find()).collection<T>(),
         _logger = logger ?? Get.find();
 
-  QueryParameters get filter;
-
-  int get pageSize => 10;
-  int get maxRecordNumber => 100;
-  bool get reactive => true;
-
-  RxList<T> get recordList => collection.data;
-  RxBool get hasMoreData => collection.hasMoreData;
+  RxList<T> get recordList => _collection.data;
+  RxBool get hasMoreData => _collection.hasMoreData;
 
   void init() {
-    collection.requestData(
-      filter,
+    _collection.requestData(
+      _params,
       pageSize: pageSize,
       maxRecordNumber: maxRecordNumber,
       reactive: reactive,
     );
-    busy.bindStream(collection.waiting.stream);
+    busy.bindStream(_collection.waiting.stream);
   }
 
   void handleListItemCreation(int index) {
     // when the item is created we request more data when we reached the end of current page
     _logger.d('index $index created');
-    if (collection.data.length == (index + 1) && collection.hasMoreData()) {
-      collection.requestMoreData();
+    if (_collection.data.length == (index + 1) && _collection.hasMoreData()) {
+      _collection.requestMoreData();
     }
   }
 
@@ -49,6 +55,6 @@ abstract class BaseCollectionController<T extends IResourceData> extends BaseCon
   @override
   void onClose() {
     _logger.d('Dispose Collection Controller');
-    collection.dispose();
+    _collection.dispose();
   }
 }
