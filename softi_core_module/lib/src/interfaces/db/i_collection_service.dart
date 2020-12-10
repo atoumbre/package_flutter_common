@@ -26,12 +26,11 @@ abstract class ICollectionService extends IBaseService {
 class QueryResult<T extends IResourceData> {
   final List<T> data;
   final List<DataChange<T>> changes;
-  final dynamic endCursor;
-  final dynamic startCursor;
+  final dynamic cursor;
 
   List<T> call() => data;
 
-  QueryResult(this.data, this.changes, {this.endCursor, this.startCursor});
+  QueryResult(this.data, this.changes, {this.cursor});
 }
 
 class DataChange<T extends IResourceData> {

@@ -63,7 +63,7 @@ class DataCollection<T extends IResourceData> {
 
     _pagination = QueryPagination(
       limit: _queryLimit,
-      startCursor: _lastCursor,
+      cursor: _lastCursor,
     );
 
     //* Create the new page if it is a new batch
@@ -119,7 +119,7 @@ class DataCollection<T extends IResourceData> {
     _data.assignAll(allData);
 
     if (requestIndex == _allPages.length - 1 && data.isNotEmpty) {
-      _lastCursor = querResult.endCursor;
+      _lastCursor = querResult.cursor;
     }
 
     _hasMoreData.value = (data.length >= _pageSize) ||

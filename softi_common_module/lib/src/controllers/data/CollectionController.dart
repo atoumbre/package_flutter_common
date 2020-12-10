@@ -13,12 +13,14 @@ class BaseCollectionController<T extends IResourceData> extends BaseController {
   final int pageSize;
   final int maxRecordNumber;
   final bool reactive;
+  final bool changesOnly;
 
   BaseCollectionController(
     Filter filter, {
     this.pageSize = 10,
     this.maxRecordNumber = 100,
     this.reactive = true,
+    this.changesOnly = true,
     DatabaseController db,
     Logger logger,
   })  : _params = (filter ?? Filter()).build(),
@@ -26,6 +28,7 @@ class BaseCollectionController<T extends IResourceData> extends BaseController {
         _logger = logger ?? Get.find();
 
   RxList<T> get recordList => _collection.data;
+  RxList<DataChange<T>> get changesList => _collection.changes;
   RxBool get hasMoreData => _collection.hasMoreData;
 
   void init() {
@@ -34,6 +37,7 @@ class BaseCollectionController<T extends IResourceData> extends BaseController {
       pageSize: pageSize,
       maxRecordNumber: maxRecordNumber,
       reactive: reactive,
+      changesOnly: changesOnly,
     );
     busy.bindStream(_collection.waiting.stream);
   }
@@ -47,8 +51,14 @@ class BaseCollectionController<T extends IResourceData> extends BaseController {
   }
 
   @override
+  void onInit() {
+    // init();
+    super.onInit();
+  }
+
+  @override
   void onReady() {
-    init();
+    // init();
     super.onReady();
   }
 

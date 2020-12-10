@@ -24,18 +24,17 @@ class QueryParameters {
 
 class QueryPagination {
   int skip, limit;
-  dynamic startCursor, endCursor;
+  dynamic cursor;
 
   // int _skip, _limit;
   // dynamic _cursor;
 
-  QueryPagination({this.skip, this.limit, this.startCursor});
+  QueryPagination({this.skip, this.limit, this.cursor});
 
-  void update({limit, skip, startCursor, endCursor}) {
+  void update({limit, skip, startCursor, cursor}) {
     this.limit = limit ?? this.limit;
     this.skip = skip ?? this.skip;
-    this.startCursor = startCursor ?? this.startCursor;
-    this.endCursor = endCursor ?? this.endCursor;
+    this.cursor = startCursor ?? this.cursor;
   }
 
   // void reset() {
