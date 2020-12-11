@@ -102,7 +102,7 @@ class DataCollection<T extends IResourceData> {
         } else {
           _data.assignAll(queryResult.data);
         }
-        if (_eventCount > 1) _changes.assignAll(queryResult.changes);
+        if (_eventCount > 1) _changes.addAll(queryResult.changes);
       } else {
         _data.addAll(queryResult.data);
       }
