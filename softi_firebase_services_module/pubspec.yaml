@@ -20,8 +20,8 @@ dependencies:
   firebase_analytics:
   firebase_database:
 
-  softi_core_module:
-    path: ../softi_core_module
+  # softi_core_module:
+  #   path: ../softi_core_module
   
   softi_firebase_auth_module:
     path: ../softi_firebase_auth_module

@@ -16,9 +16,6 @@ dependencies:
   merge_map:
   flutter_form_builder: ^4.0.2
 
-  softi_core_module:
-    path: ../softi_core_module
-  
   softi_common_module:
     path: ../softi_common_module
 
