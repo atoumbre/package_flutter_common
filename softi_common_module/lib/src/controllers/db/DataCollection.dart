@@ -44,7 +44,6 @@ class DataCollection<T extends IResourceData> {
     QueryParameters params, {
     int pageSize,
     CollectionReactivity reactive,
-    bool changesOnly = false,
     int maxRecordNumber,
   }) {
     // reset on each call of requestData, use requestMoreData for more data

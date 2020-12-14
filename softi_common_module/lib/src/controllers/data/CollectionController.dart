@@ -9,13 +9,11 @@ class CollectionControllerOptions {
   final int pageSize;
   final int maxRecordNumber;
   final CollectionReactivity reactivity;
-  final bool changesOnly;
 
   const CollectionControllerOptions({
     this.pageSize,
     this.maxRecordNumber,
     this.reactivity,
-    this.changesOnly,
   });
 }
 
@@ -39,7 +37,6 @@ class BaseCollectionController<T extends IResourceData> extends BaseController {
               pageSize: 10,
               maxRecordNumber: 100,
               reactivity: CollectionReactivity.none,
-              changesOnly: false,
             );
 
   RxList<T> get recordList => _collection.data;
@@ -52,7 +49,6 @@ class BaseCollectionController<T extends IResourceData> extends BaseController {
       pageSize: _options.pageSize,
       maxRecordNumber: _options.maxRecordNumber,
       reactive: _options.reactivity,
-      changesOnly: _options.changesOnly,
     );
     busy.bindStream(_collection.waiting.stream);
   }
