@@ -5,27 +5,42 @@ import 'package:softi_common_module/src/controllers/db/DataCollection.dart';
 import 'package:softi_common_module/src/controllers/db/Database.dart';
 import 'package:softi_core_module/softi_core_module.dart';
 
+class CollectionControllerOptions {
+  final int pageSize;
+  final int maxRecordNumber;
+  final CollectionReactivity reactivity;
+  final bool changesOnly;
+
+  const CollectionControllerOptions({
+    this.pageSize,
+    this.maxRecordNumber,
+    this.reactivity,
+    this.changesOnly,
+  });
+}
+
 class BaseCollectionController<T extends IResourceData> extends BaseController {
   final Logger _logger;
   final DataCollection<T> _collection;
   final QueryParameters _params;
 
-  final int pageSize;
-  final int maxRecordNumber;
-  final bool reactive;
-  final bool changesOnly;
+  final CollectionControllerOptions _options;
 
   BaseCollectionController(
     Filter filter, {
-    this.pageSize = 10,
-    this.maxRecordNumber = 100,
-    this.reactive = true,
-    this.changesOnly = true,
+    CollectionControllerOptions options,
     DatabaseController db,
     Logger logger,
   })  : _params = (filter ?? Filter()).build(),
         _collection = (db ?? Get.find()).collection<T>(),
-        _logger = logger ?? Get.find();
+        _logger = logger ?? Get.find(),
+        _options = options ??
+            CollectionControllerOptions(
+              pageSize: 10,
+              maxRecordNumber: 100,
+              reactivity: CollectionReactivity.none,
+              changesOnly: false,
+            );
 
   RxList<T> get recordList => _collection.data;
   RxList<DataChange<T>> get changesList => _collection.changes;
@@ -34,10 +49,10 @@ class BaseCollectionController<T extends IResourceData> extends BaseController {
   void init() {
     _collection.requestData(
       _params,
-      pageSize: pageSize,
-      maxRecordNumber: maxRecordNumber,
-      reactive: reactive,
-      changesOnly: changesOnly,
+      pageSize: _options.pageSize,
+      maxRecordNumber: _options.maxRecordNumber,
+      reactive: _options.reactivity,
+      changesOnly: _options.changesOnly,
     );
     busy.bindStream(_collection.waiting.stream);
   }
@@ -52,13 +67,13 @@ class BaseCollectionController<T extends IResourceData> extends BaseController {
 
   @override
   void onInit() {
-    // init();
+    init();
     super.onInit();
   }
 
   @override
   void onReady() {
-    // init();
+    init();
     super.onReady();
   }
 

@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:get/get.dart';
 import 'package:softi_core_module/src/interfaces/db/i_collection_service.dart';
 
+enum CollectionReactivity { none, changes, records, all }
+
 class DataCollection<T extends IResourceData> {
   DataCollection(ICollectionService collectionService, IResource<T> res)
       : _collectionService = collectionService,
@@ -23,8 +25,8 @@ class DataCollection<T extends IResourceData> {
   QueryParameters _params;
   int _maxRecordNumber;
   int _pageSize;
-  bool _reactive;
-  bool _changesOnly;
+  CollectionReactivity _reactive;
+  // bool _changesOnly;
 
   // Returned info
   final RxBool _hasMoreData = true.obs;
@@ -41,7 +43,7 @@ class DataCollection<T extends IResourceData> {
   void requestData(
     QueryParameters params, {
     int pageSize,
-    bool reactive,
+    CollectionReactivity reactive,
     bool changesOnly = false,
     int maxRecordNumber,
   }) {
@@ -52,7 +54,6 @@ class DataCollection<T extends IResourceData> {
     _params = params;
     _pageSize = pageSize ?? _pageSize;
     _reactive = reactive ?? _reactive;
-    _changesOnly = changesOnly ?? _changesOnly;
     _maxRecordNumber = maxRecordNumber ?? _maxRecordNumber;
 
     // request data
@@ -64,7 +65,7 @@ class DataCollection<T extends IResourceData> {
     _requestData(_reactive);
   }
 
-  void _requestData(bool reactive) async {
+  void _requestData(CollectionReactivity reactive) async {
     if (!_hasMoreData()) return;
 
     _waiting(true);
@@ -78,8 +79,8 @@ class DataCollection<T extends IResourceData> {
 
     //! If reactive query all docs each time and ecreas limit
     _pagination = QueryPagination(
-      limit: reactive ? _recordCount : _queryPageSize,
-      cursor: reactive ? null : _lastCursor,
+      limit: reactive != CollectionReactivity.none ? _recordCount : _queryPageSize,
+      cursor: reactive != CollectionReactivity.none ? null : _lastCursor,
     );
 
     await _mainSubscription?.cancel();
@@ -90,22 +91,26 @@ class DataCollection<T extends IResourceData> {
       _res,
       _params,
       pagination: _pagination,
-      reactive: reactive,
+      reactive: (reactive != CollectionReactivity.none),
     )
         .listen((queryResult) {
+      //
       _eventCount++;
       _lastCursor = queryResult.cursor;
 
-      if (reactive) {
-        if (_changesOnly) {
-          if (_eventCount == 1) _data.assignAll(queryResult.data);
-        } else {
-          _data.assignAll(queryResult.data);
-        }
-        if (_eventCount > 1) _changes.addAll(queryResult.changes);
+      //
+      if (reactive == CollectionReactivity.all) {
+        _data.assignAll(queryResult.data);
+        _changes.addAll(queryResult.changes);
+      } else if (reactive == CollectionReactivity.changes) {
+        if (_eventCount == 1) _data.assignAll(queryResult.data);
+        _changes.addAll(queryResult.changes);
+      } else if (reactive == CollectionReactivity.records) {
+        _data.assignAll(queryResult.data);
       } else {
-        _data.addAll(queryResult.data);
+        if (_eventCount == 1) _data.addAll(queryResult.data);
       }
+
       // Check if we have more data
       _hasMoreData(
         _data.length >= _recordCount && _recordCount <= (_maxRecordNumber ?? double.infinity),
