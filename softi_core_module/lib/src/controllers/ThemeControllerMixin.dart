@@ -36,8 +36,4 @@ mixin ThemeControllerMixin on BaseController {
     }
     _setThemeMode(themeMode);
   }
-
-  void init() {
-    getThemeMode();
-  }
 }

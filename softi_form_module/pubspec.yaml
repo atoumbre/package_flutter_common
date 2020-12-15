@@ -19,9 +19,6 @@ dependencies:
   softi_resource_module:
     path: ../softi_resource_module
 
-  softi_core_module:
-    path: ../softi_core_module
-
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,4 @@
+export 'package:softi_common_module/dep.dart';
 export 'package:softi_common_module/src/components/BackgroundServiceManager.dart';
 export 'package:softi_common_module/src/components/HideKeyboardManager.dart';
 export 'package:softi_common_module/src/components/ListItemCreationAware.dart';
@@ -5,7 +6,6 @@ export 'package:softi_common_module/src/components/StateFullWrapper.dart';
 export 'package:softi_common_module/src/controllers/LocaleController.dart';
 export 'package:softi_common_module/src/controllers/ThemeController.dart';
 export 'package:softi_common_module/src/controllers/TimerController.dart';
-export 'package:softi_common_module/src/dep.dart';
 export 'package:softi_common_module/src/interfaces/app/i_alert_service.dart';
 export 'package:softi_common_module/src/interfaces/app/i_loading_service.dart';
 export 'package:softi_common_module/src/interfaces/app/i_navigation_service.dart';

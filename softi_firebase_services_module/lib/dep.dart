@@ -13,12 +13,9 @@ Future<void> firebaseServiceSetup(FirebaseSettings firebaseSettings) async {
   // Global setings
   FirebaseStorage.instance.setMaxUploadRetryTime(Duration(minutes: 5));
 
-  var firebaseDeeplinkService = FirebaseDeeplinkService(
+  Get.put<IDynamicLinkService>(FirebaseDeeplinkService(
     firebaseSettings,
-  );
-
-  ///  Services
-  Get.put<IDynamicLinkService>(firebaseDeeplinkService);
+  ));
 }
 
 Future<void> firebaseServicesInit(ILocalStore store, FirebaseAuthService auth) async {

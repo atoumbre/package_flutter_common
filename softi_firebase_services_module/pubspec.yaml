@@ -13,12 +13,8 @@ dependencies:
     sdk: flutter
 
   cloud_functions:
-  firebase_dynamic_links:
   firebase_storage:
   firebase_remote_config:
-  firebase_messaging:
-  firebase_analytics:
-  firebase_database:
 
   softi_common_module:
     path: ../softi_common_module
@@ -31,9 +27,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  build_runner:
-  freezed:
 
 flutter:
 

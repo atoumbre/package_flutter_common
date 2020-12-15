@@ -9,25 +9,13 @@ mixin TimerControllerMixin on BaseController {
   final clock = DateTime.now().obs;
   Timer _timer;
 
-  void stop() {
+  void stopTimer() {
     _timer.cancel();
   }
 
-  void start() {
+  void startTimer() {
     _timer = Timer.periodic(interval, (timer) {
       clock(DateTime.now());
     });
-  }
-
-  @override
-  void onReady() {
-    start();
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    stop();
-    super.onClose();
   }
 }
