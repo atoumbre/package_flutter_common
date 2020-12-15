@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
-import 'package:softi_common_module/src/controllers/db/DataCollection.dart';
-import 'package:softi_common_module/src/controllers/db/DataRecord.dart';
-
-import 'package:softi_core_module/src/interfaces/db/i_collection_service.dart';
+import 'package:softi_resource_module/src/classes/DataCollection.dart';
+import 'package:softi_resource_module/src/classes/DataRecord.dart';
+import 'package:softi_resource_module/src/classes/query.dart';
+import 'package:softi_resource_module/src/classes/resource.dart';
+import 'package:softi_resource_module/src/interfaces/i_collection_service.dart';
 
 class DatabaseController {
   final ICollectionService _api;

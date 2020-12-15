@@ -1,5 +1,4 @@
-import 'package:softi_core_module/src/interfaces/db/classes/query.dart';
-import 'package:softi_core_module/src/interfaces/db/i_collection_service.dart';
+import 'package:softi_resource_module/src/classes/query.dart';
 
 // abstract class IFilter {
 //   QueryParameters build();

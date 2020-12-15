@@ -1,4 +1,4 @@
-name: softi_core_module
+name: softi_auth_module
 description: A new Flutter package project.
 version: 0.0.1
 author:
@@ -16,7 +16,10 @@ dependencies:
   location:
   recase:
   get:
-  logger:
+
+  softi_core_module:
+    path: ../softi_core_module
+  
 
 
 # flutter packages pub run build_runner watch --delete-conflicting-outputs

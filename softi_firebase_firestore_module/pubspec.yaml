@@ -15,7 +15,10 @@ dependencies:
   cloud_firestore: 
 
   softi_firebase_auth_module:
-    path: ../softi_firebase_auth_module
+    path: ../softi_firebase_auth_module  
+  
+  softi_resource_module:
+    path: ../softi_resource_module
 
 # flutter packages pub run build_runner watch --delete-conflicting-outputs
 # flutter packages pub run build_runner build --delete-conflicting-outputs

@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:softi_core_module/src/interfaces/i_base_service.dart';
-import 'package:softi_core_module/src/models/auth_user.dart';
+import 'package:softi_core_module/softi_core_module.dart';
 
 abstract class IAuthService extends IBaseService {
   Future<AuthUser> get getCurrentUser;

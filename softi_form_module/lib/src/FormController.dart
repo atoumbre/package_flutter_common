@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
+import 'package:softi_resource_module/softi_resource_module.dart';
 import 'package:softi_core_module/softi_core_module.dart';
-import 'package:softi_common_module/index.dart';
-import 'package:logger/logger.dart';
+
 import 'package:merge_map/merge_map.dart';
 
 abstract class FormController<T extends IResourceData> extends BaseController {
   final DatabaseController _db;
   final INavigationService _nav;
-  final Logger _logger;
+  // final Logger _logger;
 
   final bool isEdit;
   final T record;
@@ -21,13 +21,13 @@ abstract class FormController<T extends IResourceData> extends BaseController {
     Map<String, dynamic> initialValue,
     INavigationService nav,
     DatabaseController db,
-    Logger logger,
+    // Logger logger,
   ])  : isEdit = ((editingRecord.getId() ?? '') == ''),
         initialValue = initialValue ?? editingRecord.toJson(),
         record = editingRecord,
         _nav = nav ?? Get.find(),
-        _db = db ?? Get.find(),
-        _logger = logger ?? Get.find();
+        _db = db ?? Get.find();
+  // _logger = logger ?? Get.find();
 
   // Map<String, dynamic> buildInitialValue() => record.toJson();
 
@@ -50,7 +50,7 @@ abstract class FormController<T extends IResourceData> extends BaseController {
     } else {
       result = formKey.currentState.fields[field].value;
     }
-    _logger.d('$field: $result');
+    print('$field: $result');
     return result;
   }
 
@@ -80,7 +80,7 @@ abstract class FormController<T extends IResourceData> extends BaseController {
         ///
         onCompleted();
       } else {
-        _logger.d('${T.toString()} Form : validation failed');
+        print('${T.toString()} Form : validation failed');
 
         return false;
       }

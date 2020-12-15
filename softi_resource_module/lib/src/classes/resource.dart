@@ -1,5 +1,5 @@
 import 'package:recase/recase.dart';
-import 'package:softi_core_module/src/interfaces/db/classes/query.dart';
+import 'package:softi_resource_module/src/classes/query.dart';
 
 typedef Deserializer<T> = T Function(Map<String, dynamic>);
 
@@ -12,7 +12,7 @@ abstract class IResource<T> {
     ResourceRequestType requestType,
     QueryParameters queryParams,
     QueryPagination querypagination,
-    String id,
+    String dataId,
     String dataPath,
     T dataObject,
   });

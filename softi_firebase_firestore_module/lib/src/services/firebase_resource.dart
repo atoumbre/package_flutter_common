@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:softi_core_module/softi_core_module.dart';
+import 'package:softi_resource_module/softi_resource_module.dart';
 
 class FirestoreResource<T> extends IResource<T> {
   final String endpoint;
@@ -15,7 +15,7 @@ class FirestoreResource<T> extends IResource<T> {
     ResourceRequestType requestType,
     QueryParameters queryParams,
     QueryPagination querypagination,
-    String id,
+    String dataId,
     String dataPath,
     T dataObject,
   }) {

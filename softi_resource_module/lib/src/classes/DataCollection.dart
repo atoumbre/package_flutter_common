@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:get/get.dart';
-import 'package:softi_core_module/src/interfaces/db/i_collection_service.dart';
+import 'package:softi_resource_module/src/classes/query.dart';
+import 'package:softi_resource_module/src/classes/resource.dart';
+import 'package:softi_resource_module/src/interfaces/i_collection_service.dart';
 
 enum CollectionReactivity { none, changes, records, all }
 

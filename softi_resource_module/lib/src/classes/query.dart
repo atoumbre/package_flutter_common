@@ -26,9 +26,6 @@ class QueryPagination {
   int skip, limit;
   dynamic cursor;
 
-  // int _skip, _limit;
-  // dynamic _cursor;
-
   QueryPagination({this.skip, this.limit, this.cursor});
 
   void update({limit, skip, startCursor, cursor}) {

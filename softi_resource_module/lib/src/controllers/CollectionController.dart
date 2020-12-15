@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
-import 'package:softi_common_module/src/controllers/BaseController.dart';
-import 'package:softi_common_module/src/controllers/db/DataCollection.dart';
-import 'package:softi_common_module/src/controllers/db/Database.dart';
 import 'package:softi_core_module/softi_core_module.dart';
+import 'package:softi_resource_module/src/classes/DataCollection.dart';
+import 'package:softi_resource_module/src/classes/Database.dart';
+import 'package:softi_resource_module/src/classes/filters.dart';
+import 'package:softi_resource_module/src/classes/query.dart';
+import 'package:softi_resource_module/src/classes/resource.dart';
+import 'package:softi_resource_module/src/interfaces/i_collection_service.dart';
 
 class CollectionControllerOptions {
   final int pageSize;
@@ -18,7 +20,7 @@ class CollectionControllerOptions {
 }
 
 class BaseCollectionController<T extends IResourceData> extends BaseController {
-  final Logger _logger;
+  // final Logger _logger;
   final DataCollection<T> _collection;
   final QueryParameters _params;
 
@@ -28,10 +30,10 @@ class BaseCollectionController<T extends IResourceData> extends BaseController {
     Filter filter, {
     CollectionControllerOptions options,
     DatabaseController db,
-    Logger logger,
+    // Logger logger,
   })  : _params = (filter ?? Filter()).build(),
         _collection = (db ?? Get.find()).collection<T>(),
-        _logger = logger ?? Get.find(),
+        // _logger = logger ?? Get.find(),
         _options = options ??
             CollectionControllerOptions(
               pageSize: 10,
@@ -55,7 +57,7 @@ class BaseCollectionController<T extends IResourceData> extends BaseController {
 
   void handleListItemCreation(int index) {
     // when the item is created we request more data when we reached the end of current page
-    _logger.d('index $index created');
+    print('index $index created');
     if (_collection.data.length == (index + 1) && _collection.hasMoreData()) {
       _collection.requestMoreData();
     }
@@ -75,7 +77,7 @@ class BaseCollectionController<T extends IResourceData> extends BaseController {
 
   @override
   void onClose() {
-    _logger.d('Dispose Collection Controller');
+    print('Dispose Collection Controller');
     _collection.dispose();
   }
 }

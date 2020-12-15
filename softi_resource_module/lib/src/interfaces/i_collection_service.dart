@@ -1,13 +1,9 @@
 import 'dart:async';
 
-import 'package:softi_core_module/src/interfaces/db/classes/query.dart';
-import 'package:softi_core_module/src/interfaces/db/classes/resource.dart';
-import 'package:softi_core_module/src/interfaces/i_base_service.dart';
+import 'package:softi_resource_module/src/classes/query.dart';
+import 'package:softi_resource_module/src/classes/resource.dart';
 
-export 'package:softi_core_module/src/interfaces/db/classes/resource.dart';
-export 'package:softi_core_module/src/interfaces/db/classes/query.dart';
-
-abstract class ICollectionService extends IBaseService {
+abstract class ICollectionService {
   Stream<QueryResult<T>> find<T extends IResourceData>(
     IResource<T> res,
     QueryParameters queryParams, {

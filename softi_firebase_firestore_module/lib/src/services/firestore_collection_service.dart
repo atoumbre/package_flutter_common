@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:softi_core_module/softi_core_module.dart';
 import 'package:softi_firebase_firestore_module/src/services/firebase_desirializer.dart';
 import 'package:softi_firebase_firestore_module/src/services/firebase_resource.dart';
+import 'package:softi_resource_module/softi_resource_module.dart';
 
 class FirestoreCollectionService extends ICollectionService {
   FirestoreCollectionService(
@@ -19,13 +19,13 @@ class FirestoreCollectionService extends ICollectionService {
   @override
   Stream<QueryResult<T>> find<T extends IResourceData>(
     IResource<T> res,
-    QueryParameters params, {
+    QueryParameters queryParams, {
     QueryPagination pagination,
     bool reactive = true,
   }) {
     var _query = _firestoreQueryBuilder(
       _getRef<T>(res),
-      params: params,
+      params: queryParams,
       pagination: pagination,
     );
 
