@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:softi_auth_module/softi_auth_module.dart';
-import 'package:softi_core_module/softi_core_module.dart';
+import 'package:softi_auth_module/index.dart';
+import 'package:softi_core_module/index.dart';
 
 class AuthController extends BaseController {
   static AuthController get find => Get.find<AuthController>();

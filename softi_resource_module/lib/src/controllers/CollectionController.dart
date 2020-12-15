@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:softi_core_module/softi_core_module.dart';
+import 'package:softi_core_module/index.dart';
 import 'package:softi_resource_module/src/classes/DataCollection.dart';
 import 'package:softi_resource_module/src/classes/Database.dart';
 import 'package:softi_resource_module/src/classes/filters.dart';

@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:softi_core_module/softi_core_module.dart';
+import 'package:softi_common_module/src/interfaces/app/i_alert_service.dart';
+import 'package:softi_core_module/index.dart';
 
 class DefaultAlertService extends IAlertService {
   Function(AlertRequest, Completer) _showDialogListener;

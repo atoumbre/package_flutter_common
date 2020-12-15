@@ -16,7 +16,9 @@ dependencies:
   location:
   recase:
   get:
+  get_storage:
   logger:
+  flutter_secure_storage:
 
 
 # flutter packages pub run build_runner watch --delete-conflicting-outputs

@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:nested/nested.dart';
-import 'package:softi_core_module/softi_core_module.dart';
+import 'package:softi_common_module/src/interfaces/app/i_loading_service.dart';
 
 class LoadingService extends ILoadingService {
   static LoadingService get find => Get.find<LoadingService>();

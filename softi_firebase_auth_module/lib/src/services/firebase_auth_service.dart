@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:softi_auth_module/softi_auth_module.dart';
-import 'package:softi_core_module/softi_core_module.dart';
+import 'package:softi_auth_module/index.dart';
 import 'package:softi_firebase_auth_module/src/services/firebase_auth_provider.dart';
 import 'package:softi_firebase_auth_module/src/services/providers/firebase_auth_apple.dart';
 import 'package:softi_firebase_auth_module/src/services/providers/firebase_auth_email.dart';

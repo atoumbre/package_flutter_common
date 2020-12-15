@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:softi_resource_module/softi_resource_module.dart';
+import 'package:softi_resource_module/index.dart';
 
 class FirestoreResource<T> extends IResource<T> {
   final String endpoint;

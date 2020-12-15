@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:softi_core_module/softi_core_module.dart';
+import 'package:softi_core_module/index.dart';
 import 'package:softi_resource_module/src/classes/Database.dart';
 import 'package:softi_resource_module/src/classes/resource.dart';
 
@@ -14,15 +14,15 @@ class BindingController extends BaseController {
 
   final Map<dynamic, StreamSubscription> _bindRecordSubscriptions = {};
 
-  void bindRecord<S extends IResourceData, T extends IResourceData>(
-    Rx<S> masterDataRX,
-    Rx<T> dataRX, {
+  void bindRecord<S, T extends IResourceData>(
+    Rx<S> masterRX,
+    Rx<T> dataRX,
+    String Function(S) filter, {
     T initialData,
     bool reactive = false,
-    Future Function() creationCallback,
-    Future Function(T data) updateCallback,
-    Future Function() unauthedCallback,
-    String Function(S) filter,
+    Future Function(S) creationCallback,
+    Future Function(S, T) updateCallback,
+    Future Function() nullMasterCallback,
   }) async {
     if (_bindRecordSubscriptions[T] != null) {
       await _bindRecordSubscriptions[T].cancel();
@@ -35,22 +35,21 @@ class BindingController extends BaseController {
             .get<T>(id, reactive: reactive) //
             .listen((dataEvent) async {
           if (dataEvent == null) {
-            if (creationCallback != null) await creationCallback();
+            if (creationCallback != null) await creationCallback(masterRX());
             dataRX(initialData);
           } else {
-            if (updateCallback != null) await updateCallback(dataEvent);
+            if (updateCallback != null) await updateCallback(masterRX(), dataEvent);
             dataRX(dataEvent);
           }
         });
       } else {
-        if (unauthedCallback != null) await unauthedCallback();
+        if (nullMasterCallback != null) await nullMasterCallback();
         dataRX(initialData);
       }
     }
 
-    var _filter = filter ?? (data) => data?.getId();
-    await _bindRecord(_filter(masterDataRX()));
-    masterDataRX.map(_filter).listen(_bindRecord);
+    await _bindRecord(filter(masterRX()));
+    masterRX.map(filter).listen(_bindRecord);
   }
 
   // void bindCollection<T extends IResourceData>(AuthUser authUser, RxList<T> dataList, Filter fliter) async {

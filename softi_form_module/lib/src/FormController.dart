@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
-import 'package:softi_resource_module/softi_resource_module.dart';
-import 'package:softi_core_module/softi_core_module.dart';
+import 'package:softi_resource_module/index.dart';
+import 'package:softi_core_module/index.dart';
 
 import 'package:merge_map/merge_map.dart';
 
 abstract class FormController<T extends IResourceData> extends BaseController {
   final DatabaseController _db;
-  final INavigationService _nav;
-  // final Logger _logger;
 
   final bool isEdit;
   final T record;
@@ -19,23 +17,17 @@ abstract class FormController<T extends IResourceData> extends BaseController {
   FormController(
     T editingRecord, [
     Map<String, dynamic> initialValue,
-    INavigationService nav,
     DatabaseController db,
-    // Logger logger,
   ])  : isEdit = ((editingRecord.getId() ?? '') == ''),
         initialValue = initialValue ?? editingRecord.toJson(),
         record = editingRecord,
-        _nav = nav ?? Get.find(),
         _db = db ?? Get.find();
-  // _logger = logger ?? Get.find();
-
-  // Map<String, dynamic> buildInitialValue() => record.toJson();
 
   Future<T> beforSave(Map<String, dynamic> formData) async => _db.deserializer<T>(formData);
 
   Future<void> afterSave(T record) async => record;
 
-  VoidCallback onCompleted() => () => _nav.back(record);
+  VoidCallback onCompleted();
 
   int valueToInt(String value) => int.parse(value);
 
@@ -90,20 +82,4 @@ abstract class FormController<T extends IResourceData> extends BaseController {
       busy.toggle();
     }
   }
-
-  // uploadImages(String productId, List<File> images) async {
-  //   ///
-  //   int i = 0;
-  //   images.map<Future<RemoteImage>>((imageFile) async {
-  //     i++;
-  //     final _uploadResult = await CS.cloudStorage.uploadImage(
-  //       imageToUpload: imageFile,
-  //       title: 'products/$productId/$i',
-  //     );
-  //     return RemoteImage(
-  //       url: _uploadResult.imageUrl,
-  //       title: _uploadResult.imageFileName,
-  //     );
-  //   });
-  // }
 }

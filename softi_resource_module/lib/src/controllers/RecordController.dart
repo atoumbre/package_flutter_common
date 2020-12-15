@@ -1,7 +1,7 @@
 import 'package:softi_resource_module/src/classes/DataRecord.dart';
 import 'package:softi_resource_module/src/classes/Database.dart';
 import 'package:softi_resource_module/src/classes/resource.dart';
-import 'package:softi_core_module/softi_core_module.dart';
+import 'package:softi_core_module/index.dart';
 
 abstract class BaseRecordController<T extends IResourceData> extends BaseController {
   BaseRecordController(this.intialData, [DatabaseController db]) : record = db.record<T>();

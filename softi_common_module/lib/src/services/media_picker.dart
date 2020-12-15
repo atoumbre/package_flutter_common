@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-import 'package:softi_core_module/softi_core_module.dart';
+import 'package:softi_common_module/src/interfaces/device/i_media_picker.dart';
+import 'package:softi_core_module/index.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:wechat_camera_picker/wechat_camera_picker.dart';
 

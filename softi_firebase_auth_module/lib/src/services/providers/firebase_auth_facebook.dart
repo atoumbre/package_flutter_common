@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:softi_core_module/softi_core_module.dart';
+import 'package:softi_auth_module/index.dart';
+
 import 'package:softi_firebase_auth_module/src/services/firebase_auth_provider.dart';
 // import 'package:softi_firebase_auth_module/src/ui/facebook_signin_webview.dart';
 
