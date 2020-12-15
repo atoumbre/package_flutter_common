@@ -22,6 +22,7 @@ dependencies:
   wechat_assets_picker: 
   wechat_camera_picker:
   flutter_easyloading:
+  firebase_storage:
 
   softi_core_module:
     path: ../softi_core_module

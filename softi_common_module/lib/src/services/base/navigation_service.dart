@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:softi_common_module/src/interfaces/app/i_navigation_service.dart';
-import 'package:softi_core_module/index.dart';
 import 'package:get/get.dart';
+import 'package:softi_common_module/src/interfaces/app/i_navigation_service.dart';
 
 class NavigationService extends INavigationService {
   @override

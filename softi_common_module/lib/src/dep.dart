@@ -3,6 +3,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:softi_common_module/index.dart';
 import 'package:softi_common_module/src/interfaces/device/i_location_service.dart';
+import 'package:softi_common_module/src/services/base/location_service.dart';
+import 'package:softi_common_module/src/services/base/navigation_service.dart';
 import 'package:softi_core_module/index.dart';
 import 'package:stacked_services/stacked_services.dart' show DialogService, SnackbarService;
 
