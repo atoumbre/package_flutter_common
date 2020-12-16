@@ -116,6 +116,8 @@ class DataCollection<T extends IResourceData> {
       _hasMoreData(
         _data.length >= _recordCount && _recordCount <= (_maxRecordNumber ?? double.infinity),
       );
+
+      if (reactive == CollectionReactivity.none && !_hasMoreData()) _mainSubscription?.cancel();
     });
   }
 

@@ -7,8 +7,6 @@ import 'package:softi_core_module/index.dart';
 import 'package:softi_core_module/src/interfaces/i_local_storage.dart';
 
 mixin ThemeControllerMixin on BaseController {
-  static ThemeController get find => Get.find();
-
   ILocalStore get _store => Get.find();
 
   final _themeMode = ThemeMode.system.obs;

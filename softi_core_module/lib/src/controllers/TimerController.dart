@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:softi_core_module/src/i_base_controller.dart';
+import 'package:softi_core_module/src/base_controller.dart';
 
 class TimerController extends BaseController {
   static TimerController get find => Get.find();

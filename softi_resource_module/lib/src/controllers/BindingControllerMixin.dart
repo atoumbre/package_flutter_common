@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:softi_core_module/index.dart';
-import 'package:softi_resource_module/src/classes/Database.dart';
 import 'package:softi_resource_module/src/classes/resource.dart';
+import 'package:softi_resource_module/src/controllers/ResourceController.dart';
 
 mixin BindingControllerMixin on BaseController {
-  DatabaseController get _db => Get.find();
+  ResourceController get _db => Get.find();
+  String get ressourceTag;
 
   final Map<dynamic, StreamSubscription> _bindRecordSubscriptions = {};
 

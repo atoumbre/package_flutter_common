@@ -7,7 +7,7 @@ import 'package:softi_core_module/index.dart';
 import 'package:merge_map/merge_map.dart';
 
 abstract class FormController<T extends IResourceData> extends BaseController {
-  final DatabaseController _db;
+  final ResourceController _db;
 
   final bool isEdit;
   final T record;
@@ -17,7 +17,7 @@ abstract class FormController<T extends IResourceData> extends BaseController {
   FormController(
     T editingRecord, [
     Map<String, dynamic> initialValue,
-    DatabaseController db,
+    ResourceController db,
   ])  : isEdit = ((editingRecord.getId() ?? '') == ''),
         initialValue = initialValue ?? editingRecord.toJson(),
         record = editingRecord,

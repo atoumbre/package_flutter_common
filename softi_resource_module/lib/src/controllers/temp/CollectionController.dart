@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 import 'package:softi_core_module/index.dart';
 import 'package:softi_resource_module/src/classes/DataCollection.dart';
-import 'package:softi_resource_module/src/classes/Database.dart';
 import 'package:softi_resource_module/src/classes/filters.dart';
 import 'package:softi_resource_module/src/classes/query.dart';
 import 'package:softi_resource_module/src/classes/resource.dart';
+import 'package:softi_resource_module/src/controllers/ResourceController.dart';
 import 'package:softi_resource_module/src/interfaces/i_collection_service.dart';
 
 class CollectionControllerOptions {
@@ -29,7 +29,7 @@ class BaseCollectionController<T extends IResourceData> extends BaseController {
   BaseCollectionController(
     Filter filter, {
     CollectionControllerOptions options,
-    DatabaseController db,
+    ResourceController db,
     // Logger logger,
   })  : _params = (filter ?? Filter()).build(),
         _collection = (db ?? Get.find()).collection<T>(),

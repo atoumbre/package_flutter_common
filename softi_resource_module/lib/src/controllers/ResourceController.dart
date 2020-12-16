@@ -5,11 +5,11 @@ import 'package:softi_resource_module/src/classes/query.dart';
 import 'package:softi_resource_module/src/classes/resource.dart';
 import 'package:softi_resource_module/src/interfaces/i_collection_service.dart';
 
-class DatabaseController {
+class ResourceController {
   final ICollectionService _api;
   final Map<dynamic, dynamic> _resourceMapper;
 
-  DatabaseController(this._resourceMapper, [ICollectionService api]) : _api = api ?? Get.find();
+  ResourceController(this._resourceMapper, [ICollectionService api]) : _api = api ?? Get.find();
 
   DataCollection<T> collection<T extends IResourceData>([IResource<T> _res]) {
     return DataCollection<T>(_api, _res ?? _resourceMapper[T]);
@@ -43,7 +43,7 @@ class DatabaseController {
     return _api.save<T>(res ?? _resourceMapper[T], record);
   }
 
-  Future<void> update<T extends IResourceData>(String id, Map<String, dynamic> values, {IResource<T> res}) {
+  Future<void> patch<T extends IResourceData>(String id, Map<String, dynamic> values, {IResource<T> res}) {
     return _api.update<T>(res ?? _resourceMapper[T], id, values);
   }
 

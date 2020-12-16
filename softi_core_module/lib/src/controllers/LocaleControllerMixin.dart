@@ -6,8 +6,6 @@ import 'package:softi_core_module/index.dart';
 import 'package:softi_core_module/src/interfaces/i_local_storage.dart';
 
 mixin LocaleControllerMixin on BaseController {
-  static LocaleController get find => Get.find();
-
   ILocalStore get _store => Get.find();
 
   final _locale = Locale('en').obs;
