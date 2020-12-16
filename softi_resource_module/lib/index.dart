@@ -3,8 +3,6 @@ export 'package:softi_resource_module/src/classes/DataRecord.dart';
 export 'package:softi_resource_module/src/classes/filters.dart';
 export 'package:softi_resource_module/src/classes/query.dart';
 export 'package:softi_resource_module/src/classes/resource.dart';
-export 'package:softi_resource_module/src/controllers/BindingControllerMixin.dart';
-// export 'package:softi_resource_module/src/controllers/DatabaseController.dart';
 export 'package:softi_resource_module/src/controllers/ResourceController.dart';
 export 'package:softi_resource_module/src/controllers/temp/CollectionController.dart';
 export 'package:softi_resource_module/src/controllers/temp/RecordController.dart';

@@ -1,37 +1,25 @@
-import 'dart:async';
-
 import 'package:get/get.dart';
+import 'package:softi_core_module/index.dart';
 import 'package:softi_core_module/src/base_controller.dart';
 
-class TimerController extends BaseController {
+class TimerController extends BaseController with TimerControllerMixin {
   static TimerController get find => Get.find();
 
   final Duration _interval;
-
   TimerController(Duration interval) : _interval = interval ?? 1.minutes;
 
-  final clock = DateTime.now().obs;
-  Timer _timer;
-
-  void stop() {
-    _timer.cancel();
-  }
-
-  void start() {
-    _timer = Timer.periodic(_interval, (timer) {
-      clock(DateTime.now());
-    });
-  }
+  @override
+  Duration get interval => _interval;
 
   @override
   void onReady() {
-    start();
+    startTimer();
     super.onReady();
   }
 
   @override
   void onClose() {
-    stop();
+    startTimer();
     super.onClose();
   }
 }
