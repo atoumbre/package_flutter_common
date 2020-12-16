@@ -13,8 +13,6 @@ class _TAG<S, T> {
 mixin BindingControllerMixin on BaseController {
   String get ressourceTag;
 
-  final Map<String, _TAG> _subscriptions = {};
-
   Future<Function> binder<S, T>(
     Rx<S> masterRX,
     Rx<T> dataRX, {
@@ -27,8 +25,6 @@ mixin BindingControllerMixin on BaseController {
     var _initialData = dataRX();
 
     var _subs = _TAG<S, T>(tag);
-
-    _subscriptions[masterRX.hashCode.toString() + dataRX.hashCode.toString() + tag] = _subs;
 
     await _subs.slaveSub?.cancel();
 
@@ -50,12 +46,13 @@ mixin BindingControllerMixin on BaseController {
     }
 
     await _subs.masterSub?.cancel();
+    await _binder(masterRX());
     _subs.masterSub = masterRX.stream.listen(_binder);
 
     return () async {
       await Future.wait([
-        _subs.masterSub.cancel(),
-        _subs.slaveSub.cancel(),
+        _subs.masterSub?.cancel(),
+        _subs.slaveSub?.cancel(),
       ]);
     };
   }

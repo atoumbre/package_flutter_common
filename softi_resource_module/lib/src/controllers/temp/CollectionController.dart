@@ -4,7 +4,6 @@ import 'package:softi_resource_module/src/classes/DataCollection.dart';
 import 'package:softi_resource_module/src/classes/filters.dart';
 import 'package:softi_resource_module/src/classes/query.dart';
 import 'package:softi_resource_module/src/classes/resource.dart';
-import 'package:softi_resource_module/src/controllers/ResourceController.dart';
 import 'package:softi_resource_module/src/interfaces/i_collection_service.dart';
 
 class CollectionControllerOptions {
@@ -20,46 +19,42 @@ class CollectionControllerOptions {
 }
 
 class BaseCollectionController<T extends IResourceData> extends BaseController {
-  // final Logger _logger;
-  final DataCollection<T> _collection;
+  //
+  final DataCollection<T> collection;
+  //
   final QueryParameters _params;
-
-  final CollectionControllerOptions _options;
+  final int _pageSize;
+  final int _maxRecordNumber;
+  final CollectionReactivity _reactivity;
 
   BaseCollectionController(
-    Filter filter, {
+    this.collection, {
+    Filter filter,
     CollectionControllerOptions options,
-    ResourceController db,
-    // Logger logger,
   })  : _params = (filter ?? Filter()).build(),
-        _collection = (db ?? Get.find()).collection<T>(),
-        // _logger = logger ?? Get.find(),
-        _options = options ??
-            CollectionControllerOptions(
-              pageSize: 10,
-              maxRecordNumber: 100,
-              reactivity: CollectionReactivity.none,
-            );
+        _pageSize = options?.pageSize ?? 10,
+        _maxRecordNumber = options?.maxRecordNumber ?? 100,
+        _reactivity = options?.reactivity ?? CollectionReactivity.none;
 
-  RxList<T> get recordList => _collection.data;
-  RxList<DataChange<T>> get changesList => _collection.changes;
-  RxBool get hasMoreData => _collection.hasMoreData;
+  RxList<T> get recordList => collection.data;
+  RxList<DataChange<T>> get changesList => collection.changes;
+  RxBool get hasMoreData => collection.hasMoreData;
 
   void init() {
-    _collection.requestData(
+    collection.requestData(
       _params,
-      pageSize: _options.pageSize,
-      maxRecordNumber: _options.maxRecordNumber,
-      reactive: _options.reactivity,
+      pageSize: _pageSize,
+      maxRecordNumber: _maxRecordNumber,
+      reactive: _reactivity,
     );
-    busy.bindStream(_collection.waiting.stream);
+    busy.bindStream(collection.waiting.stream);
   }
 
   void handleListItemCreation(int index) {
     // when the item is created we request more data when we reached the end of current page
-    print('index $index created');
-    if (_collection.data.length == (index + 1) && _collection.hasMoreData()) {
-      _collection.requestMoreData();
+    // print('index $index created');
+    if (collection.data.length == (index + 1) && collection.hasMoreData()) {
+      collection.requestMoreData();
     }
   }
 
@@ -71,13 +66,12 @@ class BaseCollectionController<T extends IResourceData> extends BaseController {
 
   @override
   void onReady() {
-    init();
     super.onReady();
   }
 
   @override
   void onClose() {
     print('Dispose Collection Controller');
-    _collection.dispose();
+    collection.dispose();
   }
 }
