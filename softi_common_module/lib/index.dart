@@ -17,7 +17,7 @@ export 'package:softi_common_module/src/interfaces/external/i_remote_storage.dar
 export 'package:softi_common_module/src/services/base/alert_service.dart';
 export 'package:softi_common_module/src/services/base/location_service.dart';
 export 'package:softi_common_module/src/services/base/media_picker.dart';
-export 'package:softi_common_module/src/services/base/navigation_service.dart';
+export 'package:softi_common_module/src/services/base/loading_service.dart';
 // export 'package:softi_common_module/src/services/firebase/deeplink_service.dart';
 // export 'package:softi_common_module/src/services/firebase/remote_config_service.dart';
 // export 'package:softi_common_module/src/services/firebase/storage_service.dart';
