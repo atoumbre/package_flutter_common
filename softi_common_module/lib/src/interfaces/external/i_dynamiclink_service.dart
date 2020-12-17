@@ -10,6 +10,8 @@ abstract class IDynamicLinkService extends IBaseService {
   /// Initiate handling of deepLinks
   ///
   void handleDeeplinks();
+
+  ///
   Future<String> createDeepLink(String queryString);
 }
 

@@ -12,7 +12,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
+    
+  connectivity: ^3.0.0-nullsafety.1
   stacked_services:
   wechat_assets_picker: 
   wechat_camera_picker:
