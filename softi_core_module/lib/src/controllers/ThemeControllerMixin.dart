@@ -11,7 +11,6 @@ mixin ThemeControllerMixin on BaseController {
 
   final _themeMode = ThemeMode.system.obs;
 
-  ThemeData get theme => Get.theme;
   ThemeMode get themeMode => _themeMode.value;
 
   void _setThemeMode(ThemeMode themeMode) {
