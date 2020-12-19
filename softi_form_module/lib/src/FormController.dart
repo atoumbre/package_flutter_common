@@ -1,29 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:get/get.dart';
 import 'package:softi_resource_module/index.dart';
 import 'package:softi_core_module/index.dart';
 
 import 'package:merge_map/merge_map.dart';
 
 abstract class FormController<T extends IResourceData> extends BaseController {
-  final ResourceController _db;
-
+  final ResourceController db;
   final bool isEdit;
   final T record;
   final GlobalKey<FormBuilderState> formKey = GlobalKey();
   final Map<String, dynamic> initialValue;
 
   FormController(
-    T editingRecord, [
+    T editingRecord,
+    this.db, [
     Map<String, dynamic> initialValue,
-    ResourceController db,
   ])  : isEdit = ((editingRecord.getId() ?? '') == ''),
         initialValue = initialValue ?? editingRecord.toJson(),
-        record = editingRecord,
-        _db = db ?? Get.find();
+        record = editingRecord;
 
-  Future<T> beforSave(Map<String, dynamic> formData) async => _db.deserializer<T>(formData);
+  Future<T> beforSave(Map<String, dynamic> formData) async => db.deserializer<T>(formData);
 
   Future<void> afterSave(T record) async => record;
 
@@ -40,7 +37,7 @@ abstract class FormController<T extends IResourceData> extends BaseController {
     } else if (formKey.currentState.fields[field] == null) {
       result = initialValue[field];
     } else {
-      result = formKey.currentState.fields[field].currentState.value;
+      result = formKey.currentState.fields[field].value;
     }
     print('$field: $result');
     return result;
@@ -61,13 +58,13 @@ abstract class FormController<T extends IResourceData> extends BaseController {
         var _formResult = mergeMap([initialValue, formKey.currentState.value]);
 
         /// Fire onSubmit for additional changes
-        var _product = await beforSave(_formResult);
+        var _record = await beforSave(_formResult);
 
         /// Save to db
-        _product = await _db.save<T>(_product);
+        _record = await db.save<T>(_record);
 
         /// Fire onSave with fresh data for side effect
-        await afterSave(_product);
+        await afterSave(_record);
 
         ///
         onCompleted();

@@ -14,9 +14,13 @@ mixin BindingControllerMixin on BaseController {
   String get ressourceTag;
 
   Future<Function> binder<S, T>(
+    //
     Rx<S> masterRX,
     Rx<T> dataRX, {
-    Stream<T> Function(Rx<S>) binder,
+    Stream<T> Function(S) binder,
+    //
+    bool Function(S) masterIsNull,
+    // Callbacks
     Future Function(S) nullEventCallback,
     Future Function(S, T) eventCallback,
     Future Function() masterNullEventCallback,
@@ -28,14 +32,14 @@ mixin BindingControllerMixin on BaseController {
 
     await _subs.slaveSub?.cancel();
 
-    Future<void> _binder(S master) async {
-      if (masterRX != null) {
-        _subs.slaveSub = binder(masterRX).listen((dataEvent) async {
+    Future<void> _binder(master) async {
+      if (masterIsNull == null ? master != null : !masterIsNull(master)) {
+        _subs.slaveSub = binder(master).listen((dataEvent) async {
           if (dataEvent == null) {
-            if (nullEventCallback != null) await nullEventCallback(masterRX());
+            if (nullEventCallback != null) await nullEventCallback(master);
             dataRX(_initialData);
           } else {
-            if (eventCallback != null) await eventCallback(masterRX(), dataEvent);
+            if (eventCallback != null) await eventCallback(master, dataEvent);
             dataRX(dataEvent);
           }
         });

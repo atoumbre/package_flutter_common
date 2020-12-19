@@ -24,8 +24,9 @@ mixin LocaleControllerMixin on BaseController {
 
   Future<Locale> getLanguage() async {
     var languageText = await _store.getKey('language');
-    var lang = languageText.toString().split('_')[0];
-    var country = languageText.toString().split('_')[1];
+    var _split = languageText.toString().split('_');
+    var lang = _split.isNotEmpty ? _split[0] : '';
+    var country = _split.length > 1 ? _split[1] : '';
     await _setLanguage(Locale(lang, country));
     return Locale(lang, country);
   }

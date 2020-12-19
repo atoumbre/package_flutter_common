@@ -30,5 +30,5 @@ mixin BaseResourceDataMixin {
   String path;
   String getId() => id;
   String getPath() => path;
-  bool isValid() => (id ?? '' != '');
+  bool isValid() => (id ?? '') != '';
 }
