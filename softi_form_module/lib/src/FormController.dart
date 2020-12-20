@@ -24,7 +24,7 @@ abstract class FormController<T extends IResourceData> extends BaseController {
 
   Future<void> afterSave(T record) async => record;
 
-  VoidCallback onCompleted();
+  void onCompleted();
 
   int valueToInt(String value) => int.parse(value);
 
