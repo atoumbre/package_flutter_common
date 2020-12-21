@@ -14,6 +14,7 @@ mixin LocaleControllerMixin on BaseController {
 
   Future<void> _setLanguage(Locale language) async {
     Get.updateLocale(language);
+
     _locale(language);
   }
 

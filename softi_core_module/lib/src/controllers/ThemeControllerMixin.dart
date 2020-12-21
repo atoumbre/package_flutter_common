@@ -15,6 +15,7 @@ mixin ThemeControllerMixin on BaseController {
 
   void _setThemeMode(ThemeMode themeMode) {
     Get.changeThemeMode(themeMode);
+
     _themeMode(themeMode);
   }
 

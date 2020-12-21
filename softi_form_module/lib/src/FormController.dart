@@ -10,21 +10,25 @@ abstract class FormController<T extends IResourceData> extends BaseController {
   final bool isEdit;
   final T record;
   final GlobalKey<FormBuilderState> formKey = GlobalKey();
-  final Map<String, dynamic> initialValue;
+  final Map<String, dynamic> _initialValue;
+
+  Map<String, dynamic> get initialValue => _initialValue ?? buildInitialValue(record);
 
   FormController(
     T editingRecord,
     this.db, [
     Map<String, dynamic> initialValue,
   ])  : isEdit = ((editingRecord.getId() ?? '') == ''),
-        initialValue = initialValue ?? editingRecord.toJson(),
+        _initialValue = initialValue,
         record = editingRecord;
+
+  void onCompleted();
 
   Future<T> beforSave(Map<String, dynamic> formData) async => db.deserializer<T>(formData);
 
   Future<void> afterSave(T record) async => record;
 
-  void onCompleted();
+  Map<String, dynamic> buildInitialValue(T record) => record.toJson();
 
   int valueToInt(String value) => int.parse(value);
 
