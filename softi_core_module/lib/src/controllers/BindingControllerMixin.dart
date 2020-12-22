@@ -10,6 +10,7 @@ mixin BindingControllerMixin on BaseController {
     Rx<S> rxMaster,
     Rx<T> rxData, {
     Function(S, T) handler,
+    Function(S) masterHandler,
     Stream<T> Function(S) binder,
     bool Function(S) canBind,
   }) {
@@ -23,6 +24,9 @@ mixin BindingControllerMixin on BaseController {
         rxData(initialData);
         _sub?.cancel();
       }
+
+      //
+      masterHandler(master);
     }
 
     _binder(rxMaster());

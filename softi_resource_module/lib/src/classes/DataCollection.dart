@@ -6,7 +6,23 @@ import 'package:softi_resource_module/src/classes/query.dart';
 import 'package:softi_resource_module/src/classes/resource.dart';
 import 'package:softi_resource_module/src/interfaces/i_collection_service.dart';
 
-enum CollectionReactivity { none, changes, records, all }
+class CollectionOptions {
+  final int pageSize;
+  final int maxRecordNumber;
+  final bool reactiveRecords;
+  final bool reactiveChanges;
+  final bool reactiveLastPage;
+
+  const CollectionOptions({
+    this.reactiveRecords = true,
+    this.reactiveChanges = true,
+    this.reactiveLastPage = true,
+    this.pageSize = 10,
+    this.maxRecordNumber = 100,
+  });
+
+  bool get reactive => reactiveRecords && reactiveChanges;
+}
 
 class DataCollection<T extends IResourceData> {
   DataCollection(ICollectionService collectionService, IResource<T> res)
@@ -23,12 +39,9 @@ class DataCollection<T extends IResourceData> {
   dynamic _lastCursor;
   QueryPagination _pagination;
 
-  //  Query params for next call
+  //  Cache Query params for next call
   QueryParameters _params;
-  int _maxRecordNumber;
-  int _pageSize;
-  CollectionReactivity _reactive;
-  // bool _changesOnly;
+  CollectionOptions _options;
 
   // Returned info
   final RxBool _hasMoreData = true.obs;
@@ -44,44 +57,40 @@ class DataCollection<T extends IResourceData> {
 
   void requestData(
     QueryParameters params, {
-    int pageSize,
-    CollectionReactivity reactive,
-    int maxRecordNumber,
+    CollectionOptions options,
   }) {
     // reset on each call of requestData, use requestMoreData for more data
     _reset();
 
     // Save params for next call
     _params = params;
-    _pageSize = pageSize ?? _pageSize;
-    _reactive = reactive ?? _reactive;
-    _maxRecordNumber = maxRecordNumber ?? _maxRecordNumber;
+    _options = options ?? _options;
 
     // request data
-    _requestData(_reactive);
+    _requestData();
   }
 
   void requestMoreData({refresh = false}) {
     if (refresh) _reset();
-    _requestData(_reactive);
+    _requestData();
   }
 
-  void _requestData(CollectionReactivity reactive) async {
+  void _requestData() async {
     if (!_hasMoreData()) return;
 
     _waiting(true);
 
-    //* Update pagination params and Create next  page query
-    var _queryPageSize = (_maxRecordNumber == null || _maxRecordNumber == double.infinity)
-        ? _pageSize
-        : min(_maxRecordNumber - _recordCount, _pageSize);
+    //* Update pagination params and Create next query pagination
+    var _queryPageSize = (_options.maxRecordNumber == null || _options.maxRecordNumber == double.infinity)
+        ? _options.pageSize
+        : min(_options.maxRecordNumber - _recordCount, _options.pageSize);
 
     _recordCount += _queryPageSize;
 
     //! If reactive query all docs each time and ecreas limit
     _pagination = QueryPagination(
-      limit: reactive != CollectionReactivity.none ? _recordCount : _queryPageSize,
-      cursor: reactive != CollectionReactivity.none ? null : _lastCursor,
+      limit: _options.reactiveLastPage ? _recordCount : _queryPageSize,
+      cursor: _options.reactiveLastPage ? null : _lastCursor,
     );
 
     await _mainSubscription?.cancel();
@@ -92,32 +101,29 @@ class DataCollection<T extends IResourceData> {
       _res,
       _params,
       pagination: _pagination,
-      reactive: (reactive != CollectionReactivity.none),
+      reactive: _options.reactive,
     )
         .listen((queryResult) {
-      //
       _eventCount++;
       _lastCursor = queryResult.cursor;
 
       //
-      if (reactive == CollectionReactivity.all) {
-        _data.assignAll(queryResult.data);
-        _changes.addAll(queryResult.changes);
-      } else if (reactive == CollectionReactivity.changes) {
-        if (_eventCount == 1) _data.assignAll(queryResult.data);
-        _changes.addAll(queryResult.changes);
-      } else if (reactive == CollectionReactivity.records) {
+      if (_options.reactiveRecords) {
         _data.assignAll(queryResult.data);
       } else {
-        if (_eventCount == 1) _data.addAll(queryResult.data);
+        if (_eventCount == 1) _data.assignAll(queryResult.data);
+      }
+
+      if (_options.reactiveChanges) {
+        if (_eventCount != 1) _changes.addAll(queryResult.changes);
       }
 
       // Check if we have more data
       _hasMoreData(
-        _data.length >= _recordCount && _recordCount <= (_maxRecordNumber ?? double.infinity),
+        _data.length >= _recordCount && _recordCount <= (_options.maxRecordNumber ?? double.infinity),
       );
 
-      if (reactive == CollectionReactivity.none && !_hasMoreData()) _mainSubscription?.cancel();
+      if (!_options.reactive && !_hasMoreData()) _mainSubscription?.cancel();
     });
   }
 

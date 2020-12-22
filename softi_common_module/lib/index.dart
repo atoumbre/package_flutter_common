@@ -3,9 +3,6 @@ export 'package:softi_common_module/src/components/BackgroundServiceManager.dart
 export 'package:softi_common_module/src/components/HideKeyboardManager.dart';
 export 'package:softi_common_module/src/components/ListItemCreationAware.dart';
 export 'package:softi_common_module/src/components/StateFullWrapper.dart';
-export 'package:softi_common_module/src/controllers/LocaleController.dart';
-export 'package:softi_common_module/src/controllers/ThemeController.dart';
-export 'package:softi_common_module/src/controllers/TimerController.dart';
 export 'package:softi_common_module/src/interfaces/app/i_alert_service.dart';
 export 'package:softi_common_module/src/interfaces/app/i_loading_service.dart';
 export 'package:softi_common_module/src/interfaces/device/i_connectivity_service.dart';
@@ -18,6 +15,3 @@ export 'package:softi_common_module/src/services/base/alert_service.dart';
 export 'package:softi_common_module/src/services/base/loading_service.dart';
 export 'package:softi_common_module/src/services/base/location_service.dart';
 export 'package:softi_common_module/src/services/base/media_picker.dart';
-// export 'package:softi_common_module/src/services/firebase/deeplink_service.dart';
-// export 'package:softi_common_module/src/services/firebase/remote_config_service.dart';
-// export 'package:softi_common_module/src/services/firebase/storage_service.dart';
