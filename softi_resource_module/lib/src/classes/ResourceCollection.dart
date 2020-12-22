@@ -24,8 +24,8 @@ class CollectionOptions {
   bool get reactive => reactiveRecords && reactiveChanges;
 }
 
-class DataCollection<T extends IResourceData> {
-  DataCollection(ICollectionService collectionService, IResource<T> res)
+class ResourceCollection<T extends IResourceData> {
+  ResourceCollection(ICollectionService collectionService, IResource<T> res)
       : _collectionService = collectionService,
         _res = res;
 
@@ -44,16 +44,16 @@ class DataCollection<T extends IResourceData> {
   CollectionOptions _options;
 
   // Returned info
-  final RxBool _hasMoreData = true.obs;
-  final RxList<T> _data = <T>[].obs;
-  final RxList<DataChange<T>> _changes = <DataChange<T>>[].obs;
-  final RxBool _waiting = false.obs;
+  final hasMoreData = true.obs;
+  final data = <T>[].obs;
+  final changes = <DataChange<T>>[].obs;
+  final waiting = false.obs;
 
   //+ Exposed data
-  RxBool get hasMoreData => _hasMoreData;
-  RxList<DataChange<T>> get changes => _changes;
-  RxList<T> get data => _data;
-  RxBool get waiting => _waiting;
+  // RxBool get hasMoreData => _hasMoreData;
+  // RxList<DataChange<T>> get changes => _changes;
+  // RxList<T> get data => _data;
+  // RxBool get waiting => _waiting;
 
   void requestData(
     QueryParameters params, {
@@ -76,9 +76,9 @@ class DataCollection<T extends IResourceData> {
   }
 
   void _requestData() async {
-    if (!_hasMoreData()) return;
+    if (!hasMoreData()) return;
 
-    _waiting(true);
+    waiting(true);
 
     //* Update pagination params and Create next query pagination
     var _queryPageSize = (_options.maxRecordNumber == null || _options.maxRecordNumber == double.infinity)
@@ -109,21 +109,21 @@ class DataCollection<T extends IResourceData> {
 
       //
       if (_options.reactiveRecords) {
-        _data.assignAll(queryResult.data);
+        data.assignAll(queryResult.data);
       } else {
-        if (_eventCount == 1) _data.assignAll(queryResult.data);
+        if (_eventCount == 1) data.assignAll(queryResult.data);
       }
 
       if (_options.reactiveChanges) {
-        if (_eventCount != 1) _changes.addAll(queryResult.changes);
+        if (_eventCount > 1) changes.addAll(queryResult.changes);
       }
 
       // Check if we have more data
-      _hasMoreData(
-        _data.length >= _recordCount && _recordCount <= (_options.maxRecordNumber ?? double.infinity),
+      hasMoreData(
+        data.length >= _recordCount && _recordCount <= (_options.maxRecordNumber ?? double.infinity),
       );
 
-      if (!_options.reactive && !_hasMoreData()) _mainSubscription?.cancel();
+      if (!_options.reactive && !hasMoreData()) _mainSubscription?.cancel();
     });
   }
 
@@ -131,12 +131,16 @@ class DataCollection<T extends IResourceData> {
     _recordCount = 0;
     _eventCount = 0;
 
-    _hasMoreData(true);
-    _data.assignAll([]);
-    _changes.assignAll([]);
+    hasMoreData(true);
+    data.assignAll([]);
+    changes.assignAll([]);
   }
 
   void dispose() {
     _mainSubscription?.cancel();
+    waiting.close();
+    data.close();
+    changes.close();
+    hasMoreData.close();
   }
 }

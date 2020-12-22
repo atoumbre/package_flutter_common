@@ -6,7 +6,7 @@ import 'package:softi_core_module/index.dart';
 import 'package:merge_map/merge_map.dart';
 
 abstract class FormController<T extends IResourceData> extends BaseController {
-  final ResourceController db;
+  final ResourceBase db;
   final bool isEdit;
   final T record;
   final GlobalKey<FormBuilderState> formKey = GlobalKey();

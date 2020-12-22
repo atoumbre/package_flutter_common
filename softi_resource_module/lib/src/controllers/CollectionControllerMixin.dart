@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
 import 'package:softi_core_module/index.dart';
-import 'package:softi_resource_module/src/classes/DataCollection.dart';
+import 'package:softi_resource_module/src/classes/ResourceCollection.dart';
 import 'package:softi_resource_module/src/classes/query.dart';
 import 'package:softi_resource_module/src/classes/resource.dart';
 import 'package:softi_resource_module/src/interfaces/i_collection_service.dart';
 
 mixin CollectionControllerMixin<T extends IResourceData> on BaseController {
   //
-  DataCollection<T> get collection;
+  ResourceCollection<T> get collection;
   QueryParameters get queryParameters;
   CollectionOptions get collectionOptions;
 

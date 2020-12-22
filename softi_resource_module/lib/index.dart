@@ -1,9 +1,9 @@
-export 'package:softi_resource_module/src/classes/DataCollection.dart';
-export 'package:softi_resource_module/src/classes/DataRecord.dart';
+export 'package:softi_resource_module/src/classes/ResourceCollection.dart';
+export 'package:softi_resource_module/src/classes/ResourceRecord.dart';
 export 'package:softi_resource_module/src/classes/filters.dart';
 export 'package:softi_resource_module/src/classes/query.dart';
 export 'package:softi_resource_module/src/classes/resource.dart';
-export 'package:softi_resource_module/src/controllers/ResourceController.dart';
+export 'package:softi_resource_module/src/classes/ResourceBase.dart';
 export 'package:softi_resource_module/src/controllers/CollectionController.dart';
 export 'package:softi_resource_module/src/controllers/CollectionControllerMixin.dart';
 export 'package:softi_resource_module/src/controllers/RecordController.dart';

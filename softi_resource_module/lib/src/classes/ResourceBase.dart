@@ -1,18 +1,18 @@
 import 'package:get/get.dart';
-import 'package:softi_resource_module/src/classes/DataCollection.dart';
-import 'package:softi_resource_module/src/classes/DataRecord.dart';
+import 'package:softi_resource_module/src/classes/ResourceCollection.dart';
+import 'package:softi_resource_module/src/classes/ResourceRecord.dart';
 import 'package:softi_resource_module/src/classes/query.dart';
 import 'package:softi_resource_module/src/classes/resource.dart';
 import 'package:softi_resource_module/src/interfaces/i_collection_service.dart';
 
-class ResourceController {
+class ResourceBase {
   final ICollectionService _api;
   final Map<dynamic, dynamic> _resourceMapper;
 
-  ResourceController(this._resourceMapper, [ICollectionService api]) : _api = api ?? Get.find();
+  ResourceBase(this._resourceMapper, [ICollectionService api]) : _api = api ?? Get.find();
 
-  DataCollection<T> collection<T extends IResourceData>([IResource<T> _res]) {
-    return DataCollection<T>(_api, _res ?? _resourceMapper[T]);
+  ResourceCollection<T> collection<T extends IResourceData>([IResource<T> _res]) {
+    return ResourceCollection<T>(_api, _res ?? _resourceMapper[T]);
   }
 
   DataRecord<T> record<T extends IResourceData>([IResource<T> _res]) {
