@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/foundation.dart';
 import 'package:softi_common_module/src/class/i_media_asset.dart';
 import 'package:softi_core_module/index.dart';
@@ -26,7 +28,7 @@ class UploadEvent {
 
 abstract class IRemoteStorageService extends IBaseService {
   Stream<UploadEvent> uploadMedia({
-    @required MediaAsset imageToUpload,
+    @required Uint8List imageToUpload,
     @required String title,
     bool isFile = false,
   });
