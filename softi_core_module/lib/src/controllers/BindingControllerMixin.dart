@@ -7,8 +7,8 @@ mixin BindingControllerMixin on BaseController {
   // String get ressourceTag;
 
   Future<void> Function() binder<S, T>(
-    Rx<S> rxMaster,
-    Rx<T> rxData, {
+    Stream<S> rxMaster,
+    Stream<T> rxData, {
     Function(S, T) handler,
     Function(S) masterHandler,
     Stream<T> Function(S) binder,
