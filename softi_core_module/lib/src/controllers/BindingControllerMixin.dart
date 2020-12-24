@@ -26,7 +26,7 @@ mixin BindingControllerMixin on BaseController {
       }
 
       //
-      masterHandler(master);
+      if (masterHandler != null) masterHandler(master);
     }
 
     _binder(rxMaster());

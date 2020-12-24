@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:softi_resource_module/index.dart';
-import 'package:softi_core_module/index.dart';
-
+import 'package:get/get.dart';
 import 'package:merge_map/merge_map.dart';
+import 'package:softi_core_module/index.dart';
+import 'package:softi_resource_module/index.dart';
 
 abstract class FormController<T extends IResourceData> extends BaseController {
   final ResourceBase db;
@@ -22,7 +22,7 @@ abstract class FormController<T extends IResourceData> extends BaseController {
         _initialValue = initialValue,
         record = editingRecord;
 
-  void onCompleted();
+  void onCompleted() => Get.back();
 
   Future<T> beforSave(Map<String, dynamic> formData) async => db.deserializer<T>(formData);
 

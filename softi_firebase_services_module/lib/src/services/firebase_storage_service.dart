@@ -15,7 +15,7 @@ var _eventTypeMap = {
 
 class FirebaseStorageService extends IRemoteStorageService {
   @override
-  Stream<UploadEvent> uploadImage({
+  Stream<UploadEvent> uploadMedia({
     @required dynamic imageToUpload,
     @required String title,
     bool addTimestamp = false,
@@ -68,7 +68,7 @@ class FirebaseStorageService extends IRemoteStorageService {
   }
 
   @override
-  Future deleteImage(String imageFileName) async {
+  Future deleteMedia(String imageFileName) async {
     final firebaseStorageRef = FirebaseStorage.instance.ref().child(imageFileName);
 
     try {

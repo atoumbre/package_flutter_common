@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:softi_common_module/src/interfaces/device/i_media_picker.dart';
+import 'package:softi_common_module/src/class/i_media_asset.dart';
 import 'package:softi_core_module/index.dart';
 
 enum UploadState {
@@ -25,11 +25,11 @@ class UploadEvent {
 }
 
 abstract class IRemoteStorageService extends IBaseService {
-  Stream<UploadEvent> uploadImage({
-    @required dynamic imageToUpload,
+  Stream<UploadEvent> uploadMedia({
+    @required MediaAsset imageToUpload,
     @required String title,
     bool isFile = false,
   });
 
-  Future deleteImage(String imageFileName);
+  Future<void> deleteMedia(String imageFileName);
 }

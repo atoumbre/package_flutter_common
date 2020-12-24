@@ -9,12 +9,12 @@ var _map = {
 
 class ConnectivityService extends IConnectivityService {
   @override
-  Future<ConnectivityType> getConectivity() async {
+  Future<ConnectivityType> get conectivity {
     return Connectivity().checkConnectivity().then((result) => _map[result]);
   }
 
   @override
-  Stream<ConnectivityType> streamConectivity() {
+  Stream<ConnectivityType> get streamConectivity {
     return Connectivity().onConnectivityChanged.map((result) => _map[result]);
   }
 }
