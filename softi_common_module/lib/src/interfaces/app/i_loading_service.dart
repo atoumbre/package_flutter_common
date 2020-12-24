@@ -10,6 +10,8 @@ abstract class ILoadingService extends IBaseService {
   Future<void> showError(String status, {Duration duration, bool dismissOnTap});
 
   Future<void> showSuccess(String status, {Duration duration, bool dismissOnTap});
+
+  Future<void> showToast(String status, {Duration duration, bool dismissOnTap});
 }
 
 class LoadingServiceExeption extends IBaseServiceException {

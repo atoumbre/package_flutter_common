@@ -53,6 +53,13 @@ class LoadingService extends ILoadingService {
         // ..customAnimation = CustomAnimation();
         ;
   }
+
+  @override
+  Future<void> showToast(String status, {Duration duration, EasyLoadingMaskType maskType, bool dismissOnTap}) {
+    return catchError<void>(() async {
+      return EasyLoading.showToast(status, duration: duration, maskType: maskType, dismissOnTap: dismissOnTap);
+    });
+  }
 }
 
 class LoadingManager extends SingleChildStatelessWidget {
