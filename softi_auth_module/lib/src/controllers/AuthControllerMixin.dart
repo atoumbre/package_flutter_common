@@ -6,11 +6,13 @@ mixin AuthControllerMixin on BaseController {
   final authUser = AuthUser().obs;
 
   /// GETTERS
+
   IAuthService get authApi => Get.find();
   String get uid => authUser().uid;
   Stream<AuthUser> get authUserStream => authUser.stream;
 
   /// METHODS
+
   Future<void> initAuth() async {
     authUser(await authApi.getCurrentUser);
 

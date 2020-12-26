@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:softi_core_module/index.dart';
 import 'package:softi_resource_module/src/classes/ResourceCollection.dart';
+import 'package:softi_resource_module/src/classes/filters.dart';
 import 'package:softi_resource_module/src/classes/query.dart';
 import 'package:softi_resource_module/src/classes/resource.dart';
 import 'package:softi_resource_module/src/interfaces/i_collection_service.dart';
@@ -8,8 +9,8 @@ import 'package:softi_resource_module/src/interfaces/i_collection_service.dart';
 mixin CollectionControllerMixin<T extends IResourceData> on BaseController {
   //
   ResourceCollection<T> get collection;
-  QueryParameters get queryParameters;
-  CollectionOptions get collectionOptions;
+  QueryParameters get queryParameters => Filter().build();
+  CollectionOptions get collectionOptions => CollectionOptions();
 
   RxList<T> get recordList => collection.data;
   RxList<DataChange<T>> get changesList => collection.changes;

@@ -8,7 +8,7 @@ mixin BindingControllerMixin on BaseController {
 
   Future<void> Function() binder<S, T>(
     Stream<S> rxMaster,
-    Stream<T> rxData, {
+    Rx<T> rxData, {
     Function(S, T) handler,
     Function(S) masterHandler,
     Stream<T> Function(S) binder,
@@ -29,8 +29,8 @@ mixin BindingControllerMixin on BaseController {
       if (masterHandler != null) masterHandler(master);
     }
 
-    _binder(rxMaster());
-    _masterSub = rxMaster.stream.listen(_binder);
+    // _binder(rxMaster());
+    _masterSub = rxMaster.listen(_binder);
 
     return () async {
       await _sub?.cancel();
