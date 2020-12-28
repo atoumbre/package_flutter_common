@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:get/get.dart';
 import 'package:merge_map/merge_map.dart';
 import 'package:softi_core_module/index.dart';
 import 'package:softi_resource_module/index.dart';
 
 mixin FormControllerMixin<T extends IResourceData> on BaseController {
-  final GlobalKey<FormBuilderState> formKey = GlobalKey();
+  final formKey = GlobalKey<FormBuilderState>();
 
   T _record;
   ResourceBase _db;
@@ -22,9 +21,11 @@ mixin FormControllerMixin<T extends IResourceData> on BaseController {
   }
 
   // TO OVERRIDE
-  void onCompleted() => Get.back();
+  // void onCompleted() => Get.back();
   Future<T> beforSave(Map<String, dynamic> formData) async => _db.deserializer<T>(formData);
-  Future<void> afterSave(T record) async => record;
+
+  Future<void> afterSave(T record); // async => record;
+
   Map<String, dynamic> buildInitialValue(T record) => record.toJson();
 
   // Utlities
@@ -67,9 +68,6 @@ mixin FormControllerMixin<T extends IResourceData> on BaseController {
 
         /// Fire onSave with fresh data for side effect
         await afterSave(_record);
-
-        ///
-        onCompleted();
       } else {
         print('${T.toString()} Form : validation failed');
 
