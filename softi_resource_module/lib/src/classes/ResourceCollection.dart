@@ -49,12 +49,6 @@ class ResourceCollection<T extends IResourceData> {
   final changes = <DataChange<T>>[].obs;
   final waiting = false.obs;
 
-  //+ Exposed data
-  // RxBool get hasMoreData => _hasMoreData;
-  // RxList<DataChange<T>> get changes => _changes;
-  // RxList<T> get data => _data;
-  // RxBool get waiting => _waiting;
-
   void requestData(
     QueryParameters params, {
     CollectionOptions options,
@@ -103,28 +97,34 @@ class ResourceCollection<T extends IResourceData> {
       pagination: _pagination,
       reactive: _options.reactive,
     )
-        .listen((queryResult) {
-      _eventCount++;
-      _lastCursor = queryResult.cursor;
+        .listen(
+      (queryResult) {
+        _eventCount++;
+        _lastCursor = queryResult.cursor;
 
-      //
-      if (_options.reactiveRecords) {
-        data.assignAll(queryResult.data);
-      } else {
-        if (_eventCount == 1) data.assignAll(queryResult.data);
-      }
+        //
+        if (_options.reactiveRecords) {
+          data.assignAll(queryResult.data);
+        } else {
+          if (_eventCount == 1) data.assignAll(queryResult.data);
+        }
 
-      if (_options.reactiveChanges) {
-        if (_eventCount > 1) changes.addAll(queryResult.changes);
-      }
+        //
+        if (_options.reactiveChanges) {
+          if (_eventCount > 1) changes.addAll(queryResult.changes);
+        }
 
-      // Check if we have more data
-      hasMoreData(
-        data.length >= _recordCount && _recordCount <= (_options.maxRecordNumber ?? double.infinity),
-      );
+        // Check if we have more data
+        hasMoreData(
+          data.length >= _recordCount && _recordCount <= (_options.maxRecordNumber ?? double.infinity),
+        );
 
-      if (!_options.reactive && !hasMoreData()) _mainSubscription?.cancel();
-    });
+        if (!_options.reactive && !hasMoreData()) _mainSubscription?.cancel();
+        waiting(false);
+      },
+      onError: () => waiting(false),
+      cancelOnError: false,
+    );
   }
 
   void _reset() {
