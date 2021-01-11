@@ -122,7 +122,7 @@ class ResourceCollection<T extends IResourceData> {
         if (!_options.reactive && !hasMoreData()) _mainSubscription?.cancel();
         waiting(false);
       },
-      onError: () => waiting(false),
+      // onError: () => waiting(false),
       cancelOnError: false,
     );
   }
