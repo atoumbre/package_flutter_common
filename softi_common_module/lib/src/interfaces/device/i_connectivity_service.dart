@@ -1,4 +1,4 @@
-import 'package:softi_core_module/index.dart';
+import 'package:softi_core_module/core.dart';
 
 enum ConnectivityType { none, wifi, mobile }
 

@@ -1,3 +1,0 @@
-void formSetop() {}
-
-void formInit() {}
