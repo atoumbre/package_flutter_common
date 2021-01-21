@@ -4,8 +4,8 @@ import 'package:softi_core_module/src/resource/classes/resource.dart';
 import 'package:softi_core_module/src/resource/interfaces/i_collection_service.dart';
 import 'package:get/get.dart';
 
-class DataRecord<T extends IResourceData> {
-  DataRecord(this._api, this._res);
+class ResourceDAO<T extends IResourceData> {
+  ResourceDAO(this._api, this._res);
 
   final Rx<T> _data = Rx<T>();
   bool _reactive = false;

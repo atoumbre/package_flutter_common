@@ -6,7 +6,5 @@ export 'package:softi_core_module/src/resource/classes/query.dart';
 export 'package:softi_core_module/src/resource/classes/resource.dart';
 export 'package:softi_core_module/src/resource/controllers/CollectionController.dart';
 export 'package:softi_core_module/src/resource/controllers/CollectionControllerMixin.dart';
-export 'package:softi_core_module/src/resource/controllers/FormController.dart';
-export 'package:softi_core_module/src/resource/controllers/FormControllerMixin.dart';
 export 'package:softi_core_module/src/resource/controllers/RecordController.dart';
 export 'package:softi_core_module/src/resource/interfaces/i_collection_service.dart';

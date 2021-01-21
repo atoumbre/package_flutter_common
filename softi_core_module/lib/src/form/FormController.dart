@@ -1,35 +1,31 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_form_builder/flutter_form_builder.dart';
+// import 'package:get/get.dart';
 // import 'package:merge_map/merge_map.dart';
-// import 'package:softi_core_module/src/core/base_controller.dart';
-// import 'package:softi_core_module/src/resource/classes/ResourceBase.dart';
-// import 'package:softi_core_module/src/resource/classes/resource.dart';
+// import 'package:softi_core_module/core.dart';
 
-// mixin FormControllerMixin<T extends IResourceData> on BaseController {
-//   final formKey = GlobalKey<FormBuilderState>();
+// abstract class FormController<T> extends BaseController {
+//   final bool isEdit;
+//   final T record;
+//   final GlobalKey<FormBuilderState> formKey = GlobalKey();
+//   // final Map<String, dynamic> _initialValue;
 
-//   T _record;
-//   ResourceBase _db;
-//   bool _isEdit;
+//   Map<String, dynamic> get initialValue => buildInitialValue(record);
 
-//   Map<String, dynamic> get initialValue => buildInitialValue(_record);
-//   bool get isEdit => _isEdit;
+//   FormController(
+//     T editingRecord,
+//     this.isEdit, [
+//     Map<String, dynamic> initialValue,
+//   ]) : record = editingRecord;
 
-//   void initForm(T editingRecord, ResourceBase db) {
-//     _isEdit = ((editingRecord.getId() ?? '') == '');
-//     _record = editingRecord;
-//     _db = db;
-//   }
+//   void onCompleted() => Get.back();
 
-//   // TO OVERRIDE
-//   // void onCompleted() => Get.back();
-//   Future<T> beforSave(Map<String, dynamic> formData) async => _db.deserializer<T>(formData);
+//   Future<T> beforSave(Map<String, dynamic> formData); //async => db.deserializer<T>(formData);
 
-//   Future<void> afterSave(T record); // async => record;
+//   Future<void> afterSave(T record) async => record;
 
-//   Map<String, dynamic> buildInitialValue(T record) => record.toJson();
+//   Map<String, dynamic> buildInitialValue(T record); // => record.toJson();
 
-//   // Utlities
 //   int valueToInt(String value) => int.parse(value);
 
 //   double valueToDouble(String value) => double.parse(value);
@@ -52,7 +48,7 @@
 //   }
 
 //   Future<void> save() async {
-//     busy(true);
+//     busy.toggle();
 
 //     try {
 //       formKey.currentState.save();
@@ -65,10 +61,13 @@
 //         var _record = await beforSave(_formResult);
 
 //         /// Save to db
-//         _record = await _db.save<T>(_record);
+//         // _record = await db.save<T>(_record);
 
 //         /// Fire onSave with fresh data for side effect
 //         await afterSave(_record);
+
+//         ///
+//         onCompleted();
 //       } else {
 //         print('${T.toString()} Form : validation failed');
 
@@ -77,7 +76,7 @@
 //     } catch (e) {
 //       rethrow;
 //     } finally {
-//       busy(false);
+//       busy.toggle();
 //     }
 //   }
 // }

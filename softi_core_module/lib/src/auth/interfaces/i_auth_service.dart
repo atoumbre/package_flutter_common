@@ -42,28 +42,6 @@ abstract class IAuthService extends IBaseService {
   void refresh();
 }
 
-// class PhoneAuthResult {
-//   final SendCodeResult sendCodeFuture;
-//   final Future<AuthUser> autoRetriveFuture;
-
-//   PhoneAuthResult({
-//     this.sendCodeFuture,
-//     this.autoRetriveFuture,
-//   });
-// }
-
-// class SendCodeResult {
-//   final Future<AuthUser> Function(String) codeVerification;
-//   final Future<PhoneAuthResult> Function() resendCode;
-//   final String phoneNumber;
-
-//   SendCodeResult({
-//     @required this.phoneNumber,
-//     this.codeVerification,
-//     this.resendCode,
-//   });
-// }
-
 class SendCodeResult {
   final String phoneNumber;
   final Future<AuthUser> authResult;

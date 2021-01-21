@@ -51,13 +51,6 @@ class FileMediaAsset extends MediaAsset {
   final String id;
   final File file;
 
-  // File (Gallery and Camera)
-  // final dynamic rawEntity;
-  // final MediaType format;
-  // final Uint8List thumbData;
-  // Data
-  // final MediaSource source;
-
   FileMediaAsset({
     this.id,
     this.file,

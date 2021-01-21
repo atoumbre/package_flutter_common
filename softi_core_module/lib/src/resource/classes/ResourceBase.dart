@@ -15,8 +15,8 @@ class ResourceBase {
     return ResourceCollection<T>(_api, _res ?? _resourceMapper[T]);
   }
 
-  DataRecord<T> record<T extends IResourceData>([IResource<T> _res]) {
-    return DataRecord<T>(_api, _res ?? _resourceMapper[T]);
+  ResourceDAO<T> record<T extends IResourceData>([IResource<T> _res]) {
+    return ResourceDAO<T>(_api, _res ?? _resourceMapper[T]);
   }
 
   //  Transition helper
