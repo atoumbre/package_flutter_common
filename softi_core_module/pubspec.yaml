@@ -24,6 +24,7 @@ dependencies:
   stacked_services:
   connectivity:
   wechat_camera_picker:
+  smart_select:
 
 
 # flutter packages pub run build_runner watch --delete-conflicting-outputs
