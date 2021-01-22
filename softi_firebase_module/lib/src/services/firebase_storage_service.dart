@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
-import 'package:softi_common_module/index.dart';
+import 'package:softi_services_module/index.dart';
 
 var _eventTypeMap = {
   TaskState.error: UploadState.error,

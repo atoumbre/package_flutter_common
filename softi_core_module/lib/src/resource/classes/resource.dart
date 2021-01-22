@@ -6,7 +6,7 @@ typedef Deserializer<T> = T Function(Map<String, dynamic>);
 enum ResourceRequestType { find, read, create, replace, update, delete }
 
 abstract class IResource<T> {
-  String get collectionName => T.toString().snakeCase + 's';
+  // String get collectionName => T.toString().snakeCase + 's';
   T deserializer(Map<String, dynamic> serializedData);
   String endpointResolver({
     ResourceRequestType requestType,

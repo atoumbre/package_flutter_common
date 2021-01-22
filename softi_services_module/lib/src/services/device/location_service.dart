@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:location/location.dart';
-import 'package:softi_common_module/src/interfaces/device/i_location_service.dart';
+import 'package:softi_services_module/src/interfaces/device/i_location_service.dart';
 
 class LocationService extends ILocationService {
   StreamSubscription<LocationData> _streamSubscription;

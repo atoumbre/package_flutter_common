@@ -1,60 +1,43 @@
-// import 'package:get/get.dart';
-// import 'package:softi_core_module/index.dart';
-// import 'package:softi_core_module/src/resource/classes/ResourceCollection.dart';
-// import 'package:softi_core_module/src/resource/classes/filters.dart';
-// import 'package:softi_core_module/src/resource/classes/query.dart';
-// import 'package:softi_core_module/src/resource/classes/resource.dart';
-// import 'package:softi_core_module/src/resource/interfaces/i_collection_service.dart';
+import 'package:softi_core_module/src/core/base_controller.dart';
+import 'package:softi_core_module/src/resource/classes/ResourceCollection.dart';
+import 'package:softi_core_module/src/resource/classes/filters.dart';
+import 'package:softi_core_module/src/resource/classes/query.dart';
+import 'package:softi_core_module/src/resource/classes/resource.dart';
+import 'package:softi_core_module/src/resource/controllers/CollectionControllerMixin.dart';
 
-// abstract class BaseCollectionController<T extends IResourceData> extends BaseController {
-//   //
-//   final ResourceCollection<T> _collection;
-//   final QueryParameters _queryParams;
-//   final CollectionOptions _options;
+abstract class BaseCollectionController<T extends IResourceData> extends BaseController
+    with CollectionControllerMixin<T> {
+  //
+  @override
+  ResourceCollection<T> get collection => _collection;
 
-//   BaseCollectionController(
-//     this._collection, {
-//     Filter filter,
-//     CollectionOptions options,
-//   })  : _queryParams = (filter ?? Filter()).build(),
-//         _options = options ?? CollectionOptions();
+  @override
+  QueryParameters get queryParameters => _queryParams.build();
 
-//   // List<S> get recordList => _collection.data.map(transformer).toList();
-//   RxList<DataChange<T>> get changesList => _collection.changes;
-//   RxBool get hasMoreData => _collection.hasMoreData;
+  @override
+  CollectionOptions get collectionOptions => _options;
 
-//   void init() {
-//     _collection.requestData(
-//       _queryParams,
-//       options: _options,
-//     );
-//     busy.bindStream(_collection.waiting.stream);
-//   }
+  //
+  final ResourceCollection<T> _collection;
+  final Filter _queryParams;
+  final CollectionOptions _options;
 
-//   void handleListItemCreation(int index) {
-//     // when the item is created we request more data when we reached the end of current page
-//     // print('index $index created');
-//     if (_collection.data.length == (index + 1) && _collection.hasMoreData()) {
-//       _collection.requestMoreData();
-//     }
-//   }
+  BaseCollectionController(
+    this._collection, {
+    Filter filter,
+    CollectionOptions options,
+  })  : _queryParams = filter ?? Filter(),
+        _options = options ?? CollectionOptions();
 
-//   // S transformer(T record);
+  @override
+  void onInit() {
+    initCollection();
+    super.onInit();
+  }
 
-//   @override
-//   void onInit() {
-//     init();
-//     super.onInit();
-//   }
-
-//   @override
-//   void onReady() {
-//     super.onReady();
-//   }
-
-//   @override
-//   void onClose() {
-//     print('Dispose Collection Controller');
-//     _collection.dispose();
-//   }
-// }
+  @override
+  void onClose() {
+    disposeCollection();
+    super.onClose();
+  }
+}

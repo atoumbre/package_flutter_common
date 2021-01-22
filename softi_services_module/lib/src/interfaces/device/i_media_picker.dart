@@ -1,4 +1,4 @@
-import 'package:softi_common_module/src/class/i_media_asset.dart';
+import 'package:softi_services_module/src/class/i_media_asset.dart';
 import 'package:softi_core_module/core.dart';
 
 // enum MediaFormat { image, video, audio }

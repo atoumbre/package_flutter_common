@@ -1,5 +1,5 @@
 import 'package:connectivity/connectivity.dart';
-import 'package:softi_common_module/src/interfaces/device/i_connectivity_service.dart';
+import 'package:softi_services_module/src/interfaces/device/i_connectivity_service.dart';
 
 var _map = {
   ConnectivityResult.mobile: ConnectivityType.mobile,

@@ -9,9 +9,10 @@ import 'package:softi_core_module/src/resource/interfaces/i_collection_service.d
 mixin CollectionControllerMixin<T extends IResourceData> on BaseController {
   //
   ResourceCollection<T> get collection;
+
+  //
   QueryParameters get queryParameters => Filter().build();
   CollectionOptions get collectionOptions => CollectionOptions();
-
   RxList<T> get recordList => collection.data;
   RxList<DataChange<T>> get changesList => collection.changes;
   RxBool get hasMoreData => collection.hasMoreData;

@@ -25,8 +25,8 @@ dependencies:
   softi_core_module:
     path: ../softi_core_module
   
-  softi_common_module:
-    path: ../softi_common_module
+  softi_services_module:
+    path: ../softi_services_module
   
 
 

@@ -1,5 +1,5 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:softi_common_module/index.dart';
+import 'package:softi_services_module/index.dart';
 
 // const String _ShowMainBanner = 'show_main_banner';
 
