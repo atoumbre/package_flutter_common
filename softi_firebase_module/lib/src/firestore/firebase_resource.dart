@@ -19,7 +19,7 @@ class FirestoreResource<T> extends IResource<T> {
     String dataPath,
     T dataObject,
   }) {
-    return endpoint ?? collectionName;
+    return endpoint;
   }
 
   @override
