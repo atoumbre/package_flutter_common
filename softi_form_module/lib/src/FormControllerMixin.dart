@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:merge_map/merge_map.dart';
-import 'package:softi_core_module/src/core/base_controller.dart';
+import 'package:softi_core_module/core.dart';
 
 mixin FormControllerMixin<T> on BaseController {
   final formKey = GlobalKey<FormBuilderState>();
@@ -10,13 +10,8 @@ mixin FormControllerMixin<T> on BaseController {
   Map<String, dynamic> _initialValue;
 
   // GETTERS
-
+  T get record => _record;
   Map<String, dynamic> get initialValue => _initialValue;
-
-  void initForm(T editingRecord) {
-    _record = editingRecord;
-    _initialValue = buildInitialValue(_record);
-  }
 
   // TO OVERRIDE
 
@@ -27,6 +22,11 @@ mixin FormControllerMixin<T> on BaseController {
   Map<String, dynamic> buildInitialValue(T record); // => record.toJson();
 
   // UTILITIES
+
+  void initForm(T editingRecord) {
+    _record = editingRecord;
+    _initialValue = buildInitialValue(editingRecord);
+  }
 
   int valueToInt(String value) => int.parse(value);
 
@@ -39,7 +39,7 @@ mixin FormControllerMixin<T> on BaseController {
     } else if (formKey.currentState.fields[field] == null) {
       result = initialValue[field];
     } else {
-      result = formKey.currentState.fields[field].currentState.value;
+      result = formKey.currentState.fields[field].value;
     }
     print('$field: $result');
     return result;
