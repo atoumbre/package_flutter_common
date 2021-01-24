@@ -39,7 +39,7 @@ mixin FormControllerMixin<T> on BaseController {
     } else if (formKey.currentState.fields[field] == null) {
       result = initialValue[field];
     } else {
-      result = formKey.currentState.fields[field].value;
+      result = formKey.currentState.fields[field].currentState.value;
     }
     print('$field: $result');
     return result;

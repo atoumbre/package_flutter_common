@@ -1,4 +1,3 @@
-import 'package:recase/recase.dart';
 import 'package:softi_core_module/src/resource/classes/query.dart';
 
 typedef Deserializer<T> = T Function(Map<String, dynamic>);

@@ -23,10 +23,10 @@ dependencies:
   firebase_remote_config:
 
   softi_core_module:
-    path: ../softi_core_module
+    path: /Users/atoumbre/AppPortfolio/packages/softi_core_module
   
   softi_services_module:
-    path: ../softi_services_module
+    path: /Users/atoumbre/AppPortfolio/packages/softi_services_module
   
 
 

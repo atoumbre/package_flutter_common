@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:softi_core_module/src/resource/classes/ResourceCollection.dart';
-import 'package:softi_core_module/src/resource/classes/ResourceRecord.dart';
 import 'package:softi_core_module/src/resource/classes/query.dart';
 import 'package:softi_core_module/src/resource/classes/resource.dart';
 import 'package:softi_core_module/src/resource/interfaces/i_collection_service.dart';
