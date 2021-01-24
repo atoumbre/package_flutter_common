@@ -752,15 +752,15 @@ packages:
   softi_core_module:
     dependency: "direct main"
     description:
-      path: "/Users/atoumbre/AppPortfolio/packages/softi_core_module"
-      relative: false
+      path: "../softi_core_module"
+      relative: true
     source: path
     version: "0.0.1"
   softi_services_module:
     dependency: "direct main"
     description:
-      path: "/Users/atoumbre/AppPortfolio/packages/softi_services_module"
-      relative: false
+      path: "../softi_services_module"
+      relative: true
     source: path
     version: "0.0.1"
   source_gen:

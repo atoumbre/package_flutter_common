@@ -13,7 +13,9 @@ dependencies:
     sdk: flutter
   
   softi_core_module:
-    path: ../softi_core_module
+    git:
+      url: git://github.com/atoumbre/softi_packages.git
+      path: softi_core_module
   
   merge_map:
   flutter_secure_storage:

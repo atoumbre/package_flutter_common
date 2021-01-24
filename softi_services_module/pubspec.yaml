@@ -20,7 +20,9 @@ dependencies:
   flutter_easyloading:
 
   softi_core_module:
-    path: ../softi_core_module
+    git:
+      url: git://github.com/atoumbre/softi_packages.git
+      path: softi_core_module
 
 dev_dependencies:
   flutter_test:

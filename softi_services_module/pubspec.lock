@@ -402,9 +402,11 @@ packages:
   softi_core_module:
     dependency: "direct main"
     description:
-      path: "../softi_core_module"
-      relative: true
-    source: path
+      path: softi_core_module
+      ref: HEAD
+      resolved-ref: d65c7f1ce838588d7c258aa7ed67d7b7a9a4bd0f
+      url: "git://github.com/atoumbre/softi_packages.git"
+    source: git
     version: "0.0.1"
   source_span:
     dependency: transitive
