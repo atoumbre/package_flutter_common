@@ -404,8 +404,8 @@ packages:
     description:
       path: softi_core_module
       ref: HEAD
-      resolved-ref: d65c7f1ce838588d7c258aa7ed67d7b7a9a4bd0f
-      url: "git://github.com/atoumbre/softi_packages.git"
+      resolved-ref: f6d55cf61b54e4e7675fbd425c0ebdfc63e36d24
+      url: "https://b5f960e33e1c7fd9d5425ecfb9ded11dfcf1e7a1@github.com/atoumbre/softi_packages.git"
     source: git
     version: "0.0.1"
   source_span:
