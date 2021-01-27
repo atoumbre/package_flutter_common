@@ -1,5 +1,5 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-import 'package:softi_services_module/index.dart';
+import 'package:softi_core_module/services.dart';
 import 'package:softi_firebase_module/src/auth/models/settings.dart';
 
 class FirebaseDeeplinkService extends IDynamicLinkService {

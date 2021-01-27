@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
-import 'package:softi_services_module/index.dart';
+import 'package:softi_core_module/services.dart';
 import 'package:softi_core_module/core.dart';
 import 'package:softi_firebase_module/src/auth/models/settings.dart';
 import 'package:softi_firebase_module/src/auth/services/firebase_auth_service.dart';
