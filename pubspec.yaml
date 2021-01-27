@@ -1,0 +1,46 @@
+name: softi_common
+description: A new Flutter package project.
+version: 0.0.1
+author:
+homepage:
+publish_to: none
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  freezed_annotation:
+  location:
+  recase:
+  get:
+  get_storage:
+  logger:
+  merge_map:
+  flutter_secure_storage:
+  stacked_services:
+  connectivity:
+  wechat_camera_picker:
+  smart_select:
+  wechat_assets_picker: 
+  flutter_easyloading:
+  nested:
+  flutter_form_builder: ^4.2.0
+  
+
+# flutter packages pub run build_runner watch --delete-conflicting-outputs
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  pedantic:
+  build_runner:
+  freezed:
+
+dependency_overrides:
+  intl: 0.17.0-nullsafety.2
+  extended_image: 1.5.0-dev
+
+flutter:
+
