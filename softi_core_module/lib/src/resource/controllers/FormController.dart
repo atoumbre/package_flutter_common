@@ -2,7 +2,6 @@
 // import 'package:flutter_form_builder/flutter_form_builder.dart';
 // import 'package:get/get.dart';
 // import 'package:merge_map/merge_map.dart';
-// import 'package:softi_core_module/core.dart';
 // import 'package:softi_core_module/src/resource/classes/ResourceBase.dart';
 // import 'package:softi_core_module/src/resource/classes/resource.dart';
 

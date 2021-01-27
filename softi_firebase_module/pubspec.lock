@@ -753,8 +753,8 @@ packages:
     dependency: "direct main"
     description:
       path: softi_core_module
-      ref: HEAD
-      resolved-ref: "982b1d4cda5aa8d40067d42eb8ecf92d274ef345"
+      ref: "v0.1"
+      resolved-ref: "2f3ee35077d1758475f54b04e446d6962adaaf50"
       url: "https://b5f960e33e1c7fd9d5425ecfb9ded11dfcf1e7a1@github.com/atoumbre/softi_packages.git"
     source: git
     version: "0.0.1"
@@ -762,8 +762,8 @@ packages:
     dependency: "direct main"
     description:
       path: softi_services_module
-      ref: HEAD
-      resolved-ref: "982b1d4cda5aa8d40067d42eb8ecf92d274ef345"
+      ref: "v0.1"
+      resolved-ref: "2f3ee35077d1758475f54b04e446d6962adaaf50"
       url: "https://b5f960e33e1c7fd9d5425ecfb9ded11dfcf1e7a1@github.com/atoumbre/softi_packages.git"
     source: git
     version: "0.0.1"
