@@ -403,8 +403,8 @@ packages:
     dependency: "direct main"
     description:
       path: softi_core_module
-      ref: HEAD
-      resolved-ref: f6d55cf61b54e4e7675fbd425c0ebdfc63e36d24
+      ref: "v0.1"
+      resolved-ref: e9ce0588bdffb73c11750d7e6ad1e355e501701f
       url: "https://b5f960e33e1c7fd9d5425ecfb9ded11dfcf1e7a1@github.com/atoumbre/softi_packages.git"
     source: git
     version: "0.0.1"
