@@ -14,10 +14,8 @@ dependencies:
 
   freezed_annotation:
   location:
-  recase:
   get:
   get_storage:
-  logger:
   merge_map:
   flutter_secure_storage:
   stacked_services:
@@ -26,7 +24,6 @@ dependencies:
   smart_select:
   wechat_assets_picker: 
   flutter_easyloading:
-  nested:
   flutter_form_builder: ^4.2.0
   
 

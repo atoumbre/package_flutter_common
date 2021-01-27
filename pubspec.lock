@@ -518,13 +518,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  logger:
-    dependency: "direct main"
-    description:
-      name: logger
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.9.4"
   logging:
     dependency: transitive
     description:
@@ -561,7 +554,7 @@ packages:
     source: hosted
     version: "0.9.7"
   nested:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: nested
       url: "https://pub.dartlang.org"
@@ -728,13 +721,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
-  recase:
-    dependency: "direct main"
-    description:
-      name: recase
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.1"
   shelf:
     dependency: transitive
     description:
