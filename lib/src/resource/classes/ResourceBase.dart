@@ -7,7 +7,7 @@ import 'package:softi_common/src/resource/interfaces/i_collection_service.dart';
 class ResourceBase {
   final ICollectionService _api;
 
-  final IResource<T> Function<T>() _resourceResolver;
+  final IResource Function<T>() _resourceResolver;
 
   ResourceBase(this._resourceResolver, [ICollectionService api]) : _api = api ?? Get.find();
 
