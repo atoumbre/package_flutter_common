@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:softi_common/src/resource/classes/query.dart';
-import 'package:softi_common/src/resource/classes/resource.dart';
+import 'package:softi_common/src/resource/interfaces/i_resource.dart';
 
 abstract class ICollectionService {
   Stream<QueryResult<T>> find<T extends IResourceData>(

@@ -2,7 +2,7 @@ import 'package:softi_common/src/resource/classes/query.dart';
 
 typedef Deserializer<T> = T Function(Map<String, dynamic>);
 
-enum ResourceRequestType { find, read, create, replace, update, delete }
+enum ResourceRequestType { call, find, read, create, replace, update, delete }
 
 abstract class IResource<T> {
   // String get collectionName => T.toString().snakeCase + 's';

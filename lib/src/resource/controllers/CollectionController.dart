@@ -2,7 +2,7 @@ import 'package:softi_common/src/core/base_controller.dart';
 import 'package:softi_common/src/resource/classes/ResourceCollection.dart';
 import 'package:softi_common/src/resource/classes/filters.dart';
 import 'package:softi_common/src/resource/classes/query.dart';
-import 'package:softi_common/src/resource/classes/resource.dart';
+import 'package:softi_common/src/resource/interfaces/i_resource.dart';
 import 'package:softi_common/src/resource/controllers/CollectionControllerMixin.dart';
 
 abstract class BaseCollectionController<T extends IResourceData> extends BaseController

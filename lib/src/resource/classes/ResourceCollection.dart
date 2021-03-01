@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:get/get.dart';
 import 'package:softi_common/src/resource/classes/query.dart';
-import 'package:softi_common/src/resource/classes/resource.dart';
+import 'package:softi_common/src/resource/interfaces/i_resource.dart';
 import 'package:softi_common/src/resource/interfaces/i_collection_service.dart';
 
 class CollectionOptions {

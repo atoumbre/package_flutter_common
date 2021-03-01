@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:softi_common/src/resource/classes/resource.dart';
+import 'package:softi_common/src/resource/interfaces/i_resource.dart';
 import 'package:softi_common/src/resource/interfaces/i_collection_service.dart';
 import 'package:get/get.dart';
 
