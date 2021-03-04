@@ -6,11 +6,11 @@ import 'package:softi_common/core.dart';
 mixin FormControllerMixin<T> on BaseController {
   final formKey = GlobalKey<FormBuilderState>();
 
-  T _record;
+  // T _record;
   Map<String, dynamic> _initialValue;
 
   // GETTERS
-  T get record => _record;
+  // T get record => _record;
   Map<String, dynamic> get initialValue => _initialValue;
 
   // TO OVERRIDE
@@ -19,30 +19,13 @@ mixin FormControllerMixin<T> on BaseController {
 
   Future<void> afterSave(T record);
 
-  Map<String, dynamic> buildInitialValue(T record); // => record.toJson();
+  Future<Map<String, dynamic>> buildInitialValue(T record); // => record.toJson();
 
-  // UTILITIES
+  // Methods
 
-  void initForm(T editingRecord) {
-    _record = editingRecord;
-    _initialValue = buildInitialValue(editingRecord);
-  }
-
-  int valueToInt(String value) => int.parse(value);
-
-  double valueToDouble(String value) => double.parse(value);
-
-  dynamic getFieldValue(String field) {
-    var result;
-    if (formKey.currentState?.fields == null) {
-      result = initialValue[field];
-    } else if (formKey.currentState.fields[field] == null) {
-      result = initialValue[field];
-    } else {
-      result = formKey.currentState.fields[field].value;
-    }
-    print('$field: $result');
-    return result;
+  void initForm(T editingRecord) async {
+    // _record = editingRecord;
+    _initialValue = await buildInitialValue(editingRecord);
   }
 
   void saveState() {
@@ -65,7 +48,7 @@ mixin FormControllerMixin<T> on BaseController {
         /// Save to db
         // _record = await _db.save<T>(_record);
 
-        /// Fire onSave with fresh data for side effect
+        /// Fire onSave with fresh data for side effect (save data, navigate back ...)
         await afterSave(_record);
       } else {
         print('${T.toString()} Form : validation failed');
@@ -77,5 +60,23 @@ mixin FormControllerMixin<T> on BaseController {
     } finally {
       busy(false);
     }
+  }
+
+  // UTILITIES
+  int valueToInt(String value) => int.parse(value);
+
+  double valueToDouble(String value) => double.parse(value);
+
+  dynamic getFieldValue(String field) {
+    var result;
+    if (formKey.currentState?.fields == null) {
+      result = initialValue[field];
+    } else if (formKey.currentState.fields[field] == null) {
+      result = initialValue[field];
+    } else {
+      result = formKey.currentState.fields[field].value;
+    }
+    print('$field: $result');
+    return result;
   }
 }

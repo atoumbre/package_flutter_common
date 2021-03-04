@@ -17,11 +17,11 @@ abstract class IAuthService extends IBaseService {
   Future<void> sendPasswordResetEmail(String email);
 
   // OS Login
-  Future<AuthUser> signInWithGoogle();
-  Future<AuthUser> signInWithApple();
+  Future<AuthUser> signInWithGoogle({linkToUser = false});
+  Future<AuthUser> signInWithApple({linkToUser = false});
 
   // Social Login
-  Future<AuthUser> signInWithFacebook(dynamic param);
+  Future<AuthUser> signInWithFacebook(dynamic param, {linkToUser = false});
 
   // Email Link login
   Future<AuthUser> signInWithEmailAndLink({String email, String link});

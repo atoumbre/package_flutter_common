@@ -58,7 +58,7 @@ class MediaPicker extends IMediaPicker {
   Future<List<FileMediaAsset>> selectMediaFromGallery({
     Set<MediaFormat> formats = const {MediaFormat.image, MediaFormat.video},
     List<FileMediaAsset> selectedItemId = const [],
-    int maxItem,
+    int maxItem = 1,
   }) async {
     var _lastSelection = await Future.wait(selectedItemId.map((e) => AssetEntity.fromId(e.id)).toList());
 
