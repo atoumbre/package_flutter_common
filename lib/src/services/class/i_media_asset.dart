@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 enum MediaFormat { image, video, audio }
 enum MediaSource { file, network, memory }
+enum PickerSource { camera, gallery, file }
 
 abstract class MediaAsset {
   final dynamic rawEntity;

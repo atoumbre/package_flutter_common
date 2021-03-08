@@ -5,7 +5,7 @@ import 'package:softi_common/src/core/base_service.dart';
 import 'package:softi_common/src/services/class/i_media_asset.dart';
 
 enum UploadState {
-  progress,
+  running,
   paused,
   canceled,
   error,
@@ -27,10 +27,14 @@ class UploadEvent {
 }
 
 abstract class IRemoteStorageService extends IBaseService {
-  Stream<UploadEvent> uploadMedia({
+  Future<UploadEvent> uploadMedia({
     @required Uint8List imageToUpload,
     @required String title,
-    bool isFile = false,
+  });
+
+  Stream<UploadEvent> uploadMediaStream({
+    @required Uint8List imageToUpload,
+    @required String title,
   });
 
   Future<void> deleteMedia(String imageFileName);

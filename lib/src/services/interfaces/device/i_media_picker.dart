@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:softi_common/src/core/base_service.dart';
 import 'package:softi_common/src/services/class/i_media_asset.dart';
 
@@ -11,4 +13,7 @@ abstract class IMediaPicker extends IBaseService {
   Future<List<FileMediaAsset>> selectMediaFromCamera({
     Set<MediaFormat> formats = const {MediaFormat.image, MediaFormat.video},
   });
+
+  /// Alters the actual image
+  Future<File> singleImageSelect({bool crop, PickerSource source});
 }

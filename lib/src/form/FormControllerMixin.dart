@@ -6,26 +6,19 @@ import 'package:softi_common/core.dart';
 mixin FormControllerMixin<T> on BaseController {
   final formKey = GlobalKey<FormBuilderState>();
 
-  // T _record;
   Map<String, dynamic> _initialValue;
 
   // GETTERS
-  // T get record => _record;
   Map<String, dynamic> get initialValue => _initialValue;
 
   // TO OVERRIDE
-
   Future<T> beforSave(Map<String, dynamic> formData); // _db.deserializer<T>(formData);
-
   Future<void> afterSave(T record);
-
-  Future<Map<String, dynamic>> buildInitialValue(T record); // => record.toJson();
+  Map<String, dynamic> buildInitialValue(T record); // => record.toJson();
 
   // Methods
-
-  void initForm(T editingRecord) async {
-    // _record = editingRecord;
-    _initialValue = await buildInitialValue(editingRecord);
+  void initForm(T editingRecord) {
+    _initialValue = buildInitialValue(editingRecord);
   }
 
   void saveState() {
@@ -44,9 +37,6 @@ mixin FormControllerMixin<T> on BaseController {
 
         /// Fire onSubmit for additional changes
         var _record = await beforSave(_formResult);
-
-        /// Save to db
-        // _record = await _db.save<T>(_record);
 
         /// Fire onSave with fresh data for side effect (save data, navigate back ...)
         await afterSave(_record);

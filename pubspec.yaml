@@ -25,6 +25,8 @@ dependencies:
   wechat_assets_picker: 
   flutter_easyloading:
   flutter_form_builder: ^4.2.0
+  image_picker:
+  image_cropper:
   
 
 # flutter packages pub run build_runner watch --delete-conflicting-outputs

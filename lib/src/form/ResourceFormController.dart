@@ -10,7 +10,7 @@ abstract class ResourceFormController<T extends IResourceData> extends BaseContr
   }
 
   @override
-  Future<Map<String, dynamic>> buildInitialValue(T record) async => record.toJson();
+  Map<String, dynamic> buildInitialValue(T record) => record.toJson();
 
   @override
   Future<T> beforSave(Map<String, dynamic> formData) async => db.deserializer<T>(formData);
