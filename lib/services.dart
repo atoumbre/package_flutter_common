@@ -2,8 +2,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:softi_common/src/core/interfaces/i_local_storage.dart';
 import 'package:softi_common/src/core/services/local_storage.dart';
+import 'package:softi_common/src/services/implementations/device/location_service.dart';
 import 'package:softi_common/src/services/interfaces/device/i_location_service.dart';
-import 'package:softi_common/src/services/services/device/location_service.dart';
 import 'package:stacked_services/stacked_services.dart' show DialogService, SnackbarService;
 
 export 'package:softi_common/src/services/class/i_media_asset.dart';
@@ -11,6 +11,10 @@ export 'package:softi_common/src/services/components/BackgroundServiceManager.da
 export 'package:softi_common/src/services/components/HideKeyboardManager.dart';
 export 'package:softi_common/src/services/components/ListItemCreationAware.dart';
 export 'package:softi_common/src/services/components/StateFullWrapper.dart';
+export 'package:softi_common/src/services/implementations/app/alert_service.dart';
+export 'package:softi_common/src/services/implementations/app/loading_service.dart';
+export 'package:softi_common/src/services/implementations/device/location_service.dart';
+export 'package:softi_common/src/services/implementations/device/media_picker.dart';
 export 'package:softi_common/src/services/interfaces/app/i_alert_service.dart';
 export 'package:softi_common/src/services/interfaces/app/i_loading_service.dart';
 export 'package:softi_common/src/services/interfaces/device/i_connectivity_service.dart';
@@ -19,10 +23,6 @@ export 'package:softi_common/src/services/interfaces/device/i_media_picker.dart'
 export 'package:softi_common/src/services/interfaces/external/i_dynamiclink_service.dart';
 export 'package:softi_common/src/services/interfaces/external/i_remote_config.dart';
 export 'package:softi_common/src/services/interfaces/external/i_remote_storage.dart';
-export 'package:softi_common/src/services/services/app/alert_service.dart';
-export 'package:softi_common/src/services/services/app/loading_service.dart';
-export 'package:softi_common/src/services/services/device/location_service.dart';
-export 'package:softi_common/src/services/services/device/media_picker.dart';
 
 Future<void> commonSetup() async {
   ///

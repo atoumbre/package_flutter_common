@@ -96,7 +96,7 @@ class MediaPicker extends IMediaPicker {
     final _picked = await _picker.getImage(source: _pickerSourceMap[source]);
     if (_picked != null) {
       response = File(_picked.path);
-      response = crop ? _cropImage(response) : response;
+      response = crop ? await _cropImage(response) : response;
     }
 
     return response;
