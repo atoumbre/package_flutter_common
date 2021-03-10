@@ -104,6 +104,7 @@ class MediaPicker extends IMediaPicker {
 
   Future<File> _cropImage(imageFile) async {
     var croppedFile = await ImageCropper.cropImage(
+        maxWidth: 640,
         sourcePath: imageFile.path,
         aspectRatioPresets: Platform.isAndroid
             ? [
