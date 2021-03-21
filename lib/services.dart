@@ -7,6 +7,7 @@ import 'package:softi_common/src/services/interfaces/device/i_location_service.d
 import 'package:stacked_services/stacked_services.dart' show DialogService, SnackbarService;
 
 export 'package:softi_common/src/services/class/i_media_asset.dart';
+export 'package:softi_common/src/services/class/i_media_asset_new.dart';
 export 'package:softi_common/src/services/components/BackgroundServiceManager.dart';
 export 'package:softi_common/src/services/components/HideKeyboardManager.dart';
 export 'package:softi_common/src/services/components/ListItemCreationAware.dart';
