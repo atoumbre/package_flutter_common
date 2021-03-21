@@ -14,6 +14,6 @@ abstract class IMediaPicker extends IBaseService {
     Set<MediaFormat> formats = const {MediaFormat.image, MediaFormat.video},
   });
 
-  /// Alters the actual image
+  ///
   Future<File> singleImageSelect({bool crop, PickerSource source});
 }
