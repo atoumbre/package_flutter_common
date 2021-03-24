@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:softi_common/src/core/base_controller.dart';
 
-mixin TimerControllerMixin on BaseController {
+mixin TimerControllerMixin on IBaseController {
   Duration get interval;
 
   final clock = DateTime.now().obs;

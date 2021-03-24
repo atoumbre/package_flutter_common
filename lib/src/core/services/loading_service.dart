@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:nested/nested.dart';
-import 'package:softi_common/src/services/interfaces/app/i_loading_service.dart';
+import 'package:softi_common/src/core/interfaces/i_loading_service.dart';
 
 class LoadingService extends ILoadingService {
   @override

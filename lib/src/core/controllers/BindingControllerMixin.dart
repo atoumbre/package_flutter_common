@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:softi_common/src/core/base_controller.dart';
 
-mixin BindingControllerMixin on BaseController {
+mixin BindingControllerMixin on IBaseController {
   // String get ressourceTag;
 
   Future<void> Function() binder<S, T>(

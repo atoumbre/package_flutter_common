@@ -12,7 +12,7 @@ class ResourceBase {
   ResourceBase(this._resourceResolver, [ICollectionService api]) : _api = api ?? Get.find();
 
   ResourceCollection<T> collection<T extends IResourceData>([IResource<T> _res]) {
-    return ResourceCollection<T>(_api, _res ?? _resourceResolver<T>());
+    return ResourceCollection<T>(_api, _resourceResolver<T>());
   }
 
   //  Transition helper
@@ -27,34 +27,32 @@ class ResourceBase {
   }
 
   // Expose API
-
-  Stream<T> get<T extends IResourceData>(String id, {IResource<T> res, bool reactive}) {
-    return _api.get<T>(res ?? _resourceResolver<T>(), id, reactive: reactive);
-  }
-
-  Future<T> save<T extends IResourceData>(T record, {IResource<T> res}) {
-    return _api.save<T>(res ?? _resourceResolver<T>(), record);
-  }
-
-  Future<void> patch<T extends IResourceData>(String id, Map<String, dynamic> values, {IResource<T> res}) {
-    return _api.update<T>(res ?? _resourceResolver<T>(), id, values);
-  }
-
-  Future<void> delete<T extends IResourceData>(String id, {IResource<T> res}) {
-    return _api.delete<T>(res ?? _resourceResolver<T>(), id);
-  }
-
   Stream<QueryResult<T>> find<T extends IResourceData>(
     QueryParameters params, {
     QueryPagination pagination,
     bool reactive = true,
-    IResource<T> res,
   }) {
     return _api.find(
-      res ?? _resourceResolver<T>(),
+      _resourceResolver<T>(),
       params,
       pagination: pagination,
       reactive: reactive,
     );
+  }
+
+  Stream<T> get<T extends IResourceData>(String id, {bool reactive}) {
+    return _api.get<T>(_resourceResolver<T>(), id, reactive: reactive);
+  }
+
+  Future<T> save<T extends IResourceData>(T record) {
+    return _api.save<T>(_resourceResolver<T>(), record);
+  }
+
+  Future<void> patch<T extends IResourceData>(String id, Map<String, dynamic> values) {
+    return _api.update<T>(_resourceResolver<T>(), id, values);
+  }
+
+  Future<void> delete<T extends IResourceData>(String id) {
+    return _api.delete<T>(_resourceResolver<T>(), id);
   }
 }

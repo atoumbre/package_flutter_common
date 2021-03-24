@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:softi_common/src/core/base_controller.dart';
 import 'package:softi_common/src/core/interfaces/i_local_storage.dart';
 
-mixin LocaleControllerMixin on BaseController {
+mixin LocaleControllerMixin on IBaseController {
   ILocalStore get _store => Get.find();
 
   final _locale = Locale('en').obs;
