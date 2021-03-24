@@ -4,6 +4,7 @@ export 'package:softi_common/src/core/controllers/BindingControllerMixin.dart';
 export 'package:softi_common/src/core/controllers/IndexControllerMixin.dart';
 export 'package:softi_common/src/core/controllers/LocaleControllerMixin.dart';
 export 'package:softi_common/src/core/controllers/ThemeControllerMixin.dart';
+export 'package:softi_common/src/core/controllers/LoadingStateControllerMixin.dart';
 export 'package:softi_common/src/core/controllers/TimerControllerMixin.dart';
 export 'package:softi_common/src/core/interfaces/i_loading_service.dart';
 export 'package:softi_common/src/core/interfaces/i_local_storage.dart';

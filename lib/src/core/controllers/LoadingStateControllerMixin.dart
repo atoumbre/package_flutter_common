@@ -6,19 +6,20 @@ enum LoadingStatus { idle, loading, error }
 
 mixin LoadingStatusControllerMixin on IBaseController {
   Rx<LoadingStatus> loadingStatus = LoadingStatus.loading.obs;
+
   void changeLoadingStatus(LoadingStatus newStatus) {
     loadingStatus(newStatus);
   }
 
-  void toggleError(LoadingStatus newStatus) {
+  void toggleError() {
     loadingStatus(LoadingStatus.error);
   }
 
-  void toggleLoading(LoadingStatus newStatus) {
+  void toggleLoading() {
     loadingStatus(LoadingStatus.loading);
   }
 
-  void toggleIdle(LoadingStatus newStatus) {
+  void toggleIdle() {
     loadingStatus(LoadingStatus.idle);
   }
 }

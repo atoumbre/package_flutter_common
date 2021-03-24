@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:softi_common/src/core/base_controller.dart';
 import 'package:softi_common/src/core/interfaces/i_loading_service.dart';
 
-mixin TaskHandlerMixin on IBaseController {
+mixin TaskHandlerControllerMixin on IBaseController {
   ILoadingService get loadingService => Get.find<ILoadingService>();
 
   Future<void> controllerTaskHandler({
