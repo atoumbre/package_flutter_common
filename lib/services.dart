@@ -8,10 +8,6 @@ import 'package:stacked_services/stacked_services.dart' show DialogService, Snac
 
 export 'package:softi_common/src/services/class/i_media_asset.dart';
 export 'package:softi_common/src/services/class/i_media_asset_new.dart';
-export 'package:softi_common/src/services/components/BackgroundServiceManager.dart';
-export 'package:softi_common/src/services/components/HideKeyboardManager.dart';
-export 'package:softi_common/src/services/components/ListItemCreationAware.dart';
-export 'package:softi_common/src/services/components/StateFullWrapper.dart';
 export 'package:softi_common/src/services/implementations/app/alert_service.dart';
 export 'package:softi_common/src/services/implementations/device/camera_service.dart';
 export 'package:softi_common/src/services/implementations/device/location_service.dart';
