@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:softi_common/src/services/class/i_media_asset.dart';
 import 'package:softi_common/src/services/interfaces/device/i_media_picker.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
-import 'package:wechat_camera_picker/wechat_camera_picker.dart';
 
 class MediaPicker extends IMediaPicker {
   final _requestTypeMapper = <Set<MediaFormat>, RequestType>{
@@ -48,22 +47,22 @@ class MediaPicker extends IMediaPicker {
     return await Future.wait(_fileList);
   }
 
-  @override
-  Future<List<FileMediaAsset>> selectMediaFromCamera({
-    Set<MediaFormat> formats = const {MediaFormat.image, MediaFormat.video},
-  }) async {
-    final _assetList = await CameraPicker.pickFromCamera(
-      Get.context,
-      isOnlyAllowRecording: !formats.contains(MediaFormat.image),
-      isAllowRecording: formats.contains(MediaFormat.video),
-      resolutionPreset: ResolutionPreset.medium,
-      textDelegate: EnglishCameraPickerTextDelegate(),
-    );
+  // @override
+  // Future<List<FileMediaAsset>> selectMediaFromCamera({
+  //   Set<MediaFormat> formats = const {MediaFormat.image, MediaFormat.video},
+  // }) async {
+  //   final _assetList = await CameraPicker.pickFromCamera(
+  //     Get.context,
+  //     isOnlyAllowRecording: !formats.contains(MediaFormat.image),
+  //     isAllowRecording: formats.contains(MediaFormat.video),
+  //     resolutionPreset: ResolutionPreset.medium,
+  //     textDelegate: EnglishCameraPickerTextDelegate(),
+  //   );
 
-    if (_assetList == null) return null;
+  //   if (_assetList == null) return null;
 
-    return _processAssetsList([_assetList]);
-  }
+  //   return _processAssetsList([_assetList]);
+  // }
 
   @override
   Future<List<FileMediaAsset>> selectMediaFromGallery({

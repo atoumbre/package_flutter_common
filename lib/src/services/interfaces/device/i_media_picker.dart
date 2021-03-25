@@ -10,10 +10,6 @@ abstract class IMediaPicker extends IBaseService {
     int maxItem,
   });
 
-  Future<List<FileMediaAsset>> selectMediaFromCamera({
-    Set<MediaFormat> formats = const {MediaFormat.image, MediaFormat.video},
-  });
-
   ///
   Future<File> singleImageSelect({bool crop, PickerSource source});
 }
