@@ -4,7 +4,7 @@ import 'package:softi_common/src/core/interfaces/i_local_storage.dart';
 import 'package:softi_common/src/core/services/local_storage.dart';
 import 'package:softi_common/src/services/implementations/device/location_service.dart';
 import 'package:softi_common/src/services/interfaces/device/i_location_service.dart';
-import 'package:stacked_services/stacked_services.dart' show DialogService, SnackbarService;
+// import 'package:stacked_services/stacked_services.dart' show DialogService, SnackbarService;
 
 export 'package:softi_common/src/services/class/i_media_asset.dart';
 export 'package:softi_common/src/services/class/i_media_asset_new.dart';
@@ -31,8 +31,8 @@ Future<void> commonSetup() async {
 
   /// App services
   // Get.put<INavigationService>(NavigationService());
-  Get.put<DialogService>(DialogService());
-  Get.put<SnackbarService>(SnackbarService());
+  // Get.put<DialogService>(DialogService());
+  // Get.put<SnackbarService>(SnackbarService());
 }
 
 class CommonServices {
@@ -43,8 +43,8 @@ class CommonServices {
 
   /// App services
   // static INavigationService get nav => Get.find();
-  static DialogService get dialog => Get.find();
-  static SnackbarService get snack => Get.find();
+  // static DialogService get dialog => Get.find();
+  // static SnackbarService get snack => Get.find();
   // static IAlertService get alert => Get.find();
 
 }
