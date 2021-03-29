@@ -32,10 +32,12 @@ class MediaPicker extends IMediaPicker {
   };
 
   Future<List<FileMediaAsset>> _processAssetsList(List<AssetEntity> assets) async {
+    var crop = assets.length == 1;
+
     var _fileList = assets.map<Future<FileMediaAsset>>((asset) async {
       print('SSET ID : ${asset.id}');
       return FileMediaAsset(
-        file: await asset.file,
+        file: crop ? await _cropImage(await asset.file) : await asset.file,
 
         id: asset.id,
         //source: source,
@@ -83,7 +85,9 @@ class MediaPicker extends IMediaPicker {
 
     if (_assetList == null) return null;
 
-    return _processAssetsList(_assetList);
+    var result = await _processAssetsList(_assetList);
+
+    return result;
   }
 
   @override

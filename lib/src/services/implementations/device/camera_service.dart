@@ -12,7 +12,7 @@ class CameraService extends ICameraService {
 
   Future<List<FileMediaAsset>> _processAssetsList(List<AssetEntity> assets) async {
     var _fileList = assets.map<Future<FileMediaAsset>>((asset) async {
-      print('SSET ID : ${asset.id}');
+      // print('SSET ID : ${asset.id}');
       return FileMediaAsset(
         file: await asset.file,
 

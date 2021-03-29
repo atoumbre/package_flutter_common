@@ -40,7 +40,7 @@ class ResourceBase {
     );
   }
 
-  Stream<T> get<T extends IResourceData>(String id, {bool reactive}) {
+  Stream<T> get<T extends IResourceData>(String id, {bool reactive = true}) {
     return _api.get<T>(_resourceResolver<T>(), id, reactive: reactive);
   }
 
