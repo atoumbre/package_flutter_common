@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:softi_common/src/resource/classes/query.dart';
 import 'package:softi_common/src/resource/interfaces/i_resource.dart';
@@ -72,7 +73,9 @@ class ResourceCollection<T extends IResourceData> {
   void _requestData() async {
     if (!hasMoreData()) return;
 
-    waiting(true);
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      waiting(true);
+    });
 
     //* Update pagination params and Create next query pagination
     var _queryPageSize = (_options.maxRecordNumber == null || _options.maxRecordNumber == double.infinity)
@@ -120,7 +123,10 @@ class ResourceCollection<T extends IResourceData> {
         );
 
         if (!_options.reactive && !hasMoreData()) _mainSubscription?.cancel();
-        waiting(false);
+
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          waiting(false);
+        });
       },
       // onError: () => waiting(false),
       cancelOnError: false,

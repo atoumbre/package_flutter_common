@@ -7,11 +7,26 @@ abstract class IBaseController extends GetxController {
   // final triggerRebuild = false.obs; // a trick to trigger rebuild without MixinBuilder
 }
 
-class BaseController extends IBaseController with LoadingStatusControllerMixin, TaskHandlerControllerMixin {
-  final busy = false.obs;
+abstract class BaseController extends IBaseController with LoadingStatusControllerMixin, TaskHandlerControllerMixin {
+  // final busy = false.obs;
 }
 
-class BaseViewController extends BaseController with LoadingStatusControllerMixin, TaskHandlerControllerMixin {}
+abstract class BaseViewController extends BaseController with LoadingStatusControllerMixin, TaskHandlerControllerMixin {
+  Future<void> loadView();
+  Future<void> disposeView() => null;
+
+  @override
+  void onInit() async {
+    await loadView();
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    disposeView();
+    super.onClose();
+  }
+}
 
 abstract class BaseView<T extends BaseViewController> extends StatelessWidget {
   Widget loadingBuilder(T controller) => builder(controller);
@@ -19,12 +34,11 @@ abstract class BaseView<T extends BaseViewController> extends StatelessWidget {
   Widget builder(T controller);
   T init();
 
-  final bool reactive;
-
-  const BaseView(
-    this.reactive, {
+  const BaseView({
     Key key,
   }) : super(key: key);
+
+  // T get controller => Get.put<T>(init());
 
   @override
   Widget build(BuildContext context) {
@@ -43,17 +57,4 @@ abstract class BaseView<T extends BaseViewController> extends StatelessWidget {
       },
     );
   }
-}
-
-class TestView extends BaseView<BaseViewController> {
-  TestView(
-    bool reactive,
-    Key key,
-  ) : super(reactive, key: key);
-
-  @override
-  BaseViewController init() => BaseViewController();
-
-  @override
-  Widget builder(BaseViewController controller) => Container();
 }

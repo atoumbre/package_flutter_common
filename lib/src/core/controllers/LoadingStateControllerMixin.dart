@@ -11,6 +11,10 @@ mixin LoadingStatusControllerMixin on IBaseController {
     loadingStatus(newStatus);
   }
 
+  void toggleIdle() {
+    loadingStatus(LoadingStatus.idle);
+  }
+
   void toggleError() {
     loadingStatus(LoadingStatus.error);
   }
@@ -19,9 +23,9 @@ mixin LoadingStatusControllerMixin on IBaseController {
     loadingStatus(LoadingStatus.loading);
   }
 
-  void toggleIdle() {
-    loadingStatus(LoadingStatus.idle);
-  }
+  bool get isIdle => loadingStatus() == LoadingStatus.idle;
+  bool get isErrored => loadingStatus() == LoadingStatus.error;
+  bool get isLoding => loadingStatus() == LoadingStatus.loading;
 }
 
 class LoadingStatusWidget extends StatelessWidget {
