@@ -6,5 +6,6 @@ export 'package:softi_common/src/resource/classes/query.dart';
 export 'package:softi_common/src/resource/controllers/CollectionController.dart';
 export 'package:softi_common/src/resource/controllers/CollectionControllerMixin.dart';
 export 'package:softi_common/src/resource/controllers/RecordController.dart';
+export 'package:softi_common/src/resource/controllers/RecordControllerMixin.dart';
 export 'package:softi_common/src/resource/interfaces/i_collection_service.dart';
 export 'package:softi_common/src/resource/interfaces/i_resource.dart';

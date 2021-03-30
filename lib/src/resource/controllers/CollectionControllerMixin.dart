@@ -7,17 +7,17 @@ import 'package:softi_common/src/resource/interfaces/i_resource.dart';
 import 'package:softi_common/src/resource/interfaces/i_collection_service.dart';
 
 mixin CollectionControllerMixin<T extends IResourceData> on BaseController {
-  //
+  //! Parameters
   ResourceCollection<T> get collection;
-
-  //
   QueryParameters get queryParameters => Filter().build();
-  CollectionOptions get collectionOptions => CollectionOptions();
+  CollectionOptions get options => CollectionOptions();
+
+  //! Getters
   RxList<T> get recordList => collection.data;
   RxList<DataChange<T>> get changesList => collection.changes;
   RxBool get hasMoreData => collection.hasMoreData;
 
-  void handleListItemCreation(int index) {
+  void handleListItemCreation(int index, [int itemCount = 0]) {
     // when the item is created we request more data when we reached the end of current page
     // print('index $index created');
     if (collection.data.length == (index + 1) && collection.hasMoreData()) {
@@ -29,7 +29,7 @@ mixin CollectionControllerMixin<T extends IResourceData> on BaseController {
     busy.bindStream(collection.waiting.stream);
     collection.requestData(
       queryParameters,
-      options: collectionOptions,
+      options: options,
     );
   }
 

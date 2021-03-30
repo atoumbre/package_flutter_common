@@ -5,29 +5,22 @@ import 'package:softi_common/src/resource/classes/query.dart';
 import 'package:softi_common/src/resource/interfaces/i_resource.dart';
 import 'package:softi_common/src/resource/controllers/CollectionControllerMixin.dart';
 
-abstract class BaseCollectionController<T extends IResourceData> extends BaseController
-    with CollectionControllerMixin<T> {
-  //
+class CollectionController<T extends IResourceData> extends BaseViewController with CollectionControllerMixin<T> {
   @override
-  ResourceCollection<T> get collection => _collection;
+  final ResourceCollection<T> collection;
 
   @override
-  QueryParameters get queryParameters => _queryParams.build();
+  final QueryParameters queryParameters; //=> _queryParams.build();
 
   @override
-  CollectionOptions get collectionOptions => _options;
+  final CollectionOptions options;
 
-  //
-  final ResourceCollection<T> _collection;
-  final Filter _queryParams;
-  final CollectionOptions _options;
-
-  BaseCollectionController(
-    this._collection, {
+  CollectionController(
+    this.collection, {
     Filter filter,
     CollectionOptions options,
-  })  : _queryParams = filter ?? Filter(),
-        _options = options ?? CollectionOptions();
+  })  : queryParameters = (filter ?? Filter()).build(),
+        options = options ?? CollectionOptions();
 
   @override
   void onInit() {

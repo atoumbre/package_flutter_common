@@ -1,21 +1,33 @@
-// import 'package:softi_common/src/core/base_controller.dart';
-// import 'package:softi_common/src/resource/classes/ResourceRecord.dart';
-// import 'package:softi_common/src/resource/classes/resource.dart';
-// import 'package:softi_common/src/resource/classes/ResourceBase.dart';
+import 'package:get/get.dart';
+import 'package:softi_common/src/core/base_controller.dart';
+import 'package:softi_common/src/resource/classes/ResourceBase.dart';
+import 'package:softi_common/src/resource/controllers/RecordControllerMixin.dart';
+import 'package:softi_common/src/resource/interfaces/i_resource.dart';
 
-// abstract class BaseRecordController<T extends IResourceData> extends BaseController {
-//   BaseRecordController(this.intialData, [ResourceBase db]) : record = db.record<T>();
+class RecordController<T extends IResourceData> extends BaseController with RecordControllerMixin<T> {
+  @override
+  final String recordId;
+  @override
+  final bool reactive;
 
-//   final ResourceDAO<T> record;
-//   final T intialData;
+  @override
+  final ResourceBase resourceBase;
 
-//   Future<void> init() {
-//     return record.init(intialData);
-//   }
+  RecordController(
+    this.recordId, {
+    ResourceBase resourceBase,
+    this.reactive = true,
+  }) : resourceBase = resourceBase ?? Get.find<ResourceBase>();
 
-//   @override
-//   Future<void> onReady() {
-//     super.onReady();
-//     return init();
-//   }
-// }
+  @override
+  void onInit() {
+    initRecord();
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    disposeRecord();
+    super.onClose();
+  }
+}
