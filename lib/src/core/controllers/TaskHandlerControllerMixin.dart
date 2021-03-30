@@ -7,31 +7,31 @@ mixin TaskHandlerControllerMixin on LoadingStatusControllerMixin {
   ILoadingService get loadingService => Get.find<ILoadingService>();
 
   Future<void> controllerTaskHandler({
-    @required Future<String> Function() task,
-    @required String Function(dynamic) errorHandler,
-    int messageType = 1,
-    bool showStatus = true,
+    @required Future<void> Function() task,
+    String Function(dynamic) errorHandler,
     String loadingMessage = '',
-    bool toggleBusyState = true,
+    String idleMessage = '',
+    bool showViewState = true,
+    bool toggleViewState = true,
     bool rethrowError = true,
   }) async {
-    if (toggleBusyState) toggleLoading();
+    var _errorHandler = errorHandler ?? (e) => 'An Error Occures';
+
+    if (toggleViewState) toggleLoading();
     try {
-      if (showStatus) await loadingService.showStatus(status: loadingMessage);
-      var message = await task();
-      if (messageType == 0) {
-        if (showStatus) await loadingService.showSuccess(message);
-      } else {
-        if (showStatus) await loadingService.showInfo(message);
-      }
-      if (toggleBusyState) toggleIdle();
+      if (showViewState) await loadingService.showStatus(status: loadingMessage);
+
+      await task();
+
+      if (showViewState) await loadingService.showSuccess(idleMessage);
+      if (toggleViewState) toggleIdle();
     } catch (e) {
-      var message = errorHandler(e);
-      if (toggleBusyState) toggleIdle();
-      if (showStatus) await loadingService.showError(message);
+      var errorMessage = _errorHandler(e);
+
+      if (showViewState) await loadingService.showError(errorMessage);
+      if (toggleViewState) toggleIdle();
+
       if (rethrowError) rethrow;
-    } finally {
-      // if (toggleBusyState) busy(false);
-    }
+    } finally {}
   }
 }

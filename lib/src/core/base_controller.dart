@@ -15,9 +15,24 @@ abstract class BaseViewController extends BaseController with LoadingStatusContr
   Future<void> loadView();
   Future<void> disposeView() => null;
 
+  Future<void> _loadView() async {
+    await controllerTaskHandler(
+        task: () async {
+          await loadView();
+        },
+        toggleViewState: true,
+        showViewState: false,
+        loadingMessage: 'Loading ...',
+        idleMessage: 'Loding completed',
+        rethrowError: true,
+        errorHandler: (error) {
+          return '';
+        });
+  }
+
   @override
   void onInit() async {
-    await loadView();
+    await _loadView();
     super.onInit();
   }
 
