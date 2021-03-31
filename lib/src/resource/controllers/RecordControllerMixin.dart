@@ -14,7 +14,6 @@ mixin RecordControllerMixin<T extends IResourceData> on BaseController {
   StreamSubscription _sub;
 
   void initRecord() {
-    toggleLoading();
     _sub = resourceBase.get<T>(recordId, reactive: reactive).listen((recordEvent) {
       _rxRecord(recordEvent);
     });

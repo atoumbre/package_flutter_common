@@ -21,6 +21,8 @@ abstract class IResourceData {
   Map<String, dynamic> toJson();
   String getId();
   String getPath();
+  void setId(String newId);
+  void setPath(String newPath);
   bool isValid();
 }
 
@@ -29,5 +31,7 @@ mixin BaseResourceDataMixin {
   String path;
   String getId() => id;
   String getPath() => path;
+  void setId(String newId) => id = newId;
+  void setPath(String newPath) => path = newPath;
   bool isValid() => (id ?? '') != '';
 }

@@ -49,6 +49,8 @@ abstract class BaseView<T extends BaseViewController> extends StatelessWidget {
   Widget builder(T controller);
   T init();
 
+  String get tag;
+
   const BaseView({
     Key key,
   }) : super(key: key);
@@ -59,6 +61,7 @@ abstract class BaseView<T extends BaseViewController> extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetX<T>(
       init: init(),
+      tag: tag,
       builder: (controller) {
         if (controller.loadingStatus() == LoadingStatus.error && errorBuilder != null) {
           return errorBuilder(controller);
