@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:softi_common/resource.dart';
 import 'package:softi_common/src/resource/classes/ResourceCollection.dart';
 import 'package:softi_common/src/resource/classes/query.dart';
 import 'package:softi_common/src/resource/interfaces/i_resource.dart';
@@ -13,6 +14,10 @@ class ResourceBase {
 
   ResourceCollection<T> collection<T extends IResourceData>([IResource<T> _res]) {
     return ResourceCollection<T>(_api, _resourceResolver<T>());
+  }
+
+  ResourceRecord<T> record<T extends IResourceData>([IResource<T> _res]) {
+    return ResourceRecord<T>(_api, _resourceResolver<T>());
   }
 
   //  Transition helper

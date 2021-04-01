@@ -10,6 +10,9 @@ mixin CollectionControllerMixin<T extends IResourceData> on BaseViewController {
   @override
   Future<void> loadView() async => initCollection();
 
+  @override
+  Future<void> disposeView() async => disposeCollection();
+
   //! Parameters
   ResourceCollection<T> get collection;
   QueryParameters get queryParameters => Filter().build();

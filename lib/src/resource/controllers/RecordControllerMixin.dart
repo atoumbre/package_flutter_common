@@ -2,26 +2,24 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:softi_common/src/core/base_controller.dart';
-import 'package:softi_common/src/resource/classes/ResourceBase.dart';
+import 'package:softi_common/src/resource/classes/ResourceRecord.dart';
 import 'package:softi_common/src/resource/interfaces/i_resource.dart';
 
-mixin RecordControllerMixin<T extends IResourceData> on BaseController {
-  String get recordId;
-  bool get reactive;
-  ResourceBase get resourceBase;
+mixin RecordControllerMixin<T extends IResourceData> on BaseViewController {
+  @override
+  Future<void> loadView() async => initRecord();
 
-  final Rx<T> _rxRecord = Rx<T>();
-  StreamSubscription _sub;
+  //! Parameters
+  String get id;
+  bool get reactive;
+  ResourceRecord<T> get resourceRecord;
+
+  //! Getters
+  Rx<T> get record => resourceRecord.data;
 
   void initRecord() {
-    _sub = resourceBase.get<T>(recordId, reactive: reactive).listen((recordEvent) {
-      _rxRecord(recordEvent);
-    });
+    resourceRecord.init(id, reactive: reactive);
   }
 
-  void disposeRecord() {
-    _sub.cancel();
-  }
-
-  Rx<T> get record => _rxRecord;
+  void disposeRecord() {}
 }

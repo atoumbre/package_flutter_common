@@ -26,9 +26,7 @@ class CollectionOptions {
 }
 
 class ResourceCollection<T extends IResourceData> {
-  ResourceCollection(ICollectionService collectionService, IResource<T> res)
-      : _collectionService = collectionService,
-        _res = res;
+  ResourceCollection(this._collectionService, this._res);
 
   final ICollectionService _collectionService;
   final IResource<T> _res;
