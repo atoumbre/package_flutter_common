@@ -40,11 +40,11 @@ class ResourceRecord<T extends IResourceData> {
   }
 
   Future<void> update(Map<String, dynamic> data) async {
-    return _collectionService.update(_res, id, data);
+    return _collectionService.update<T>(_res, id, data);
   }
 
   Future<void> exist() async {
-    return _collectionService.exists(_res, id);
+    return _collectionService.exists<T>(_res, id);
   }
 
   void deserialize(Map<String, dynamic> map) {

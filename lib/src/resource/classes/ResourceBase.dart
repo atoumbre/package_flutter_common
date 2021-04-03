@@ -13,13 +13,17 @@ class ResourceBase {
   ResourceBase(this._resourceResolver, [ICollectionService api]) : _api = api ?? Get.find();
 
   ResourceCollection<T> collection<T extends IResourceData>([IResource<T> _res]) {
-    return ResourceCollection<T>(_api, _resourceResolver<T>());
+    return ResourceCollection<T>(_api, _res ?? _resourceResolver<T>());
   }
 
   ResourceRecord<T> record<T extends IResourceData>([IResource<T> _res]) {
-    return ResourceRecord<T>(_api, _resourceResolver<T>());
+    return ResourceRecord<T>(_api, _res ?? _resourceResolver<T>());
   }
 
+  FirestoreResource<T> setEndpoint(String newEndPoint) {
+    _endpoint = newEndPoint;
+    return this;
+  }
   //  Transition helper
 
   String endpointResolver<T extends IResourceData>() {

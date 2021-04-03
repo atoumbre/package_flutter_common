@@ -14,7 +14,7 @@ dependencies:
 
   freezed_annotation:
   location:
-  get:
+  get: 3.25.6
   nested:
   get_storage:
   flutter_secure_storage:
