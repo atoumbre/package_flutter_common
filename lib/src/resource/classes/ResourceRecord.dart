@@ -6,9 +6,9 @@ import 'package:softi_common/src/resource/interfaces/i_resource_adapter.dart';
 
 class ResourceRecord<T extends IResourceData> {
   final IResourceAdapter<T> adapter;
-  ResourceRecord(this.adapter) : data = adapter.resource.deserializer({}).obs;
+  ResourceRecord(this.adapter); // : data = adapter.resource.deserializer({}).obs;
 
-  final Rx<T> data;
+  final Rx<T> data = Rx<T>(null);
   final RxInt fetchCount = 0.obs;
   StreamSubscription<T> _sub;
 
