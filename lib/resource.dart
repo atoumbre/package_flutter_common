@@ -1,4 +1,4 @@
-export 'package:softi_common/src/resource/classes/ResourceBase.dart';
+export 'package:softi_common/src/resource/interfaces/i_resource_base.dart';
 export 'package:softi_common/src/resource/classes/ResourceCollection.dart';
 export 'package:softi_common/src/resource/classes/ResourceRecord.dart';
 export 'package:softi_common/src/resource/classes/filters.dart';
@@ -7,5 +7,5 @@ export 'package:softi_common/src/resource/controllers/CollectionController.dart'
 export 'package:softi_common/src/resource/controllers/CollectionControllerMixin.dart';
 export 'package:softi_common/src/resource/controllers/RecordController.dart';
 export 'package:softi_common/src/resource/controllers/RecordControllerMixin.dart';
-export 'package:softi_common/src/resource/interfaces/i_collection_service.dart';
+export 'package:softi_common/src/resource/interfaces/i_resource_adapter.dart';
 export 'package:softi_common/src/resource/interfaces/i_resource.dart';

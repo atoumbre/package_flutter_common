@@ -1,19 +1,19 @@
-import 'package:softi_common/src/resource/classes/query.dart';
-
 typedef Deserializer<T> = T Function(Map<String, dynamic>);
 
 enum ResourceRequestType { call, find, read, create, replace, update, delete }
 
-abstract class IResource<T> {
+abstract class IResource<T extends IResourceData> {
+  String _endpoint;
+  IResource(String endpoint) : _endpoint = endpoint;
+
+  String get endpoint => _endpoint;
+
   T deserializer(Map<String, dynamic> serializedData);
-  String endpointResolver({
-    ResourceRequestType requestType,
-    QueryParameters queryParams,
-    QueryPagination querypagination,
-    String dataId,
-    String dataPath,
-    T dataObject,
-  });
+
+  IResource<T> setEndpoint(String newEndpoint) {
+    _endpoint = newEndpoint;
+    return this;
+  }
 }
 
 abstract class IResourceData {

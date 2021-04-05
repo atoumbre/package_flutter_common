@@ -1,27 +1,24 @@
 import 'dart:async';
 
-import 'package:softi_common/src/resource/interfaces/i_resource.dart';
-import 'package:softi_common/src/resource/interfaces/i_collection_service.dart';
 import 'package:get/get.dart';
+import 'package:softi_common/src/resource/interfaces/i_resource.dart';
+import 'package:softi_common/src/resource/interfaces/i_resource_adapter.dart';
 
 class ResourceRecord<T extends IResourceData> {
-  ResourceRecord(this._collectionService, this._res);
+  final IResourceAdapter<T> adapter;
+  ResourceRecord(this.adapter);
 
   final Rx<T> data = Rx<T>();
+  final RxInt fetchCount = 0.obs;
+  StreamSubscription<T> _sub;
 
   String get id => data.value?.getId();
-  // Rx<T> get data => _data;
-
-  final ICollectionService _collectionService;
-  final IResource<T> _res;
-  StreamSubscription<T> _sub;
-  final RxInt fetchCount = 0.obs;
 
   void init(
     String recordId, {
     bool reactive = true,
   }) {
-    _sub = _collectionService.get<T>(_res, recordId, reactive: reactive).listen((event) {
+    _sub = adapter.get(recordId, reactive: reactive).listen((event) {
       data(event);
       fetchCount.value++;
     });
@@ -31,25 +28,25 @@ class ResourceRecord<T extends IResourceData> {
     _sub.cancel();
   }
 
-  Future<void> save() async {
-    return _collectionService.save<T>(_res, data.value);
-  }
+  // Future<void> save() async {
+  //   return _res.adapteur.save(data.value);
+  // }
 
-  Future<void> delete() async {
-    await _collectionService.delete<T>(_res, id);
-  }
+  // Future<void> delete() async {
+  //   await _res.adapteur.delete(id);
+  // }
 
-  Future<void> update(Map<String, dynamic> data) async {
-    return _collectionService.update<T>(_res, id, data);
-  }
+  // Future<void> update(Map<String, dynamic> data) async {
+  //   return _res.adapteur.update(id, data);
+  // }
 
-  Future<void> exist() async {
-    return _collectionService.exists<T>(_res, id);
-  }
+  // Future<void> exist() async {
+  //   return _res.adapteur.exists(id);
+  // }
 
-  void deserialize(Map<String, dynamic> map) {
-    data(_res.deserializer(map));
-  }
+  // void deserialize(Map<String, dynamic> map) {
+  //   data(_res.deserializer(map));
+  // }
 
   T call() => data.value;
 }

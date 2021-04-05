@@ -3,20 +3,28 @@ import 'dart:async';
 import 'package:softi_common/src/resource/classes/query.dart';
 import 'package:softi_common/src/resource/interfaces/i_resource.dart';
 
-abstract class ICollectionService<T extends IResourceData> {
+abstract class IResourceAdapter<T extends IResourceData> {
+  IResource<T> _res;
+
+  IResource<T> get resource => _res;
+
+  IResourceAdapter<T> setResource(IResource<T> newResource) {
+    _res = newResource;
+    return this;
+  }
+
   Stream<QueryResult<T>> find(
-    IResource<T> res,
     QueryParameters queryParams, {
     QueryPagination pagination,
     bool reactive = true,
   });
 
-  Stream<T> get(IResource<T> res, String id, {bool reactive = true});
+  Stream<T> get(String id, {bool reactive = true});
 
-  Future<bool> exists(IResource<T> res, String id);
-  Future<T> save(IResource<T> res, T record);
-  Future<void> update(IResource<T> res, String id, Map<String, dynamic> values);
-  Future<void> delete(IResource<T> res, String id);
+  Future<bool> exists(String id);
+  Future<T> save(T record);
+  Future<void> update(String id, Map<String, dynamic> values);
+  Future<void> delete(String id);
 }
 
 class QueryResult<T extends IResourceData> {

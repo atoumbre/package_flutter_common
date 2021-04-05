@@ -5,31 +5,13 @@ import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:softi_common/src/resource/classes/query.dart';
 import 'package:softi_common/src/resource/interfaces/i_resource.dart';
-import 'package:softi_common/src/resource/interfaces/i_collection_service.dart';
-
-class CollectionOptions {
-  final int pageSize;
-  final int maxRecordNumber;
-  final bool reactiveRecords;
-  final bool reactiveChanges;
-  final bool reactiveLastPage;
-
-  const CollectionOptions({
-    this.reactiveRecords = true,
-    this.reactiveChanges = true,
-    this.reactiveLastPage = true,
-    this.pageSize = 10,
-    this.maxRecordNumber = 100,
-  });
-
-  bool get reactive => reactiveRecords && reactiveChanges;
-}
+import 'package:softi_common/src/resource/interfaces/i_resource_adapter.dart';
 
 class ResourceCollection<T extends IResourceData> {
-  ResourceCollection(this._collectionService, this._res);
+  final IResourceAdapter<T> adapter;
+  ResourceCollection(this.adapter);
 
-  final ICollectionService _collectionService;
-  final IResource<T> _res;
+  // final ICollectionService _collectionService;
 
   // Pagination variables
   StreamSubscription _mainSubscription;
@@ -46,7 +28,7 @@ class ResourceCollection<T extends IResourceData> {
   final hasMoreData = true.obs;
   final data = <T>[].obs;
   final changes = <DataChange<T>>[].obs;
-  final waiting = false.obs;
+  final loading = false.obs;
 
   void requestData(
     QueryParameters params, {
@@ -72,7 +54,7 @@ class ResourceCollection<T extends IResourceData> {
     if (!hasMoreData()) return;
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      waiting(true);
+      loading(true);
     });
 
     //* Update pagination params and Create next query pagination
@@ -91,9 +73,8 @@ class ResourceCollection<T extends IResourceData> {
     await _mainSubscription?.cancel();
     _eventCount = 0;
 
-    _mainSubscription = _collectionService
+    _mainSubscription = adapter
         .find(
-      _res,
       _params,
       pagination: _pagination,
       reactive: _options.reactive,
@@ -123,7 +104,7 @@ class ResourceCollection<T extends IResourceData> {
         if (!_options.reactive && !hasMoreData()) _mainSubscription?.cancel();
 
         SchedulerBinding.instance.addPostFrameCallback((_) {
-          waiting(false);
+          loading(false);
         });
       },
       // onError: () => waiting(false),
@@ -142,9 +123,27 @@ class ResourceCollection<T extends IResourceData> {
 
   void dispose() {
     _mainSubscription?.cancel();
-    waiting.close();
+    loading.close();
     data.close();
     changes.close();
     hasMoreData.close();
   }
+}
+
+class CollectionOptions {
+  final int pageSize;
+  final int maxRecordNumber;
+  final bool reactiveRecords;
+  final bool reactiveChanges;
+  final bool reactiveLastPage;
+
+  const CollectionOptions({
+    this.reactiveRecords = true,
+    this.reactiveChanges = true,
+    this.reactiveLastPage = true,
+    this.pageSize = 10,
+    this.maxRecordNumber = 100,
+  });
+
+  bool get reactive => reactiveRecords && reactiveChanges;
 }

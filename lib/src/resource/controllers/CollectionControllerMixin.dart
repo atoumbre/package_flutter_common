@@ -3,7 +3,7 @@ import 'package:softi_common/src/core/base_controller.dart';
 import 'package:softi_common/src/resource/classes/ResourceCollection.dart';
 import 'package:softi_common/src/resource/classes/filters.dart';
 import 'package:softi_common/src/resource/classes/query.dart';
-import 'package:softi_common/src/resource/interfaces/i_collection_service.dart';
+import 'package:softi_common/src/resource/interfaces/i_resource_adapter.dart';
 import 'package:softi_common/src/resource/interfaces/i_resource.dart';
 
 mixin CollectionControllerMixin<T extends IResourceData> on BaseViewController {
@@ -22,7 +22,7 @@ mixin CollectionControllerMixin<T extends IResourceData> on BaseViewController {
   RxList<T> get recordList => collection.data;
   RxList<DataChange<T>> get changesList => collection.changes;
   RxBool get hasMoreData => collection.hasMoreData;
-  RxBool get isResourceLoading => collection.waiting;
+  RxBool get isResourceLoading => collection.loading;
 
   void handleListItemCreation(int index, [int itemCount = 0]) {
     // when item is created we request more data when we reached the end of current page
