@@ -8,9 +8,9 @@ mixin TaskHandlerControllerMixin on LoadingStatusControllerMixin {
 
   Future<void> controllerTaskHandler({
     @required Future<void> Function() task,
+    String completedMessage = '',
+    String busyMessage = '',
     String Function(dynamic) errorHandler,
-    String loadingMessage = '',
-    String idleMessage = '',
     bool showViewState = true,
     bool toggleViewState = true,
     bool rethrowError = true,
@@ -19,11 +19,11 @@ mixin TaskHandlerControllerMixin on LoadingStatusControllerMixin {
 
     if (toggleViewState) toggleLoading();
     try {
-      if (showViewState) await loadingService.showStatus(status: loadingMessage);
+      if (showViewState) await loadingService.showStatus(status: busyMessage);
 
       await task();
 
-      if (showViewState) await loadingService.showSuccess(idleMessage);
+      if (showViewState) await loadingService.showSuccess(completedMessage);
       if (toggleViewState) toggleIdle();
     } catch (e) {
       var errorMessage = _errorHandler(e);

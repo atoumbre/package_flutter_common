@@ -22,8 +22,8 @@ abstract class BaseViewController extends BaseController with LoadingStatusContr
         },
         toggleViewState: true,
         showViewState: false,
-        loadingMessage: 'Loading ...',
-        idleMessage: 'Loding completed',
+        busyMessage: 'Loading ...',
+        completedMessage: 'Loding completed',
         rethrowError: true,
         errorHandler: (error) {
           return '';
