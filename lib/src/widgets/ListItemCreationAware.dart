@@ -2,10 +2,10 @@ import 'package:flutter/widgets.dart';
 
 class ListItemCreationAware extends StatefulWidget {
   final VoidCallback itemCreated;
-  final Widget child;
+  final Widget? child;
   const ListItemCreationAware({
-    Key key,
-    @required this.itemCreated,
+    Key? key,
+    required this.itemCreated,
     this.child,
   }) : super(key: key);
 
@@ -17,14 +17,14 @@ class _ListItemCreationAwareState extends State<ListItemCreationAware> {
   @override
   void initState() {
     super.initState();
-    if (widget.itemCreated != null) {
-      widget.itemCreated();
-    }
+    // if (widget.itemCreated != null) {
+    widget.itemCreated();
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.child;
+    return widget.child!;
   }
 }
 

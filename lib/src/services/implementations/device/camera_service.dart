@@ -27,11 +27,11 @@ class CameraService extends ICameraService {
   }
 
   @override
-  Future<List<FileMediaAsset>> useCamera({
+  Future<List<FileMediaAsset>?> useCamera({
     Set<MediaFormat> formats = const {MediaFormat.image, MediaFormat.video},
   }) async {
     final _assetList = await CameraPicker.pickFromCamera(
-      Get.context,
+      Get.context!,
       // onlyEnableRecording: ,
       // isOnlyAllowRecording: !formats.contains(MediaFormat.image),
       // isAllowRecording: formats.contains(MediaFormat.video),

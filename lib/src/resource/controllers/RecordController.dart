@@ -5,7 +5,7 @@ import 'package:softi_common/src/resource/interfaces/i_resource.dart';
 
 class RecordController<T extends IResourceData> extends BaseViewController with RecordControllerMixin<T> {
   @override
-  final String id;
+  final String? id;
 
   @override
   final bool reactive;

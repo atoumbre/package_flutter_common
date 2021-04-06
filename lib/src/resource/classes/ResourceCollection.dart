@@ -14,15 +14,15 @@ class ResourceCollection<T extends IResourceData> {
   // final ICollectionService _collectionService;
 
   // Pagination variables
-  StreamSubscription _mainSubscription;
-  int _recordCount;
-  int _eventCount;
+  StreamSubscription? _mainSubscription;
+  late int _recordCount;
+  late int _eventCount;
   dynamic _lastCursor;
-  QueryPagination _pagination;
+  QueryPagination? _pagination;
 
   //  Cache Query params for next call
-  QueryParameters _params;
-  CollectionOptions _options;
+  QueryParameters? _params;
+  CollectionOptions? _options;
 
   // Returned info
   final hasMoreData = true.obs;
@@ -32,7 +32,7 @@ class ResourceCollection<T extends IResourceData> {
 
   void requestData(
     QueryParameters params, {
-    CollectionOptions options,
+    CollectionOptions? options,
   }) {
     // reset on each call of requestData, use requestMoreData for more data
     _reset();
@@ -53,21 +53,21 @@ class ResourceCollection<T extends IResourceData> {
   void _requestData() async {
     if (!hasMoreData()) return;
 
-    SchedulerBinding.instance.addPostFrameCallback((_) {
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
       loading(true);
     });
 
     //* Update pagination params and Create next query pagination
-    var _queryPageSize = (_options.maxRecordNumber == null || _options.maxRecordNumber == double.infinity)
-        ? _options.pageSize
-        : min(_options.maxRecordNumber - _recordCount, _options.pageSize);
+    var _queryPageSize = (_options!.maxRecordNumber == double.infinity)
+        ? _options!.pageSize
+        : min(_options!.maxRecordNumber - _recordCount, _options!.pageSize);
 
     _recordCount += _queryPageSize;
 
     //! If reactive query all docs each time and ecreas limit
     _pagination = QueryPagination(
-      limit: _options.reactiveLastPage ? _recordCount : _queryPageSize,
-      cursor: _options.reactiveLastPage ? null : _lastCursor,
+      limit: _options!.reactiveLastPage ? _recordCount : _queryPageSize,
+      cursor: _options!.reactiveLastPage ? null : _lastCursor,
     );
 
     await _mainSubscription?.cancel();
@@ -77,7 +77,7 @@ class ResourceCollection<T extends IResourceData> {
         .find(
       _params,
       pagination: _pagination,
-      reactive: _options.reactive,
+      reactive: _options!.reactive,
     )
         .listen(
       (queryResult) {
@@ -85,25 +85,25 @@ class ResourceCollection<T extends IResourceData> {
         _lastCursor = queryResult.cursor;
 
         //
-        if (_options.reactiveRecords) {
+        if (_options!.reactiveRecords) {
           data.assignAll(queryResult.data);
         } else {
           if (_eventCount == 1) data.assignAll(queryResult.data);
         }
 
         //
-        if (_options.reactiveChanges) {
+        if (_options!.reactiveChanges) {
           if (_eventCount > 1) changes.addAll(queryResult.changes);
         }
 
         // Check if we have more data
         hasMoreData(
-          data.length >= _recordCount && _recordCount <= (_options.maxRecordNumber ?? double.infinity),
+          data.length >= _recordCount && _recordCount <= (_options!.maxRecordNumber),
         );
 
-        if (!_options.reactive && !hasMoreData()) _mainSubscription?.cancel();
+        if (!_options!.reactive && !hasMoreData()) _mainSubscription?.cancel();
 
-        SchedulerBinding.instance.addPostFrameCallback((_) {
+        SchedulerBinding.instance!.addPostFrameCallback((_) {
           loading(false);
         });
       },

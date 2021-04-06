@@ -7,9 +7,9 @@ enum PickerSource { camera, gallery, file }
 
 abstract class MediaAsset {
   final dynamic rawEntity;
-  final MediaFormat format;
-  final MediaSource source;
-  final Uint8List thumbData;
+  final MediaFormat? format;
+  final MediaSource? source;
+  final Uint8List? thumbData;
 
   MediaAsset({
     this.thumbData,
@@ -20,12 +20,12 @@ abstract class MediaAsset {
 }
 
 class MemoryMediaAsset extends MediaAsset {
-  final Uint8List data;
+  final Uint8List? data;
 
   MemoryMediaAsset({
     this.data,
-    MediaFormat format,
-    Uint8List thumbData,
+    MediaFormat? format,
+    Uint8List? thumbData,
     rawEntity,
   }) : super(
           thumbData: thumbData,
@@ -36,21 +36,21 @@ class MemoryMediaAsset extends MediaAsset {
 }
 
 class NetworkMediaAsset extends MediaAsset {
-  final String title;
-  final String url;
+  final String? title;
+  final String? url;
 
   NetworkMediaAsset({
     this.title,
     this.url,
-    MediaFormat format,
-    Uint8List thumbData,
+    MediaFormat? format,
+    Uint8List? thumbData,
     rawEntity,
   }) : super(thumbData: thumbData, rawEntity: rawEntity, format: format, source: MediaSource.network);
 }
 
 class FileMediaAsset extends MediaAsset {
-  final String id;
-  final File file;
+  final String? id;
+  final File? file;
 
   FileMediaAsset({
     this.id,

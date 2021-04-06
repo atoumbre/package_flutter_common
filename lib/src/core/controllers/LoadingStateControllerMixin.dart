@@ -29,11 +29,11 @@ mixin LoadingStatusControllerMixin on IBaseController {
 }
 
 class LoadingStatusWidget extends StatelessWidget {
-  final LoadingStatusControllerMixin controller;
-  final Widget Function() loadingWidget, errorWidget, builder;
+  final LoadingStatusControllerMixin? controller;
+  final Widget Function()? loadingWidget, errorWidget, builder;
 
   const LoadingStatusWidget({
-    Key key,
+    Key? key,
     this.controller,
     this.builder,
     this.errorWidget,
@@ -42,17 +42,15 @@ class LoadingStatusWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Obx(() {
-        switch (controller.loadingStatus()) {
+        switch (controller!.loadingStatus()) {
           case LoadingStatus.error:
-            return errorWidget();
-            break;
+            return errorWidget!();
 
           case LoadingStatus.loading:
-            return loadingWidget();
-            break;
+            return loadingWidget!();
 
           default:
-            return builder();
+            return builder!();
         }
       });
 }

@@ -4,10 +4,10 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class FormFieldCurrency extends StatelessWidget {
   FormFieldCurrency({
-    Key key,
-    @required this.initialValue,
-    @required this.name,
-    @required this.decoration,
+    Key? key,
+    required this.initialValue,
+    required this.name,
+    required this.decoration,
   }) : super(key: key);
 
   final String name;

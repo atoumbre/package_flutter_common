@@ -7,7 +7,7 @@ mixin TimerControllerMixin on IBaseController {
   Duration get interval;
 
   final clock = DateTime.now().obs;
-  Timer _timer;
+  late Timer _timer;
 
   void stopTimer() {
     _timer.cancel();

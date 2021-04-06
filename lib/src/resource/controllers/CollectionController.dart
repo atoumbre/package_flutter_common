@@ -17,8 +17,8 @@ class CollectionController<T extends IResourceData> extends BaseViewController w
 
   CollectionController(
     this.collection, {
-    Filter filter,
-    CollectionOptions options,
+    Filter? filter,
+    CollectionOptions? options,
   })  : queryParameters = (filter ?? Filter()).build(),
         options = options ?? CollectionOptions();
 }

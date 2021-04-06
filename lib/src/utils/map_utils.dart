@@ -1,12 +1,12 @@
-void _copyValues<K, V>(Map<K, V> from, Map<K, V> to, bool recursive, bool acceptNull) {
+void _copyValues<K, V>(Map<K, V> from, Map<K, V?>? to, bool recursive, bool acceptNull) {
   for (var key in from.keys) {
     if (from[key] is Map<K, V> && recursive) {
-      if (!(to[key] is Map<K, V>)) {
+      if (!(to![key] is Map<K, V>)) {
         to[key] = <K, V>{} as V;
       }
-      _copyValues(from[key] as Map, to[key] as Map, recursive, acceptNull);
+      _copyValues(from[key] as Map, to[key] as Map?, recursive, acceptNull);
     } else {
-      if (from[key] != null || acceptNull) to[key] = from[key];
+      if (from[key] != null || acceptNull) to![key] = from[key];
     }
   }
 }
@@ -20,9 +20,9 @@ void _copyValues<K, V>(Map<K, V> from, Map<K, V> to, bool recursive, bool accept
 /// `acceptNull` is set to `false` by default. If set to `false`,
 /// then if the value on a map is `null`, it will be ignored, and
 /// that `null` will not be copied.
-Map<K, V> mergeMap<K, V>(Iterable<Map<K, V>> maps, {bool recursive = true, bool acceptNull = false}) {
+Map<K, V> mergeMap<K, V>(Iterable<Map<K, V>?> maps, {bool recursive = true, bool acceptNull = false}) {
   var result = <K, V>{};
-  maps.forEach((Map<K, V> map) {
+  maps.forEach((Map<K, V>? map) {
     if (map != null) _copyValues(map, result, recursive, acceptNull);
   });
   return result;
@@ -41,13 +41,13 @@ Map<String, dynamic> flatten(
   Map<String, dynamic> target, {
   String delimiter = '.',
   bool safe = false,
-  int maxDepth,
+  int? maxDepth,
 }) {
   final result = <String, dynamic>{};
 
   void step(
     Map<String, dynamic> obj, [
-    String previousKey,
+    String? previousKey,
     int currentDepth = 1,
   ]) {
     obj.forEach((key, value) {

@@ -2,7 +2,7 @@ typedef Deserializer<T> = T Function(Map<String, dynamic>);
 
 enum ResourceRequestType { call, find, read, create, replace, update, delete }
 
-abstract class IResource<T extends IResourceData> {
+abstract class IResource<T extends IResourceData?> {
   String _endpoint;
   IResource(String endpoint) : _endpoint = endpoint;
 
@@ -26,10 +26,10 @@ abstract class IResourceData {
 }
 
 mixin BaseResourceDataMixin {
-  String id;
-  String path;
-  String getId() => id;
-  String getPath() => path;
+  String? id;
+  String? path;
+  String? getId() => id;
+  String? getPath() => path;
   void setId(String newId) => id = newId;
   void setPath(String newPath) => path = newPath;
   bool isValid() => (id ?? '') != '';

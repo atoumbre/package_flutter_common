@@ -5,12 +5,12 @@ class HideKeyboardManager extends SingleChildStatelessWidget {
   void hideKeyboard(BuildContext context) {
     var currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-      currentFocus.focusedChild.unfocus();
+      currentFocus.focusedChild!.unfocus();
     }
   }
 
   @override
-  Widget buildWithChild(BuildContext context, Widget child) {
+  Widget buildWithChild(BuildContext context, Widget? child) {
     return GestureDetector(
       onTap: () => hideKeyboard(context),
       child: child,

@@ -10,11 +10,11 @@ var _map = {
 class ConnectivityService extends IConnectivityService {
   @override
   Future<ConnectivityType> get conectivity {
-    return Connectivity().checkConnectivity().then((result) => _map[result]);
+    return Connectivity().checkConnectivity().then((result) => _map[result]!);
   }
 
   @override
-  Stream<ConnectivityType> get streamConectivity {
+  Stream<ConnectivityType?> get streamConectivity {
     return Connectivity().onConnectivityChanged.map((result) => _map[result]);
   }
 }

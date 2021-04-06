@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -67,20 +68,20 @@ class MediaPicker extends IMediaPicker {
   // }
 
   @override
-  Future<List<FileMediaAsset>> selectMediaFromGallery({
+  Future<List<FileMediaAsset>?> selectMediaFromGallery({
     Set<MediaFormat> formats = const {MediaFormat.image, MediaFormat.video},
     List<FileMediaAsset> selectedItemId = const [],
-    int maxItem = 1,
+    int? maxItem = 1,
   }) async {
-    var _lastSelection = await Future.wait(selectedItemId.map((e) => AssetEntity.fromId(e.id)).toList());
+    var _lastSelection = await Future.wait(selectedItemId.map((e) => AssetEntity.fromId(e.id!)).toList());
 
-    var _requestType = _requestTypeMapper[formats];
+    var _requestType = _requestTypeMapper[formats]!;
     final _assetList = await AssetPicker.pickAssets(
-      Get.context,
+      Get.context!,
       requestType: _requestType,
-      selectedAssets: _lastSelection,
+      selectedAssets: _lastSelection as List<AssetEntity>?,
       textDelegate: EnglishTextDelegate(),
-      maxAssets: maxItem,
+      maxAssets: maxItem!,
     );
 
     if (_assetList == null) return null;
@@ -91,21 +92,21 @@ class MediaPicker extends IMediaPicker {
   }
 
   @override
-  Future<File> singleImageSelect({PickerSource source = PickerSource.gallery, bool crop}) async {
+  Future<File?> singleImageSelect({PickerSource? source = PickerSource.gallery, bool? crop}) async {
     final _picker = ImagePicker();
 
-    File response;
+    File? response;
 
-    final _picked = await _picker.getImage(source: _pickerSourceMap[source]);
+    final _picked = await _picker.getImage(source: _pickerSourceMap[source!]!);
     if (_picked != null) {
       response = File(_picked.path);
-      response = crop ? await _cropImage(response) : response;
+      response = crop! ? await (_cropImage(response) as FutureOr<File>) : response;
     }
 
     return response;
   }
 
-  Future<File> _cropImage(imageFile) async {
+  Future<File?> _cropImage(imageFile) async {
     var croppedFile = await ImageCropper.cropImage(
         maxWidth: 640,
         sourcePath: imageFile.path,

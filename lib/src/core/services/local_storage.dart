@@ -12,16 +12,17 @@ class LocalStore extends ILocalStore {
 
   @override
   Future<void> init([String container = 'GetStorage']) async {
-    return GetStorage.init();
+    await GetStorage.init();
+    return;
   }
 
   @override
-  Future<String> getKey(String key) async {
+  Future<String?> getKey(String key) async {
     return _storage.read(key);
   }
 
   @override
-  Future<String> getSecuredKey(String key) async {
+  Future<String?> getSecuredKey(String key) async {
     return _secureStorage.read(key: key);
   }
 

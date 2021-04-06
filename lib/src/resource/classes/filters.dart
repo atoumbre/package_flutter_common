@@ -34,19 +34,19 @@ class _FilterBuilder {
 
 // implements IFilter
 class Filter with BaseFilterMixin {
-  Filter([_FilterBuilder filterBuilder]) : _filterBuilder = filterBuilder ?? _FilterBuilder();
+  Filter([_FilterBuilder? filterBuilder]) : _filterBuilder = filterBuilder ?? _FilterBuilder();
 
   @override
   final _FilterBuilder _filterBuilder;
 }
 
 class FieldFilter with FieldFilterMixin {
-  FieldFilter(String field, _FilterBuilder filterBuilder)
+  FieldFilter(String field, _FilterBuilder? filterBuilder)
       : _field = field,
         _filterBuilder = filterBuilder;
 
   @override
-  final _FilterBuilder _filterBuilder;
+  final _FilterBuilder? _filterBuilder;
 
   @override
   final String _field;
@@ -54,7 +54,7 @@ class FieldFilter with FieldFilterMixin {
 
 // implements IFilter
 class FieldFilterExtended with BaseFilterMixin, FieldFilterMixin implements Filter {
-  FieldFilterExtended([String field, _FilterBuilder filterBuilder])
+  FieldFilterExtended([String? field, _FilterBuilder? filterBuilder])
       : _filterBuilder = filterBuilder ?? _FilterBuilder(),
         _field = field;
 
@@ -62,13 +62,13 @@ class FieldFilterExtended with BaseFilterMixin, FieldFilterMixin implements Filt
   final _FilterBuilder _filterBuilder;
 
   @override
-  final String _field;
+  final String? _field;
 }
 
 /// FILTERS MIXINS
 
 mixin BaseFilterMixin {
-  _FilterBuilder _filterBuilder;
+  _FilterBuilder? _filterBuilder;
 
   FieldFilter $field(String field) => FieldFilter(field, _filterBuilder);
 
@@ -82,56 +82,56 @@ mixin BaseFilterMixin {
   FieldFilterExtended $filter$contains(String field, value) => $field(field).$contains(value);
   FieldFilterExtended $filter$containsAny(String field, value) => $field(field).$containsAny(value);
 
-  QueryParameters build() => _filterBuilder.build();
-  void reset() => _filterBuilder.reset();
+  QueryParameters build() => _filterBuilder!.build();
+  void reset() => _filterBuilder!.reset();
 }
 
 mixin FieldFilterMixin {
-  _FilterBuilder _filterBuilder;
-  String _field;
+  _FilterBuilder? _filterBuilder;
+  String? _field;
 
   FieldFilterExtended $sort({bool desc = false}) {
-    _filterBuilder.addOrderBy(QuerySort(_field, desc: desc));
+    _filterBuilder!.addOrderBy(QuerySort(_field, desc: desc));
     return FieldFilterExtended(_field, _filterBuilder);
   }
 
   FieldFilterExtended $in(List<dynamic> valueList) {
-    _filterBuilder.addFilter(QueryFilter(field: _field, condition: QueryOperator.isIn, value: valueList));
+    _filterBuilder!.addFilter(QueryFilter(field: _field, condition: QueryOperator.isIn, value: valueList));
     return FieldFilterExtended(_field, _filterBuilder);
   }
 
   FieldFilterExtended $eq(dynamic value) {
-    _filterBuilder.addFilter(QueryFilter(field: _field, condition: QueryOperator.equal, value: value));
+    _filterBuilder!.addFilter(QueryFilter(field: _field, condition: QueryOperator.equal, value: value));
     return FieldFilterExtended(_field, _filterBuilder);
   }
 
   FieldFilterExtended $gte(dynamic value) {
-    _filterBuilder.addFilter(QueryFilter(field: _field, condition: QueryOperator.greaterThanOrEqualTo, value: value));
+    _filterBuilder!.addFilter(QueryFilter(field: _field, condition: QueryOperator.greaterThanOrEqualTo, value: value));
     return FieldFilterExtended(_field, _filterBuilder);
   }
 
   FieldFilterExtended $gt(dynamic value) {
-    _filterBuilder.addFilter(QueryFilter(field: _field, condition: QueryOperator.greaterThan, value: value));
+    _filterBuilder!.addFilter(QueryFilter(field: _field, condition: QueryOperator.greaterThan, value: value));
     return FieldFilterExtended(_field, _filterBuilder);
   }
 
   FieldFilterExtended $lt(dynamic value) {
-    _filterBuilder.addFilter(QueryFilter(field: _field, condition: QueryOperator.lessThan, value: value));
+    _filterBuilder!.addFilter(QueryFilter(field: _field, condition: QueryOperator.lessThan, value: value));
     return FieldFilterExtended(_field, _filterBuilder);
   }
 
   FieldFilterExtended $lte(dynamic value) {
-    _filterBuilder.addFilter(QueryFilter(field: _field, condition: QueryOperator.lessThanOrEqualTo, value: value));
+    _filterBuilder!.addFilter(QueryFilter(field: _field, condition: QueryOperator.lessThanOrEqualTo, value: value));
     return FieldFilterExtended(_field, _filterBuilder);
   }
 
   FieldFilterExtended $contains(value) {
-    _filterBuilder.addFilter(QueryFilter(field: _field, condition: QueryOperator.arrayContains, value: value));
+    _filterBuilder!.addFilter(QueryFilter(field: _field, condition: QueryOperator.arrayContains, value: value));
     return FieldFilterExtended(_field, _filterBuilder);
   }
 
   FieldFilterExtended $containsAny(List<dynamic> valueList) {
-    _filterBuilder.addFilter(QueryFilter(field: _field, condition: QueryOperator.arrayContainsAny, value: valueList));
+    _filterBuilder!.addFilter(QueryFilter(field: _field, condition: QueryOperator.arrayContainsAny, value: valueList));
     return FieldFilterExtended(_field, _filterBuilder);
   }
 }

@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:softi_common/src/resource/classes/query.dart';
 import 'package:softi_common/src/resource/interfaces/i_resource.dart';
 
-abstract class IResourceAdapter<T extends IResourceData> {
-  IResource<T> _res;
+abstract class IResourceAdapter<T extends IResourceData?> {
+  IResource<T>? _res;
 
-  IResource<T> get resource => _res;
+  IResource<T>? get resource => _res;
 
   IResourceAdapter<T> setResource(IResource<T> newResource) {
     _res = newResource;
@@ -14,12 +14,12 @@ abstract class IResourceAdapter<T extends IResourceData> {
   }
 
   Stream<QueryResult<T>> find(
-    QueryParameters queryParams, {
-    QueryPagination pagination,
+    QueryParameters? queryParams, {
+    QueryPagination? pagination,
     bool reactive = true,
   });
 
-  Stream<T> get(String id, {bool reactive = true});
+  Stream<T> get(String? id, {bool reactive = true});
 
   Future<bool> exists(String id);
   Future<T> save(T record);
@@ -27,7 +27,7 @@ abstract class IResourceAdapter<T extends IResourceData> {
   Future<void> delete(String id);
 }
 
-class QueryResult<T extends IResourceData> {
+class QueryResult<T extends IResourceData?> {
   final List<T> data;
   final List<DataChange<T>> changes;
   final dynamic cursor;
@@ -37,11 +37,11 @@ class QueryResult<T extends IResourceData> {
   QueryResult(this.data, this.changes, {this.cursor});
 }
 
-class DataChange<T extends IResourceData> {
-  T data;
-  int oldIndex;
-  int newIndex;
-  DataChangeType type;
+class DataChange<T extends IResourceData?> {
+  T? data;
+  int? oldIndex;
+  int? newIndex;
+  DataChangeType? type;
 
   DataChange({
     this.oldIndex,

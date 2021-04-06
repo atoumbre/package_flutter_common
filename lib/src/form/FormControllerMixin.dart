@@ -6,10 +6,10 @@ import 'package:softi_common/utils.dart';
 mixin FormControllerMixin<T> on BaseController {
   final formKey = GlobalKey<FormBuilderState>();
 
-  Map<String, dynamic> _initialValue;
+  Map<String, dynamic>? _initialValue;
 
   // GETTERS
-  Map<String, dynamic> get initialValue => _initialValue;
+  Map<String, dynamic>? get initialValue => _initialValue;
 
   // TO OVERRIDE
   Future<T> beforSave(Map<String, dynamic> formData); // _db.deserializer<T>(formData);
@@ -22,18 +22,18 @@ mixin FormControllerMixin<T> on BaseController {
   }
 
   void saveState() {
-    formKey.currentState.save();
+    formKey.currentState!.save();
   }
 
   Future<void> save() async {
     toggleLoading();
 
     try {
-      formKey.currentState.save();
+      formKey.currentState!.save();
 
-      if (formKey.currentState.validate()) {
+      if (formKey.currentState!.validate()) {
         /// Update record with changes from Form
-        var _formResult = mergeMap([initialValue, formKey.currentState.value]);
+        var _formResult = mergeMap([initialValue, formKey.currentState!.value]);
 
         /// Fire onSubmit for additional changes
         var _record = await beforSave(_formResult);
@@ -43,7 +43,7 @@ mixin FormControllerMixin<T> on BaseController {
       } else {
         print('${T.toString()} Form : validation failed');
 
-        return false;
+        // return false;
       }
     } catch (e) {
       rethrow;
@@ -60,11 +60,11 @@ mixin FormControllerMixin<T> on BaseController {
   dynamic getFieldValue(String field) {
     var result;
     if (formKey.currentState?.fields == null) {
-      result = initialValue[field];
-    } else if (formKey.currentState.fields[field] == null) {
-      result = initialValue[field];
+      result = initialValue![field];
+    } else if (formKey.currentState!.fields[field] == null) {
+      result = initialValue![field];
     } else {
-      result = formKey.currentState.fields[field].value;
+      result = formKey.currentState!.fields[field]!.value;
     }
     print('$field: $result');
     return result;

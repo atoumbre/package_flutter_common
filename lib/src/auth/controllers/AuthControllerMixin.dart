@@ -9,8 +9,8 @@ mixin AuthControllerMixin on BaseController {
   /// GETTERS
 
   IAuthService get authApi => Get.find();
-  String get uid => authUser().uid;
-  Stream<AuthUser> get authUserStream => authUser.stream;
+  String? get uid => authUser().uid;
+  Stream<AuthUser?> get authUserStream => authUser.stream;
 
   /// METHODS
 
@@ -18,8 +18,8 @@ mixin AuthControllerMixin on BaseController {
     authUser(await authApi.getCurrentUser);
 
     return authUser.bindStream(authApi.authUserStream.skip(1).map((event) {
-      print('authUser.bindStream fired: ${event?.uid}');
-      return event ?? AuthUser(uid: null);
+      print('authUser.bindStream fired: ${event.uid}');
+      return event;
     }));
   }
 

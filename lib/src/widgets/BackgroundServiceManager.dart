@@ -3,9 +3,9 @@ import 'package:nested/nested.dart';
 import 'package:softi_common/src/core/base_service.dart';
 
 class BackgroundServiceManager extends SingleChildStatefulWidget {
-  final Widget child;
+  final Widget? child;
   final List<IStoppableService> services; // = [];
-  BackgroundServiceManager(this.services, {Key key, this.child}) : super(key: key);
+  BackgroundServiceManager(this.services, {Key? key, this.child}) : super(key: key);
 
   @override
   _LifeCycleManagerState createState() => _LifeCycleManagerState();
@@ -16,13 +16,13 @@ class _LifeCycleManagerState extends SingleChildState<BackgroundServiceManager> 
 
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
     super.initState();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 
@@ -39,7 +39,7 @@ class _LifeCycleManagerState extends SingleChildState<BackgroundServiceManager> 
   }
 
   @override
-  Widget buildWithChild(BuildContext context, Widget child) {
+  Widget buildWithChild(BuildContext context, Widget? child) {
     return Container(
       child: child,
     );

@@ -8,9 +8,9 @@ class StateFullWrapper extends StatefulWidget {
     // this.build,
   });
 
-  final Widget child;
-  final VoidCallback onInit;
-  final VoidCallback onDispose;
+  final Widget? child;
+  final VoidCallback? onInit;
+  final VoidCallback? onDispose;
   // final Function build;
 
   @override
@@ -22,18 +22,18 @@ class _StateFullWrapperState extends State<StateFullWrapper> {
   void initState() {
     super.initState();
     if (widget.onInit != null) {
-      widget.onInit();
+      widget.onInit!();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.child;
+    return widget.child!;
   }
 
   @override
   void dispose() {
-    if (widget.onDispose != null) widget.onDispose();
+    if (widget.onDispose != null) widget.onDispose!();
     super.dispose();
   }
 }

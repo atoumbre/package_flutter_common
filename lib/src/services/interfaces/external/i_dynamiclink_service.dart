@@ -30,8 +30,8 @@ class DynamicLinkData {
     this.androidClickTimestamp,
   });
 
-  final Uri link;
-  final int androidMinimumVersion;
-  final int androidClickTimestamp;
-  final String iosMinimumVersion;
+  final Uri? link;
+  final int? androidMinimumVersion;
+  final int? androidClickTimestamp;
+  final String? iosMinimumVersion;
 }

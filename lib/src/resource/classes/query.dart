@@ -1,15 +1,13 @@
-import 'package:flutter/foundation.dart';
-
 class QueryFilter {
-  final String field;
-  final QueryOperator condition;
+  final String? field;
+  final QueryOperator? condition;
   final dynamic value;
 
   QueryFilter({this.field, this.condition, this.value});
 }
 
 class QuerySort {
-  final String field;
+  final String? field;
   final bool desc;
 
   QuerySort(this.field, {this.desc = false});
@@ -17,13 +15,13 @@ class QuerySort {
 
 class QueryParameters {
   List<QuerySort> sortList;
-  List<QueryFilter> filterList;
+  List<QueryFilter>? filterList;
 
-  QueryParameters({@required this.sortList, this.filterList});
+  QueryParameters({required this.sortList, this.filterList});
 }
 
 class QueryPagination {
-  int skip, limit;
+  int? skip, limit;
   dynamic cursor;
 
   QueryPagination({this.skip, this.limit, this.cursor});

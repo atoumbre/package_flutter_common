@@ -6,7 +6,7 @@ abstract class IBaseService {
   // final StreamController _errorStreamController = StreamController();
 
   @protected
-  Future<T> catchError<T>(
+  Future<T>? catchError<T>(
     Future<T> Function() task,
   ) {
     try {
@@ -67,9 +67,9 @@ abstract class IStoppableService extends IBaseService {
 }
 
 abstract class IBaseServiceException implements Exception {
-  final String service;
-  final String code;
-  final String message;
+  final String? service;
+  final String? code;
+  final String? message;
 
-  IBaseServiceException({@required this.service, @required this.code, this.message});
+  IBaseServiceException({required this.service, required this.code, this.message});
 }

@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart';
 import 'package:softi_common/src/core/base_service.dart';
 import 'package:softi_common/src/services/class/i_media_asset.dart';
 
@@ -13,28 +12,28 @@ enum UploadState {
 }
 
 class UploadEvent {
-  final UploadState type;
-  final double uploaded;
-  final double total;
+  final UploadState? type;
+  final double? uploaded;
+  final double? total;
 
   final dynamic rawrResult;
 
-  final NetworkMediaAsset result;
+  final NetworkMediaAsset? result;
 
   UploadEvent({this.rawrResult, this.result, this.type, this.uploaded, this.total});
 
-  double get progress => (total != 0 && uploaded != null) ? uploaded / total : 0;
+  double get progress => (total != 0 && uploaded != null) ? uploaded! / total! : 0;
 }
 
 abstract class IRemoteStorageService extends IBaseService {
   Future<UploadEvent> uploadMedia({
-    @required Uint8List imageToUpload,
-    @required String title,
+    required Uint8List imageToUpload,
+    required String title,
   });
 
   Stream<UploadEvent> uploadMediaStream({
-    @required Uint8List imageToUpload,
-    @required String title,
+    required Uint8List imageToUpload,
+    required String title,
   });
 
   Future<void> deleteMedia(String imageFileName);

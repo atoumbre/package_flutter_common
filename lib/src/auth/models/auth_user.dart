@@ -1,30 +1,61 @@
-import 'package:flutter/foundation.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+// part 'auth_user.freezed.dart';
 
-part 'auth_user.freezed.dart';
+class AuthUser {
+  final String? uid;
 
-@freezed
-abstract class AuthUser implements _$AuthUser {
-  const AuthUser._();
+  // Is new ?
+  bool isNew;
 
-  const factory AuthUser({
-    final String uid,
+  // Profile infos : Editable by the user
+  final String? displayName;
+  final String? photoUrl;
+  final String? email;
+  final String? phoneNumber;
 
-    // Is new ?
-    final bool isNew,
+  // Account infos : Not editable from frontend
+  final bool? isAnonymous;
+  final bool? isEmailVerified;
+  final DateTime? creationTime;
+  final DateTime? lastSignInTime;
+  final String? providerId;
 
-    // Profile infos : Editable by the user
-    final String displayName,
-    final String photoUrl,
-    final String email,
-    final String phoneNumber,
+  AuthUser({
+    this.uid,
+    this.isNew = false,
+    this.displayName,
+    this.photoUrl,
+    this.email,
+    this.phoneNumber,
+    this.isAnonymous,
+    this.isEmailVerified,
+    this.creationTime,
+    this.lastSignInTime,
+    this.providerId,
+  });
 
-    // Account infos : Not editable from frontend
-    final bool isAnonymous,
-    final bool isEmailVerified,
-    final DateTime creationTime,
-    final DateTime lastSignInTime,
-    final String providerId,
-    //
-  }) = _AuthUser;
+  // const factory AuthUser({
+  //   final String? uid,
+
+  //   // Is new ?
+  //   final bool? isNew,
+
+  //   // Profile infos : Editable by the user
+  //   final String? displayName,
+  //   final String? photoUrl,
+  //   final String? email,
+  //   final String? phoneNumber,
+
+  //   // Account infos : Not editable from frontend
+  //   final bool? isAnonymous,
+  //   final bool? isEmailVerified,
+  //   final DateTime? creationTime,
+  //   final DateTime? lastSignInTime,
+  //   final String? providerId,
+  //   //
+  // })
+  //
+  //
+  void setIsNew(bool val) {
+    isNew = val;
+  }
 }

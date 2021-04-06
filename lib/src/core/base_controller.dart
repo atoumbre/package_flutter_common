@@ -13,7 +13,7 @@ abstract class BaseController extends IBaseController with LoadingStatusControll
 
 abstract class BaseViewController extends BaseController with LoadingStatusControllerMixin, TaskHandlerControllerMixin {
   Future<void> loadView();
-  Future<void> disposeView() => null;
+  Future<void>? disposeView() => null;
 
   Future<void> _loadView() async {
     await controllerTaskHandler(
@@ -52,7 +52,7 @@ abstract class BaseView<T extends BaseViewController> extends StatelessWidget {
   String get tag;
 
   const BaseView({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   // T get controller => Get.put<T>(init());
@@ -63,11 +63,11 @@ abstract class BaseView<T extends BaseViewController> extends StatelessWidget {
       init: init(),
       tag: tag,
       builder: (controller) {
-        if (controller.loadingStatus() == LoadingStatus.error && errorBuilder != null) {
+        if (controller.loadingStatus() == LoadingStatus.error) {
           return errorBuilder(controller);
         }
 
-        if (controller.loadingStatus() == LoadingStatus.loading && loadingBuilder != null) {
+        if (controller.loadingStatus() == LoadingStatus.loading) {
           return loadingBuilder(controller);
         }
 

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:softi_common/src/core/controllers/LoadingStateControllerMixin.dart';
 import 'package:softi_common/src/core/interfaces/i_loading_service.dart';
@@ -7,10 +6,10 @@ mixin TaskHandlerControllerMixin on LoadingStatusControllerMixin {
   ILoadingService get loadingService => Get.find<ILoadingService>();
 
   Future<void> controllerTaskHandler({
-    @required Future<void> Function() task,
+    required Future<void> Function() task,
     String completedMessage = '',
     String busyMessage = '',
-    String Function(dynamic) errorHandler,
+    String Function(dynamic)? errorHandler,
     bool showViewState = true,
     bool toggleViewState = true,
     bool rethrowError = true,
