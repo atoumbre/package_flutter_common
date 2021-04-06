@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:softi_common/src/resource/classes/query.dart';
 import 'package:softi_common/src/resource/interfaces/i_resource.dart';
 
-abstract class IResourceAdapter<T extends IResourceData?> {
-  IResource<T>? _res;
+abstract class IResourceAdapter<T extends IResourceData> {
+  late IResource<T> _res;
 
-  IResource<T>? get resource => _res;
+  IResource<T> get resource => _res;
 
   IResourceAdapter<T> setResource(IResource<T> newResource) {
     _res = newResource;
@@ -14,25 +14,25 @@ abstract class IResourceAdapter<T extends IResourceData?> {
   }
 
   Stream<QueryResult<T>> find(
-    QueryParameters? queryParams, {
+    QueryParameters queryParams, {
     QueryPagination? pagination,
     bool reactive = true,
   });
 
-  Stream<T> get(String? id, {bool reactive = true});
-
   Future<bool> exists(String id);
-  Future<T> save(T record);
+  Stream<T?> get(String id, {bool reactive = true});
+
+  Future<T?> save(T record);
   Future<void> update(String id, Map<String, dynamic> values);
   Future<void> delete(String id);
 }
 
-class QueryResult<T extends IResourceData?> {
-  final List<T> data;
+class QueryResult<T extends IResourceData> {
+  final List<T?> data;
   final List<DataChange<T>> changes;
   final dynamic cursor;
 
-  List<T> call() => data;
+  List<T?> call() => data;
 
   QueryResult(this.data, this.changes, {this.cursor});
 }

@@ -10,7 +10,7 @@ mixin RecordControllerMixin<T extends IResourceData> on BaseViewController {
   Future<void> loadView() async => initRecord();
 
   //! Parameters
-  String? get id;
+  String get id;
   bool get reactive;
   ResourceRecord<T> get resourceRecord;
 

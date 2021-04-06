@@ -10,13 +10,13 @@ class ResourceRecord<T extends IResourceData> {
 
   final Rx<T?> data = Rx<T?>(null);
   final RxInt fetchCount = 0.obs;
-  late StreamSubscription<T> _sub;
+  late StreamSubscription<T?> _sub;
 
   // String get data => data?.value?.getId();
   String? get id => data.value?.getId();
 
   void init(
-    String? recordId, {
+    String recordId, {
     bool reactive = true,
   }) {
     _sub = adapter.get(recordId, reactive: reactive).listen((event) {

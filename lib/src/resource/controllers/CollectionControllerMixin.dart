@@ -19,7 +19,7 @@ mixin CollectionControllerMixin<T extends IResourceData> on BaseViewController {
   CollectionOptions get options => CollectionOptions();
 
   //! Getters
-  RxList<T> get recordList => collection.data;
+  RxList<T?> get recordList => collection.data;
   RxList<DataChange<T>> get changesList => collection.changes;
   RxBool get hasMoreData => collection.hasMoreData;
   RxBool get isResourceLoading => collection.loading;

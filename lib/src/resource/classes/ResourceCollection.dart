@@ -26,7 +26,7 @@ class ResourceCollection<T extends IResourceData> {
 
   // Returned info
   final hasMoreData = true.obs;
-  final data = <T>[].obs;
+  final data = <T?>[].obs;
   final changes = <DataChange<T>>[].obs;
   final loading = false.obs;
 
@@ -75,7 +75,7 @@ class ResourceCollection<T extends IResourceData> {
 
     _mainSubscription = adapter
         .find(
-      _params,
+      _params!,
       pagination: _pagination,
       reactive: _options!.reactive,
     )

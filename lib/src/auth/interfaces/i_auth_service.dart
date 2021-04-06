@@ -4,31 +4,31 @@ import 'package:softi_common/src/auth/models/auth_user.dart';
 import 'package:softi_common/src/core/base_service.dart';
 
 abstract class IAuthService extends IBaseService {
-  Future<AuthUser> get getCurrentUser;
-  Stream<AuthUser> get authUserStream;
+  Future<AuthUser?> get getCurrentUser;
+  Stream<AuthUser?> get authUserStream;
 
   // Anonymous login
-  Future<AuthUser> signInAnonymously();
+  Future<AuthUser?> signInAnonymously();
 
   // Email and password
-  Future<AuthUser> signInWithEmailAndPassword(String email, String password);
-  Future<AuthUser> createUserWithEmailAndPassword(String email, String password);
+  Future<AuthUser?> signInWithEmailAndPassword(String email, String password);
+  Future<AuthUser?> createUserWithEmailAndPassword(String email, String password);
   Future<void> sendPasswordResetEmail(String email);
 
   // OS Login
-  Future<AuthUser> signInWithGoogle({linkToUser = false});
-  Future<AuthUser> signInWithApple({linkToUser = false});
+  Future<AuthUser?> signInWithGoogle({linkToUser = false});
+  Future<AuthUser?> signInWithApple({linkToUser = false});
 
   // Social Login
-  Future<AuthUser> signInWithFacebook(dynamic param, {linkToUser = false});
+  Future<AuthUser?> signInWithFacebook(dynamic param, {linkToUser = false});
 
   // Email Link login
-  Future<AuthUser> signInWithEmailAndLink({String? email, String? link});
+  Future<AuthUser?> signInWithEmailAndLink({String? email, String? link});
   Future<bool> isSignInWithEmailLink({String? link});
   Future<void> sendSignInWithEmailLink({required String email});
 
   // Phone login
-  Future<AuthUser> signInWithPhone(verificationId, smsOTP);
+  Future<AuthUser?> signInWithPhone(verificationId, smsOTP);
   Future<SendCodeResult> sendSignInWithPhoneCode({
     String? phoneNumber,
     dynamic resendingId,
