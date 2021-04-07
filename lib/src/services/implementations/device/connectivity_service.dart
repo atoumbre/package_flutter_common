@@ -14,7 +14,10 @@ class ConnectivityService extends IConnectivityService {
   }
 
   @override
-  Stream<ConnectivityType?> get streamConectivity {
-    return Connectivity().onConnectivityChanged.map((result) => _map[result]);
+  Stream<ConnectivityType> get streamConectivity {
+    return Connectivity().onConnectivityChanged.map((result) {
+      print(result);
+      return _map[result]!;
+    });
   }
 }

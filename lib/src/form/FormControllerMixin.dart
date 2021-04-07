@@ -3,21 +3,21 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:softi_common/core.dart';
 import 'package:softi_common/utils.dart';
 
-mixin FormControllerMixin<T> on BaseController {
+mixin FormControllerMixin<T> on BaseViewController {
   final formKey = GlobalKey<FormBuilderState>();
 
-  Map<String, dynamic>? _initialValue;
+  Map<String, dynamic> _initialValue = {};
 
   // GETTERS
-  Map<String, dynamic>? get initialValue => _initialValue;
+  Map<String, dynamic> get initialValue => _initialValue;
 
   // TO OVERRIDE
   Future<T> beforSave(Map<String, dynamic> formData); // _db.deserializer<T>(formData);
   Future<void> afterSave(T record);
-  Map<String, dynamic> buildInitialValue(T record); // => record.toJson();
+  Map<String, dynamic> buildInitialValue(T? record); // => record.toJson();
 
   // Methods
-  void initForm(T editingRecord) {
+  void initForm(T? editingRecord) {
     _initialValue = buildInitialValue(editingRecord);
   }
 
@@ -59,10 +59,11 @@ mixin FormControllerMixin<T> on BaseController {
 
   dynamic getFieldValue(String field) {
     var result;
-    if (formKey.currentState?.fields == null) {
-      result = initialValue![field];
-    } else if (formKey.currentState!.fields[field] == null) {
-      result = initialValue![field];
+    // if (formKey.currentState?.fields == null) {
+    //   result = initialValue[field];
+    // } else
+    if (formKey.currentState?.fields[field] == null) {
+      result = initialValue[field];
     } else {
       result = formKey.currentState!.fields[field]!.value;
     }

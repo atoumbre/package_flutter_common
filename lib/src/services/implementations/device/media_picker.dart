@@ -75,7 +75,7 @@ class MediaPicker extends IMediaPicker {
   }) async {
     var _lastSelection = await Future.wait(selectedItemId.map((e) => AssetEntity.fromId(e.id!)).toList());
 
-    var _requestType = _requestTypeMapper[formats]!;
+    var _requestType = _requestTypeMapper[formats] ?? RequestType.common;
     final _assetList = await AssetPicker.pickAssets(
       Get.context!,
       requestType: _requestType,
