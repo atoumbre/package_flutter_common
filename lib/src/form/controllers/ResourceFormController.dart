@@ -1,6 +1,6 @@
 import 'package:softi_common/core.dart';
 import 'package:softi_common/resource.dart';
-import 'package:softi_common/src/form/FormControllerMixin.dart';
+import 'package:softi_common/src/form/controllers/FormControllerMixin.dart';
 
 abstract class ResourceFormController<T extends IResourceData> extends BaseViewController with FormControllerMixin<T> {
   final IResourceBase db;
@@ -12,6 +12,7 @@ abstract class ResourceFormController<T extends IResourceData> extends BaseViewC
   T? _editingRecord;
 
   @override
+  // ignore: must_call_super
   Future<void> onViewInit() async {
     if (refreshRecord && record.isValid()) {
       _editingRecord = (await db.api<T>().get(record.getId(), reactive: false).first);
@@ -21,6 +22,10 @@ abstract class ResourceFormController<T extends IResourceData> extends BaseViewC
 
     initForm(_editingRecord);
   }
+
+  @override
+  // ignore: must_call_super
+  Future<void> onViewClose() async {}
 
   @override
   Map<String, dynamic> buildInitialValue(T? record) => record?.toJson() ?? {};

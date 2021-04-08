@@ -28,8 +28,8 @@ abstract class IResourceData {
 mixin BaseResourceDataMixin {
   String? id;
   String? path;
-  String? getId() => id;
-  String? getPath() => path;
+  String getId() => id ?? '';
+  String getPath() => path ?? '';
   void setId(String newId) => id = newId;
   void setPath(String newPath) => path = newPath;
   bool isValid() => (id ?? '') != '';

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:softi_common/src/core/base_controller.dart';
+import 'package:softi_common/src/core/BaseController.dart';
 
 mixin IndexControllerMixin on IBaseController {
   final index = 0.obs;

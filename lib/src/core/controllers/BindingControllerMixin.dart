@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:softi_common/src/core/base_controller.dart';
+import 'package:softi_common/src/core/BaseController.dart';
 
 mixin BindingControllerMixin on IBaseController {
   // String get ressourceTag;

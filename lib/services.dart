@@ -1,6 +1,6 @@
 // import 'package:get/get.dart';
 // import 'package:get_storage/get_storage.dart';
-// import 'package:softi_common/src/core/interfaces/i_local_storage.dart';
+// import 'package:softi_common/src/core/services/interfaces/i_local_storage.dart';
 // import 'package:softi_common/src/core/services/local_storage.dart';
 // import 'package:softi_common/src/services/implementations/device/location_service.dart';
 // import 'package:softi_common/src/services/interfaces/device/i_location_service.dart';

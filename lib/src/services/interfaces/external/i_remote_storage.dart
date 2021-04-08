@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:softi_common/src/core/base_service.dart';
+import 'package:softi_common/src/core/BaseService.dart';
 import 'package:softi_common/src/services/class/i_media_asset.dart';
 
 enum UploadState {

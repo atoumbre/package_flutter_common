@@ -1,4 +1,4 @@
-import 'package:softi_common/src/core/base_service.dart';
+import 'package:softi_common/src/core/BaseService.dart';
 
 abstract class IDynamicLinkService extends IBaseService {
   /// Resgister deeplink handler

@@ -3,7 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:softi_common/core.dart';
 import 'package:softi_common/utils.dart';
 
-mixin FormControllerMixin<T> on BaseViewController {
+mixin FormControllerMixin<T> on BaseController {
   final formKey = GlobalKey<FormBuilderState>();
 
   Map<String, dynamic> _initialValue = {};

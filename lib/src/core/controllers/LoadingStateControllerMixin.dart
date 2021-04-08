@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:softi_common/src/core/base_controller.dart';
+import 'package:softi_common/src/core/BaseController.dart';
 
-enum LoadingStatus { idle, loading, error }
+enum LoadingStatus { ready, loading, error }
 
 mixin LoadingStatusControllerMixin on IBaseController {
   Rx<LoadingStatus> loadingStatus = LoadingStatus.loading.obs;
@@ -12,7 +12,7 @@ mixin LoadingStatusControllerMixin on IBaseController {
   }
 
   void toggleIdle() {
-    loadingStatus(LoadingStatus.idle);
+    loadingStatus(LoadingStatus.ready);
   }
 
   void toggleError() {
@@ -23,7 +23,7 @@ mixin LoadingStatusControllerMixin on IBaseController {
     loadingStatus(LoadingStatus.loading);
   }
 
-  bool get isIdle => loadingStatus() == LoadingStatus.idle;
+  bool get isIdle => loadingStatus() == LoadingStatus.ready;
   bool get isErrored => loadingStatus() == LoadingStatus.error;
   bool get isLoding => loadingStatus() == LoadingStatus.loading;
 }

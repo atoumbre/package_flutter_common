@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:softi_common/src/core/controllers/LoadingStateControllerMixin.dart';
-import 'package:softi_common/src/core/interfaces/i_loading_service.dart';
+import 'package:softi_common/src/core/services/interfaces/i_loading_service.dart';
 
 mixin TaskHandlerControllerMixin on LoadingStatusControllerMixin {
   ILoadingService get loadingService => Get.find<ILoadingService>();

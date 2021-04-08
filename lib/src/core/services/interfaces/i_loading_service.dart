@@ -1,4 +1,4 @@
-import 'package:softi_common/src/core/base_service.dart';
+import 'package:softi_common/src/core/BaseService.dart';
 
 abstract class ILoadingService extends IBaseService {
   Future<void>? dismiss();
@@ -14,14 +14,13 @@ abstract class ILoadingService extends IBaseService {
   Future<void>? showToast(String status, {Duration? duration, bool? dismissOnTap});
 }
 
-class LoadingServiceExeption extends IBaseServiceException {
+class LoadingServiceExeption extends ServiceException {
   LoadingServiceExeption({
-    String? service,
-    String? code,
+    required String code,
     String? message,
   }) : super(
+          service: 'Loading',
           code: code,
-          // message: message,
-          service: service,
+          message: message,
         );
 }

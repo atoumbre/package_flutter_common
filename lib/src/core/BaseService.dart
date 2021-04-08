@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-abstract class IBaseService {
-  // final StreamController _errorStreamController = StreamController();
+typedef VoidAsyncCallback = Future<void> Function();
 
+abstract class IBaseService {
   @protected
   Future<T>? catchError<T>(
     Future<T> Function() task,
@@ -12,22 +12,22 @@ abstract class IBaseService {
     try {
       return task();
     } catch (e) {
-      if (!errorHandler(e)) rethrow;
-      // } finally {
-      return null;
+      throw errorHandler(e);
     }
   }
 
-  bool errorHandler(error) {
-    print('[ERROR] ${error.toString()}');
-    return false;
+  ServiceException errorHandler(dynamic error) {
+    return ServiceException(
+      service: runtimeType.toString(),
+      code: '_SERVICE_EXCEPTION_',
+      message: 'Unhandled service exeption',
+      rawError: error,
+    );
   }
 
   Future<dynamic> init() async {}
   Future<dynamic> dispose() async {}
 }
-
-typedef VoidAsyncCallback = Future<void> Function();
 
 abstract class IStoppableService extends IBaseService {
   bool _serviceIsActive = false;
@@ -36,7 +36,7 @@ abstract class IStoppableService extends IBaseService {
   Future<dynamic> startCallback();
   Future<dynamic> stopCallback();
 
-  bool get isOn => _serviceIsActive;
+  bool get isActive => _serviceIsActive;
   bool get isEnabled => _serviceIsEnabled;
 
   Future<void> enable({bool startLate = false}) async {
@@ -66,10 +66,16 @@ abstract class IStoppableService extends IBaseService {
   }
 }
 
-abstract class IBaseServiceException implements Exception {
-  final String? service;
-  final String? code;
+class ServiceException implements Exception {
+  final String service;
+  final String code;
   final String? message;
+  final dynamic? rawError;
 
-  IBaseServiceException({required this.service, required this.code, this.message});
+  ServiceException({
+    required this.service,
+    required this.code,
+    this.message,
+    this.rawError,
+  });
 }

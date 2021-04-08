@@ -1,10 +1,10 @@
-import 'package:softi_common/src/core/base_controller.dart';
+import 'package:softi_common/src/core/BaseController.dart';
 import 'package:softi_common/src/services/interfaces/device/i_connectivity_service.dart';
 import 'package:get/get.dart';
 
 // enum LoadingStatus { idle, loading, error }
 
-mixin ConnectivityControllerMixin on IBaseController {
+mixin ConnectivityControllerMixin on BaseController {
   IConnectivityService connectivityService = Get.find<IConnectivityService>();
 
   Rx<ConnectivityType> connectivityType = ConnectivityType.none.obs;

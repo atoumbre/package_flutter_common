@@ -1,5 +1,5 @@
 import 'package:location/location.dart';
-import 'package:softi_common/src/core/base_service.dart';
+import 'package:softi_common/src/core/BaseService.dart';
 
 abstract class ILocationService extends IStoppableService {
   Stream<LocationData>? get locationStream;

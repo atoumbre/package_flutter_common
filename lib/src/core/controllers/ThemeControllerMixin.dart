@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:softi_common/src/core/base_controller.dart';
-import 'package:softi_common/src/core/interfaces/i_local_storage.dart';
+import 'package:softi_common/src/core/BaseController.dart';
+import 'package:softi_common/src/core/services/interfaces/i_local_storage.dart';
 
 mixin ThemeControllerMixin on IBaseController {
   ILocalStore get _store => Get.find();

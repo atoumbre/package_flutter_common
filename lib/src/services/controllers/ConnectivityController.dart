@@ -1,10 +1,10 @@
-import 'package:softi_common/src/core/base_controller.dart';
+import 'package:softi_common/src/core/BaseController.dart';
 import 'package:softi_common/src/services/controllers/ConnectivityControllerMixin.dart';
 import 'package:softi_common/src/services/interfaces/device/i_connectivity_service.dart';
 
 // enum LoadingStatus { idle, loading, error }
 
-class ConnectivityController extends IBaseController with ConnectivityControllerMixin {
+class ConnectivityController extends BaseController with ConnectivityControllerMixin {
   @override
   final IConnectivityService connectivityService;
 
