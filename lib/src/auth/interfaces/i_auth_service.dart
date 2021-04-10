@@ -23,8 +23,8 @@ abstract class IAuthService extends IBaseService {
   Future<AuthUser?> signInWithFacebook(dynamic param, {linkToUser = false});
 
   // Email Link login
-  Future<AuthUser?> signInWithEmailAndLink({String? email, String? link});
-  Future<bool> isSignInWithEmailLink({String? link});
+  Future<AuthUser?> signInWithEmailAndLink({required String email, required String link});
+  Future<bool> isSignInWithEmailLink({required String link});
   Future<void> sendSignInWithEmailLink({required String email});
 
   // Phone login

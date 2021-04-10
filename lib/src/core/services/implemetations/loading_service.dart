@@ -1,39 +1,47 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:nested/nested.dart';
+import 'package:softi_common/core.dart';
 import 'package:softi_common/src/core/services/interfaces/i_loading_service.dart';
 
 class LoadingService extends ILoadingService {
   @override
-  Future<void>? showStatus({String? status, EasyLoadingMaskType? maskType, bool? dismissOnTap = false}) {
-    return catchError<void>(() async {
-      return EasyLoading.show(status: status, maskType: maskType, dismissOnTap: dismissOnTap);
-    });
+  Future<void> showStatus({String? status, EasyLoadingMaskType? maskType, bool? dismissOnTap = false}) {
+    // return catchError<void>(() async {
+    return EasyLoading.show(status: status, maskType: maskType, dismissOnTap: dismissOnTap);
+    // });
   }
 
   @override
-  Future<void>? showSuccess(String status, {Duration? duration, EasyLoadingMaskType? maskType, bool? dismissOnTap}) {
-    return catchError<void>(() async {
-      return EasyLoading.showSuccess(status, duration: duration, maskType: maskType, dismissOnTap: dismissOnTap);
-    });
+  Future<void> showSuccess(String status, {Duration? duration, EasyLoadingMaskType? maskType, bool? dismissOnTap}) {
+    // return catchError<void>(() async {
+    return EasyLoading.showSuccess(status, duration: duration, maskType: maskType, dismissOnTap: dismissOnTap);
+    // });
   }
 
   @override
-  Future<void>? showError(String status, {Duration? duration, EasyLoadingMaskType? maskType, bool? dismissOnTap}) {
-    return catchError<void>(() async {
-      return EasyLoading.showError(status, duration: duration, maskType: maskType, dismissOnTap: dismissOnTap);
-    });
+  Future<void> showError(String status, {Duration? duration, EasyLoadingMaskType? maskType, bool? dismissOnTap}) {
+    // return catchError<void>(() async {
+    return EasyLoading.showError(status, duration: duration, maskType: maskType, dismissOnTap: dismissOnTap);
+    // });
   }
 
   @override
-  Future<void>? showInfo(String status, {Duration? duration, EasyLoadingMaskType? maskType, bool? dismissOnTap}) {
-    return catchError<void>(() async {
-      return EasyLoading.showInfo(status, duration: duration, maskType: maskType, dismissOnTap: dismissOnTap);
-    });
+  Future<void> showInfo(String status, {Duration? duration, EasyLoadingMaskType? maskType, bool? dismissOnTap}) {
+    // return catchError<void>(() async {
+    return EasyLoading.showInfo(status, duration: duration, maskType: maskType, dismissOnTap: dismissOnTap);
+    // });
   }
 
   @override
-  Future<void>? dismiss() => catchError<void>(EasyLoading.dismiss);
+  Future<void> showToast(String status, {Duration? duration, EasyLoadingMaskType? maskType, bool? dismissOnTap}) {
+    // return catchError<void>(() async {
+    return EasyLoading.showToast(status, duration: duration, maskType: maskType, dismissOnTap: dismissOnTap);
+    // });
+  }
+
+  @override
+  Future<void> dismiss() => EasyLoading.dismiss();
 
   @override
   Future<void> init() async {
@@ -53,13 +61,6 @@ class LoadingService extends ILoadingService {
             .dismissOnTap = true
         // ..customAnimation = CustomAnimation();
         ;
-  }
-
-  @override
-  Future<void>? showToast(String status, {Duration? duration, EasyLoadingMaskType? maskType, bool? dismissOnTap}) {
-    return catchError<void>(() async {
-      return EasyLoading.showToast(status, duration: duration, maskType: maskType, dismissOnTap: dismissOnTap);
-    });
   }
 }
 

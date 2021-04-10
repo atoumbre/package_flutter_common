@@ -6,14 +6,3 @@ abstract class ILocalStore extends IBaseService {
   Future<void> setKey(String key, dynamic value);
   Future<void> setSecuredKey(String key, dynamic value);
 }
-
-class LocalStorageServiceExeption extends ServiceException {
-  LocalStorageServiceExeption({
-    required String code,
-    String? message,
-  }) : super(
-          service: 'LocalStorage',
-          code: code,
-          message: message,
-        );
-}

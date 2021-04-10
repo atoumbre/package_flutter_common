@@ -2,22 +2,25 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-typedef VoidAsyncCallback = Future<void> Function();
-
 abstract class IBaseService {
   @protected
-  Future<T>? catchError<T>(
+  Future<T> serviceTaskHandler<T>(
     Future<T> Function() task,
   ) {
     try {
       return task();
     } catch (e) {
-      throw errorHandler(e);
+      var formatedFailer = errorHandler(e);
+      if (formatedFailer != null) {
+        throw formatedFailer;
+      } else {
+        rethrow;
+      }
     }
   }
 
-  ServiceException errorHandler(dynamic error) {
-    return ServiceException(
+  ServiceFailure? errorHandler(dynamic error) {
+    return ServiceFailure(
       service: runtimeType.toString(),
       code: '_SERVICE_EXCEPTION_',
       message: 'Unhandled service exeption',
@@ -66,13 +69,13 @@ abstract class IStoppableService extends IBaseService {
   }
 }
 
-class ServiceException implements Exception {
+class ServiceFailure implements Exception {
   final String service;
   final String code;
   final String? message;
   final dynamic? rawError;
 
-  ServiceException({
+  ServiceFailure({
     required this.service,
     required this.code,
     this.message,

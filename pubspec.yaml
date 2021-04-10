@@ -25,6 +25,8 @@ dependencies:
   wechat_camera_picker: ^2.1.1
   wechat_assets_picker: ^5.1.0 
   flutter_form_builder: ^6.0.0-nullsafety.1
+  dartz: 0.10.0-nullsafety.1
+  multiple_result:
   
 # flutter packages pub run build_runner watch --delete-conflicting-outputs
 dev_dependencies:
