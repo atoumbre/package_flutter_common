@@ -1,70 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:multiple_result/multiple_result.dart';
-import 'package:softi_common/src/core/BaseService.dart';
 import 'package:softi_common/src/core/controllers/LoadingStateControllerMixin.dart';
 import 'package:softi_common/src/core/controllers/TaskHandlerControllerMixin.dart';
 
 abstract class IBaseController extends GetxController {}
 
-abstract class BaseController extends IBaseController with LoadingStatusControllerMixin {
-  Future<Result<ServiceFailure, R>> failureCatcher<R>(Future<R> Function() task) async {
-    try {
-      return Success(await task());
-    } on ServiceFailure catch (e) {
-      return Error(e);
-    } catch (e) {
-      rethrow;
-    }
-  }
-}
+abstract class BaseController extends IBaseController with LoadingStatusControllerMixin, TaskHandlerControllerMixin {}
 
 class BaseViewSettings {}
 
-abstract class BaseViewController extends BaseController with TaskHandlerControllerMixin {
-  @mustCallSuper
+abstract class BaseViewController extends BaseController {
   Future<void> onViewInit() async {}
 
-  @mustCallSuper
   Future<void> onViewReady() async {}
 
-  @mustCallSuper
   Future<void> onViewClose() async {}
 
-  Future<void> _initView() async {
-    await controllerTaskHandler(
+  Future<void> _onViewInit() async {
+    await serviceTaskHandler(
         task: () async {
           await onViewInit();
         },
         toggleViewState: true,
-        showViewState: false,
+        showLoading: false,
         busyMessage: 'Loading ...',
         completedMessage: 'Loding completed',
-        rethrowError: true,
-        errorHandler: (error) {
+        errorMessageBuilder: (error) {
           return '';
         });
   }
 
   Future<void> _onViewReady() async {
-    await controllerTaskHandler(
+    await serviceTaskHandler(
         task: () async {
           await onViewReady();
         },
         toggleViewState: true,
-        showViewState: false,
+        showLoading: false,
         busyMessage: 'Loading ...',
         completedMessage: 'Loding completed',
-        rethrowError: true,
-        errorHandler: (error) {
+        errorMessageBuilder: (error) {
           return '';
         });
   }
 
   @override
   void onInit() async {
-    await _initView();
+    await _onViewInit();
     super.onInit();
   }
 
@@ -131,40 +114,3 @@ abstract class BaseView<T extends BaseViewController> extends StatelessWidget {
     });
   }
 }
-
-// typedef VoidAsyncCallback = Future<void> Function();
-typedef ServiceCall<R, T> = Future<R> Function(T);
-
-extension ServiceFailerCatcher<R, T> on ServiceCall<R, T> {
-  Future<Result<ServiceFailure, R>> failureCatcher(T params) async {
-    try {
-      return Success(await this.call(params));
-    } catch (e) {
-      try {
-        return Error(e as ServiceFailure);
-      } catch (e) {
-        rethrow;
-      }
-    }
-
-    // var res = await Task(() => this.call(params)) //
-    //     .attempt()
-    //     .map(
-    //       // Grab only the *left* side of Either<Object, Post>
-    //       (either) => either.leftMap((obj) {
-    //         try {
-    //           // Cast the Object into a Failure
-    //           return obj as ServiceFailure;
-    //         } catch (e) {
-    //           // 'rethrow' the original exception
-    //           throw obj;
-    //         }
-    //       }),
-    //     )
-    //     .run();
-
-    // return res;
-  }
-}
-
-void test() {}

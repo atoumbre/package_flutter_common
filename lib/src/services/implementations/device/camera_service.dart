@@ -26,8 +26,7 @@ class CameraService extends ICameraService {
     return await Future.wait(_fileList);
   }
 
-  @override
-  Future<List<FileMediaAsset>?> useCamera({
+  Future<List<FileMediaAsset>?> _useCamera({
     Set<MediaFormat> formats = const {MediaFormat.image, MediaFormat.video},
   }) async {
     final _assetList = await CameraPicker.pickFromCamera(
@@ -42,5 +41,10 @@ class CameraService extends ICameraService {
     if (_assetList == null) return null;
 
     return _processAssetsList([_assetList]);
+  }
+
+  @override
+  Future<List<FileMediaAsset>?> useCamera({Set<MediaFormat> formats = const {MediaFormat.image, MediaFormat.video}}) {
+    return failureCatcher<List<FileMediaAsset>?>(() => _useCamera(formats: formats));
   }
 }

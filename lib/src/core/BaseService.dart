@@ -4,9 +4,7 @@ import 'package:flutter/foundation.dart';
 
 abstract class IBaseService {
   @protected
-  Future<T> serviceTaskHandler<T>(
-    Future<T> Function() task,
-  ) {
+  Future<T> failureCatcher<T>(Future<T> Function() task) {
     try {
       return task();
     } catch (e) {
@@ -19,14 +17,15 @@ abstract class IBaseService {
     }
   }
 
-  ServiceFailure? errorHandler(dynamic error) {
-    return ServiceFailure(
-      service: runtimeType.toString(),
-      code: '_SERVICE_EXCEPTION_',
-      message: 'Unhandled service exeption',
-      rawError: error,
-    );
-  }
+  ServiceFailure? errorHandler(dynamic error) => null;
+  // {
+  //   return ServiceFailure(
+  //     service: runtimeType.toString(),
+  //     code: '_SERVICE_EXCEPTION_',
+  //     message: 'Unhandled service exeption',
+  //     rawError: error,
+  //   );
+  // }
 
   Future<dynamic> init() async {}
   Future<dynamic> dispose() async {}

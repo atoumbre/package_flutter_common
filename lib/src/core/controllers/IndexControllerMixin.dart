@@ -14,4 +14,12 @@ mixin IndexControllerMixin on IBaseController {
     minIndex(min);
     maxIndex(max);
   }
+
+  void increment() {
+    if (index.value < maxIndex()) index.value++;
+  }
+
+  void decrement() {
+    if (index.value > minIndex()) index.value--;
+  }
 }

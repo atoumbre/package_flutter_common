@@ -1,36 +1,41 @@
 import 'package:get/get.dart';
+import 'package:multiple_result/multiple_result.dart';
+import 'package:softi_common/src/core/BaseService.dart';
 import 'package:softi_common/src/core/controllers/LoadingStateControllerMixin.dart';
 import 'package:softi_common/src/core/services/interfaces/i_loading_service.dart';
 
 mixin TaskHandlerControllerMixin on LoadingStatusControllerMixin {
   ILoadingService get loadingService => Get.find<ILoadingService>();
 
-  Future<void> controllerTaskHandler({
-    required Future<void> Function() task,
+  Future<Result<ServiceFailure, R>> serviceTaskHandler<R>({
+    required Future<R> Function() task,
     String completedMessage = '',
     String busyMessage = '',
-    String Function(dynamic)? errorHandler,
-    bool showViewState = true,
-    bool toggleViewState = true,
-    bool rethrowError = true,
+    String Function(ServiceFailure)? errorMessageBuilder,
+    bool showLoading = true,
+    bool toggleViewState = false,
   }) async {
-    var _errorHandler = errorHandler ?? (e) => 'An Error Occures';
+    var _errorMessageBuilder = errorMessageBuilder ?? (e) => e.message ?? '';
 
     if (toggleViewState) toggleLoading();
+
     try {
-      if (showViewState) await loadingService.showStatus(status: busyMessage);
+      if (showLoading) await loadingService.showStatus(status: busyMessage);
 
-      await task();
+      var result = await task();
 
-      if (showViewState) await loadingService.showSuccess(completedMessage);
+      if (showLoading) await loadingService.showSuccess(completedMessage);
       if (toggleViewState) toggleIdle();
+
+      //
+      return Success(result);
+    } on ServiceFailure catch (e) {
+      var errorMessage = _errorMessageBuilder(e);
+      if (showLoading) await loadingService.showError(errorMessage);
+      if (toggleViewState) toggleIdle();
+      return Error(e);
     } catch (e) {
-      var errorMessage = _errorHandler(e);
-
-      if (showViewState) await loadingService.showError(errorMessage);
-      if (toggleViewState) toggleIdle();
-
-      if (rethrowError) rethrow;
+      rethrow;
     } finally {}
   }
 }
