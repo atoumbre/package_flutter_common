@@ -11,3 +11,4 @@ export 'package:softi_common/src/core/services/interfaces/i_loading_service.dart
 export 'package:softi_common/src/core/services/interfaces/i_local_storage.dart';
 export 'package:softi_common/src/core/services/implemetations/loading_service.dart';
 export 'package:softi_common/src/core/services/implemetations/local_storage.dart';
+export 'package:softi_common/src/core/controllers/TranslationControllerMixin.dart';
