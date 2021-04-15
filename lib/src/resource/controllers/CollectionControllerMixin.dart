@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
-import 'package:softi_common/src/core/BaseController.dart';
+import 'package:softi_common/src/core/controllers/BaseController.dart';
 import 'package:softi_common/src/resource/classes/ResourceCollection.dart';
 import 'package:softi_common/src/resource/classes/filters.dart';
 import 'package:softi_common/src/resource/classes/query.dart';
 import 'package:softi_common/src/resource/interfaces/i_resource_adapter.dart';
 import 'package:softi_common/src/resource/interfaces/i_resource.dart';
 
-mixin CollectionControllerMixin<T extends IResourceData> on BaseController {
+mixin CollectionControllerMixin<T extends IResourceData> on IBaseController {
   // @override
   // Future<void> loadView() async => initCollection();
 

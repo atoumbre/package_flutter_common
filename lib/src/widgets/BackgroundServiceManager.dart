@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:nested/nested.dart';
-import 'package:softi_common/src/core/BaseService.dart';
+import 'package:softi_common/src/core/controllers/BaseService.dart';
 
 class BackgroundServiceManager extends SingleChildStatefulWidget {
   final Widget? child;

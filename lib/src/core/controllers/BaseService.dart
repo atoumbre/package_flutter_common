@@ -55,6 +55,7 @@ abstract class IStoppableService extends IBaseService {
 
   Future<void> stop() async {
     if (!_serviceIsEnabled) return;
+    if (!_serviceIsActive) return;
 
     await stopCallback();
     _serviceIsActive = false;
@@ -62,9 +63,10 @@ abstract class IStoppableService extends IBaseService {
 
   Future<void> start() async {
     if (!_serviceIsEnabled) return;
+    if (_serviceIsActive) return;
 
-    await startCallback();
     _serviceIsActive = true;
+    await startCallback();
   }
 }
 

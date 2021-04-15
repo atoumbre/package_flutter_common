@@ -1,4 +1,4 @@
-import 'package:softi_common/src/core/BaseController.dart';
+import 'package:softi_common/src/core/controllers/BaseController.dart';
 import 'package:softi_common/src/resource/classes/ResourceRecord.dart';
 import 'package:softi_common/src/resource/controllers/RecordControllerMixin.dart';
 import 'package:softi_common/src/resource/interfaces/i_resource.dart';

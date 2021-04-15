@@ -1,51 +1,41 @@
 import 'dart:async';
 
+import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:softi_common/src/services/interfaces/device/i_location_service.dart';
 
 class LocationService extends ILocationService {
-  StreamSubscription<LocationData>? _streamSubscription;
-
   // Location Available
   bool? locationAvailable;
-
-  // Keep track of current Location
-  LocationData? _currentLocation;
-
-  // Continuously emit location updates
-  Stream<LocationData>? _locationStream; //= StreamController<UserLocation>.broadcast();
+  late Rxn<LocationData> _locationStream; //= StreamController<UserLocation>.broadcast();
 
   Location location = Location();
 
-  LocationService() {
-    location.requestPermission().then((granted) {
-      _locationStream = location.onLocationChanged;
-      if (granted == PermissionStatus.granted) {
-        locationAvailable = true;
-      } else {
-        locationAvailable = false;
-      }
-    });
-  }
+  @override
+  Stream<LocationData?> get locationStream => _locationStream.stream;
 
   @override
-  Stream<LocationData>? get locationStream => _locationStream;
-
-  @override
-  LocationData? get currentLocation => _currentLocation;
+  LocationData? get currentLocation => _locationStream();
 
   @override
   Future<void> startCallback() async {
-    _streamSubscription = _locationStream!.listen((locationData) {
-      _currentLocation = locationData;
+    _locationStream = Rxn<LocationData>();
+
+    var granted = await location.requestPermission();
+
+    _locationStream
+      ..bindStream(location.onLocationChanged)
+      ..listen((data) => print('New location ${data.toString()}'));
+
+    if (granted == PermissionStatus.granted) {
       locationAvailable = true;
-      print(_currentLocation.toString());
-      // return locationData;
-    });
+    } else {
+      locationAvailable = false;
+    }
   }
 
   @override
   Future<void> stopCallback() async {
-    await _streamSubscription?.cancel();
+    _locationStream.close();
   }
 }

@@ -1,4 +1,4 @@
-import 'package:softi_common/src/core/BaseService.dart';
+import 'package:softi_common/src/core/controllers/BaseService.dart';
 
 abstract class ILocalStore extends IBaseService {
   Future<String?> getKey(String key);

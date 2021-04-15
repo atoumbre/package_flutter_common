@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:softi_common/src/core/BaseController.dart';
+import 'package:softi_common/core.dart';
+import 'package:softi_common/src/core/controllers/BaseController.dart';
 import 'package:softi_common/src/core/services/interfaces/i_local_storage.dart';
 
 mixin ThemeControllerMixin on IBaseController {
@@ -33,5 +34,15 @@ mixin ThemeControllerMixin on IBaseController {
       themeMode = ThemeMode.system;
     }
     _setThemeMode(themeMode);
+  }
+}
+
+class ThemeController extends IBaseController with ThemeControllerMixin {
+  static ThemeController get find => Get.find<ThemeController>();
+
+  @override
+  void onInit() {
+    super.onInit();
+    getThemeMode();
   }
 }

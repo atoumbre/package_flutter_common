@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:softi_common/src/auth/models/auth_user.dart';
-import 'package:softi_common/src/core/BaseService.dart';
+import 'package:softi_common/src/core/controllers/BaseService.dart';
 
 abstract class IAuthService extends IBaseService {
   Future<AuthUser?> get getCurrentUser;

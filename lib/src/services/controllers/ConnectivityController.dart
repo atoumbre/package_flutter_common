@@ -1,10 +1,18 @@
-import 'package:softi_common/src/core/BaseController.dart';
-import 'package:softi_common/src/services/controllers/ConnectivityControllerMixin.dart';
+import 'package:get/get.dart';
+import 'package:softi_common/src/core/controllers/BaseController.dart';
 import 'package:softi_common/src/services/interfaces/device/i_connectivity_service.dart';
 
-// enum LoadingStatus { idle, loading, error }
+mixin ConnectivityControllerMixin on IBaseController {
+  IConnectivityService connectivityService = Get.find<IConnectivityService>();
 
-class ConnectivityController extends BaseController with ConnectivityControllerMixin {
+  Rx<ConnectivityType> connectivityType = ConnectivityType.none.obs;
+
+  void initConnectivityMonitoring() {
+    connectivityType.bindStream(connectivityService.streamConectivity);
+  }
+}
+
+class ConnectivityController extends IBaseController with ConnectivityControllerMixin {
   @override
   final IConnectivityService connectivityService;
 

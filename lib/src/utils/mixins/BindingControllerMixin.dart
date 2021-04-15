@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:softi_common/src/core/BaseController.dart';
+import 'package:softi_common/src/core/controllers/BaseController.dart';
 
 mixin BindingControllerMixin on IBaseController {
   // String get ressourceTag;
@@ -9,17 +9,18 @@ mixin BindingControllerMixin on IBaseController {
   Future<void> Function() binder<S, T>(
     Stream<S> rxMaster,
     Rx<T> rxData, {
-    Function(S, T)? handler,
+    required Stream<T> Function(S) binder,
+    required Function(S, T) handler,
     Function(S)? masterHandler,
     bool Function(S)? canBind,
-    Stream<T> Function(S)? binder,
   }) {
     StreamSubscription? _sub;
     StreamSubscription _masterSub;
+
     T? initialData = rxData();
     void _binder(S master) {
       if (canBind != null ? canBind(master) : master != null) {
-        _sub = binder!(master).listen((event) => handler!(master, event));
+        _sub = binder(master).listen((event) => handler(master, event));
       } else {
         rxData(initialData);
         _sub?.cancel();
@@ -41,17 +42,17 @@ mixin BindingControllerMixin on IBaseController {
   Future<void> Function() binderList<S, T>(
     Stream<S> rxMaster,
     RxList<T> rxData, {
-    Function(S, List<T>)? handler,
+    required Function(S, List<T>) handler,
+    required Stream<List<T>> Function(S) binder,
     Function(S)? masterHandler,
     bool Function(S)? canBind,
-    Stream<List<T>> Function(S)? binder,
   }) {
     StreamSubscription? _sub;
     StreamSubscription _masterSub;
-    // var initialData = rxData();
+
     void _binder(S master) {
       if (canBind != null ? canBind(master) : master != null) {
-        _sub = binder!(master).listen((event) => handler!(master, event));
+        _sub = binder(master).listen((event) => handler(master, event));
       } else {
         rxData.assignAll([]);
         _sub?.cancel();

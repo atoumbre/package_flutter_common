@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:softi_common/src/auth/interfaces/i_auth_service.dart';
 import 'package:softi_common/src/auth/models/auth_user.dart';
-import 'package:softi_common/src/core/BaseController.dart';
+import 'package:softi_common/src/core/controllers/BaseController.dart';
 
-mixin AuthControllerMixin on BaseController {
+mixin AuthControllerMixin on IBaseController {
   final authUser = Rxn<AuthUser>(AuthUser());
 
   /// GETTERS

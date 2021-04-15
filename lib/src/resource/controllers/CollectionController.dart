@@ -1,4 +1,4 @@
-import 'package:softi_common/src/core/BaseController.dart';
+import 'package:softi_common/src/core/controllers/BaseController.dart';
 import 'package:softi_common/src/resource/classes/ResourceCollection.dart';
 import 'package:softi_common/src/resource/classes/filters.dart';
 import 'package:softi_common/src/resource/classes/query.dart';
