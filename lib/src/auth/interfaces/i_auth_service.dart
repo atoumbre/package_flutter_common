@@ -44,14 +44,14 @@ abstract class IAuthService extends IBaseService {
 class SendCodeResult {
   final String phoneNumber;
   final Future<AuthUser>? authResult;
-  final Future<SendCodeResult> Function()? resendCode;
-  final Future<AuthUser> Function(String)? codeVerification;
+  final Future<SendCodeResult> Function() resendCode;
+  final Future<AuthUser> Function(String) codeVerification;
 
   SendCodeResult({
     required this.phoneNumber,
+    required this.codeVerification,
+    required this.resendCode,
     this.authResult,
-    this.codeVerification,
-    this.resendCode,
   });
 }
 

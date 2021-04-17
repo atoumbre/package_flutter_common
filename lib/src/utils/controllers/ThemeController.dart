@@ -10,13 +10,12 @@ import 'package:softi_common/src/core/services/interfaces/i_local_storage.dart';
 mixin ThemeControllerMixin on IBaseController {
   ILocalStore get _store => Get.find();
 
-  final _themeMode = ThemeMode.system.obs;
+  final Rx<ThemeMode> _themeMode = ThemeMode.system.obs;
 
   ThemeMode get themeMode => _themeMode.value;
 
   void _setThemeMode(ThemeMode themeMode) {
     Get.changeThemeMode(themeMode);
-
     _themeMode(themeMode);
   }
 
@@ -26,12 +25,13 @@ mixin ThemeControllerMixin on IBaseController {
   }
 
   Future<void> getThemeMode() async {
-    ThemeMode themeMode;
     var themeText = await _store.getKey('theme');
+    if (themeText == null) return;
+    ThemeMode themeMode;
     try {
       themeMode = ThemeMode.values.firstWhere((e) => describeEnum(e) == themeText);
     } catch (e) {
-      themeMode = ThemeMode.system;
+      themeMode = Get.isDarkMode ? ThemeMode.dark : ThemeMode.light; //.system;
     }
     _setThemeMode(themeMode);
   }

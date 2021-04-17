@@ -9,6 +9,9 @@ enum LoadingStatus { ready, loading, error }
 
 abstract class IBaseController extends GetxController {}
 
+abstract class IBaseBusyController extends IBaseController
+    with LoadingStatusControllerMixin, TaskHandlerControllerMixin {}
+
 mixin LoadingStatusControllerMixin on IBaseController {
   Rx<LoadingStatus> loadingStatus = LoadingStatus.loading.obs;
 
@@ -35,41 +38,46 @@ mixin LoadingStatusControllerMixin on IBaseController {
 
 mixin TaskHandlerControllerMixin on LoadingStatusControllerMixin {
   ILoadingService get loadingService => Get.find<ILoadingService>();
+  final lastResult = Rxn();
 
   Future<Result<ServiceFailure, R>> serviceTaskHandler<R>({
     required Future<R> Function() task,
-    String completedMessage = '',
-    String busyMessage = '',
-    String Function(ServiceFailure)? errorMessageBuilder,
-    bool showLoading = true,
+    Future<void> Function(R)? onSuccess,
+    Future<void> Function(ServiceFailure)? onFailure,
     bool toggleViewState = false,
+    bool showLoading = true,
+    String busyMessage = '',
   }) async {
-    var _errorMessageBuilder = errorMessageBuilder ?? (e) => e.message ?? '';
-
+    if (showLoading) await loadingService.showStatus(status: busyMessage);
     if (toggleViewState) toggleLoading();
 
     try {
-      if (showLoading) await loadingService.showStatus(status: busyMessage);
-
       var result = await task();
 
-      if (showLoading) await loadingService.showSuccess(completedMessage);
       if (toggleViewState) toggleIdle();
+      if (showLoading) await loadingService.dismiss();
+      if (onSuccess != null) await onSuccess(result);
 
-      //
+      lastResult(Success(result));
       return Success(result);
+      //
     } on ServiceFailure catch (e) {
-      var errorMessage = _errorMessageBuilder(e);
-      if (showLoading) await loadingService.showError(errorMessage);
       if (toggleViewState) toggleIdle();
+      if (showLoading) await loadingService.dismiss();
+      if (onFailure != null) await onFailure(e);
+
+      lastResult(Error(e));
       return Error(e);
+      //
     } catch (e) {
       rethrow;
-    } finally {}
+    } finally {
+      if (showLoading) await loadingService.dismiss();
+    }
   }
 }
 
-abstract class _IBaseLifeCycleController extends IBaseController with WidgetsBindingObserver {}
+abstract class _IBaseLifeCycleController extends IBaseBusyController with WidgetsBindingObserver {}
 
 abstract class IBaseLifeCycleController extends _IBaseLifeCycleController with _FullLifeCycleMixin {}
 
@@ -113,12 +121,7 @@ mixin _FullLifeCycleMixin on _IBaseLifeCycleController {
   void onDetached();
 }
 
-// abstract class BaseLifeCycleController extends IBaseLifeCycleController
-//     with LoadingStatusControllerMixin, TaskHandlerControllerMixin {}
-
-// abstract class BaseController extends IBaseController with LoadingStatusControllerMixin, TaskHandlerControllerMixin {}
-
-abstract class BaseViewController extends IBaseController
+abstract class BaseViewController extends IBaseBusyController
     with LoadingStatusControllerMixin, TaskHandlerControllerMixin {
   Future<void> onViewInit() async {}
 
@@ -128,30 +131,24 @@ abstract class BaseViewController extends IBaseController
 
   Future<void> _onViewInit() async {
     await serviceTaskHandler(
-        task: () async {
-          await onViewInit();
-        },
-        toggleViewState: true,
-        showLoading: false,
-        busyMessage: 'Loading ...',
-        completedMessage: 'Loding completed',
-        errorMessageBuilder: (error) {
-          return '';
-        });
+      task: () async {
+        await onViewInit();
+      },
+      toggleViewState: true,
+      showLoading: false,
+      busyMessage: 'Loading ...',
+    );
   }
 
   Future<void> _onViewReady() async {
     await serviceTaskHandler(
-        task: () async {
-          await onViewReady();
-        },
-        toggleViewState: true,
-        showLoading: false,
-        busyMessage: 'Loading ...',
-        completedMessage: 'Loding completed',
-        errorMessageBuilder: (error) {
-          return '';
-        });
+      task: () async {
+        await onViewReady();
+      },
+      toggleViewState: true,
+      showLoading: false,
+      busyMessage: 'Loading ...',
+    );
   }
 
   @override
@@ -188,25 +185,6 @@ abstract class BaseView<T extends BaseViewController> extends StatelessWidget {
   }) : super(key: key);
 
   T get controller => Get.put<T>(init(), tag: tag);
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return GetX<T>(
-  //     init: init(),
-  //     tag: tag,
-  //     builder: (controller) {
-  //       if (controller.loadingStatus() == LoadingStatus.error) {
-  //         return errorBuilder(controller);
-  //       }
-
-  //       if (controller.loadingStatus() == LoadingStatus.loading) {
-  //         return loadingBuilder(controller);
-  //       }
-
-  //       return builder(controller);
-  //     },
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
-export 'package:softi_common/src/utils/helpers/map_utils.dart';
+export 'package:softi_common/src/utils/helpers/helpers.dart';
+export 'package:softi_common/src/utils/helpers/binder.dart';
 export 'package:softi_common/src/utils/mixins/BindingControllerMixin.dart';
 export 'package:softi_common/src/utils/mixins/IndexControllerMixin.dart';
 export 'package:softi_common/src/utils/mixins/TimerControllerMixin.dart';
