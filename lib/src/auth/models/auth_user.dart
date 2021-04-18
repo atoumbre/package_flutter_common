@@ -1,7 +1,7 @@
 // part 'auth_user.freezed.dart';
 
 class AuthUser {
-  final String? uid;
+  final String uid;
 
   // Is new ?
   bool isNew;
@@ -20,7 +20,7 @@ class AuthUser {
   final String? providerId;
 
   AuthUser({
-    this.uid,
+    required this.uid,
     this.isNew = false,
     this.displayName,
     this.photoUrl,

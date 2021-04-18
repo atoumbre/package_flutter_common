@@ -5,39 +5,16 @@ import 'package:multiple_result/multiple_result.dart';
 import 'package:softi_common/src/core/controllers/BaseService.dart';
 import 'package:softi_common/src/core/services/interfaces/i_loading_service.dart';
 
-enum LoadingStatus { ready, loading, error }
+enum ControllerStatus { ready, busy, error }
 
 abstract class IBaseController extends GetxController {}
 
-abstract class IBaseBusyController extends IBaseController
-    with LoadingStatusControllerMixin, TaskHandlerControllerMixin {}
+abstract class IBaseBusyController extends IBaseController with LoadingStatusControllerMixin {}
 
 mixin LoadingStatusControllerMixin on IBaseController {
-  Rx<LoadingStatus> loadingStatus = LoadingStatus.loading.obs;
-
-  void changeLoadingStatus(LoadingStatus newStatus) {
-    loadingStatus(newStatus);
-  }
-
-  void toggleIdle() {
-    loadingStatus(LoadingStatus.ready);
-  }
-
-  void toggleError() {
-    loadingStatus(LoadingStatus.error);
-  }
-
-  void toggleLoading() {
-    loadingStatus(LoadingStatus.loading);
-  }
-
-  bool get isIdle => loadingStatus() == LoadingStatus.ready;
-  bool get isErrored => loadingStatus() == LoadingStatus.error;
-  bool get isLoding => loadingStatus() == LoadingStatus.loading;
-}
-
-mixin TaskHandlerControllerMixin on LoadingStatusControllerMixin {
   ILoadingService get loadingService => Get.find<ILoadingService>();
+
+  final loadingStatus = ControllerStatus.ready.obs;
   final lastResult = Rxn();
 
   Future<Result<ServiceFailure, R>> serviceTaskHandler<R>({
@@ -48,8 +25,16 @@ mixin TaskHandlerControllerMixin on LoadingStatusControllerMixin {
     bool showLoading = true,
     String busyMessage = '',
   }) async {
-    if (showLoading) await loadingService.showStatus(status: busyMessage);
+    // Protect
+    if (loadingStatus() == ControllerStatus.busy) {
+      return Error(ServiceFailure(
+        code: 'BUSY_CONTROLLER',
+        service: '_INTERNAL_',
+      ));
+    }
+
     if (toggleViewState) toggleLoading();
+    if (showLoading) await loadingService.showStatus(status: busyMessage);
 
     try {
       var result = await task();
@@ -75,6 +60,26 @@ mixin TaskHandlerControllerMixin on LoadingStatusControllerMixin {
       if (showLoading) await loadingService.dismiss();
     }
   }
+
+  void changeLoadingStatus(ControllerStatus newStatus) {
+    loadingStatus(newStatus);
+  }
+
+  void toggleIdle() {
+    loadingStatus(ControllerStatus.ready);
+  }
+
+  void toggleError() {
+    loadingStatus(ControllerStatus.error);
+  }
+
+  void toggleLoading() {
+    loadingStatus(ControllerStatus.busy);
+  }
+
+  bool get isIdle => loadingStatus() == ControllerStatus.ready;
+  bool get isErrored => loadingStatus() == ControllerStatus.error;
+  bool get isLoding => loadingStatus() == ControllerStatus.busy;
 }
 
 abstract class _IBaseLifeCycleController extends IBaseBusyController with WidgetsBindingObserver {}
@@ -121,8 +126,7 @@ mixin _FullLifeCycleMixin on _IBaseLifeCycleController {
   void onDetached();
 }
 
-abstract class BaseViewController extends IBaseBusyController
-    with LoadingStatusControllerMixin, TaskHandlerControllerMixin {
+abstract class BaseViewController extends IBaseBusyController {
   Future<void> onViewInit() async {}
 
   Future<void> onViewReady() async {}
@@ -189,11 +193,11 @@ abstract class BaseView<T extends BaseViewController> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (controller.loadingStatus() == LoadingStatus.error) {
+      if (controller.loadingStatus() == ControllerStatus.error) {
         return errorBuilder(controller);
       }
 
-      if (controller.loadingStatus() == LoadingStatus.loading) {
+      if (controller.loadingStatus() == ControllerStatus.busy) {
         return loadingBuilder(controller);
       }
 
