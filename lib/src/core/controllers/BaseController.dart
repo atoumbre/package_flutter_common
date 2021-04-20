@@ -9,13 +9,13 @@ enum ControllerStatus { ready, busy, error }
 
 abstract class IBaseController extends GetxController {}
 
-abstract class IBaseBusyController extends IBaseController with LoadingStatusControllerMixin {}
+abstract class IBaseBusyController extends IBaseController with TaskManagerControllerMixin {}
 
-mixin LoadingStatusControllerMixin on IBaseController {
+mixin TaskManagerControllerMixin on IBaseController {
   ILoadingService get loadingService => Get.find<ILoadingService>();
 
   final loadingStatus = ControllerStatus.ready.obs;
-  final lastResult = Rxn();
+  final lastResult = Rx<Result<ServiceFailure, dynamic>>(Success(null));
 
   Future<Result<ServiceFailure, R>> serviceTaskHandler<R>({
     required Future<R> Function() task,
@@ -53,7 +53,6 @@ mixin LoadingStatusControllerMixin on IBaseController {
 
       lastResult(Error(e));
       return Error(e);
-      //
     } catch (e) {
       rethrow;
     } finally {
@@ -180,6 +179,7 @@ abstract class BaseView<T extends BaseViewController> extends StatelessWidget {
   Widget loadingBuilder(T controller) => Center(child: CircularProgressIndicator());
   Widget errorBuilder(T controller) => Center(child: Text('An Error Occurs', style: TextStyle(color: Colors.red)));
   Widget builder(T controller);
+
   T init();
 
   String? get tag => null;
@@ -202,6 +202,26 @@ abstract class BaseView<T extends BaseViewController> extends StatelessWidget {
       }
 
       return builder(controller);
+    });
+  }
+}
+
+extension BaseViewControllerExt on BaseViewController {
+  Widget obx<T extends BaseViewController>(
+    Widget Function(T) builder, {
+    Widget Function(T)? busyBuilder,
+    Widget Function(T)? errorBuilder,
+  }) {
+    return Obx(() {
+      if (loadingStatus() == ControllerStatus.error && errorBuilder != null) {
+        return errorBuilder(this as T);
+      }
+
+      if (loadingStatus() == ControllerStatus.busy && busyBuilder != null) {
+        return busyBuilder(this as T);
+      }
+
+      return builder(this as T);
     });
   }
 }

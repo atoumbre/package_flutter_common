@@ -33,7 +33,7 @@ abstract class IAuthService extends IBaseService {
     String? phoneNumber,
     dynamic resendingId,
     bool? autoRetrive,
-    int? autoRetrievalTimeoutSeconds,
+    int autoRetrievalTimeoutSeconds = 30,
   });
 
   Future<void> signOut();

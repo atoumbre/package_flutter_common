@@ -1,12 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-
 abstract class IBaseService {
-  @protected
-  Future<T> failureCatcher<T>(Future<T> Function() task) {
+  // @protected
+  Future<T> failureCatcher<T>(Future<T> Function() task) async {
     try {
-      return task();
+      var result = await task();
+      return result;
     } catch (e) {
       var formatedFailer = errorHandler(e);
       if (formatedFailer != null) {
@@ -17,15 +16,14 @@ abstract class IBaseService {
     }
   }
 
-  ServiceFailure? errorHandler(dynamic error) => null;
-  // {
-  //   return ServiceFailure(
-  //     service: runtimeType.toString(),
-  //     code: '_SERVICE_EXCEPTION_',
-  //     message: 'Unhandled service exeption',
-  //     rawError: error,
-  //   );
-  // }
+  ServiceFailure? errorHandler(dynamic error) {
+    return ServiceFailure(
+      service: runtimeType.toString(),
+      code: '_SERVICE_EXCEPTION_',
+      message: 'Unhandled service exeption',
+      rawError: error,
+    );
+  }
 
   Future<dynamic> init() async {}
   Future<dynamic> dispose() async {}
